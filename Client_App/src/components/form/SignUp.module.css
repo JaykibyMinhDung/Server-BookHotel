@@ -1,0 +1,51 @@
+/* Navbar sign up */
+.nav {
+  background-color: rgb(116, 116, 255);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+}
+.nav h2 {
+  /* margin-top: calc(1% - 0.5rem); */
+  margin-left: 2rem;
+  /* width: 50%; */
+}
+.nav div {
+  /* margin-right: 2rem; */
+  width: 20%;
+}
+.nav div button {
+  width: 30%;
+  margin: 0.5rem;
+  color: rgb(33, 33, 255);
+  outline: none;
+  cursor: pointer;
+}
+
+/* Form Sign Up */
+
+.formSignUp {
+  margin-top: 2rem;
+  text-align: center;
+}
+.formSignUp input {
+  margin: 0.5rem;
+  width: calc(50% - 30rem);
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid rgb(0, 0, 0);
+}
+.formSignUp input:focus {
+  outline: none;
+}
+.formSignUp button {
+  width: calc(50% - 29rem);
+  padding: 0.5rem;
+  color: white;
+  font-weight: bold;
+  border: 0px solid;
+  border-radius: 5px;
+  background-color: rgb(33, 33, 255);
+  cursor: pointer;
+}
