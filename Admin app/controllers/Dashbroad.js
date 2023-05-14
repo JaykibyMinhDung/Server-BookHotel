@@ -5,4 +5,9 @@ exports.getDashbroad = (req, res, next) => {
     path: "/dashbroad",
     pageTitle: "Admin Page",
   });
+  // <%- include('../includes/navigation.ejs') %> <%- include('../includes/head.ejs') %>
+  // <% for (let product of prods) { %>
+  {
+    /* <img src="<%= product.imageUrl %>" alt="<%= product.title %>"> */
+  }
 };

@@ -1,12 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+<%- include('./includes/head.ejs') %>
+
+    <link rel="stylesheet" href="/css/dashbroad.css" />
+    <link rel="stylesheet" href="/css/sidebar.css" />
   </head>
   <body>
-    <h1>hello</h1>
-  </body>
-</html>
+<%- include('./includes/navigation.ejs') %>
+    <main>
+      <header>
+        <div>
+          <div>
+            <h4>USER</h4>
+            <p>100</p>
+          </div>
+          <img src="" alt="" />
+        </div>
+      </header>
+      <article>
+        <h2>Latest Transactions</h2>
+        <table></table>
+      </article>
+    </main>
+
+<%- include('./includes/foot.ejs') %>
