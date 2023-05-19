@@ -2,10 +2,11 @@
 
     <link rel="stylesheet" href="/css/dashbroad.css" />
     <link rel="stylesheet" href="/css/sidebar.css" />
+    <link rel="stylesheet" href="/css/table.css" />
   </head>
   <body>
-<%- include('./includes/navigation.ejs') %>
-    <main>
+    <%- include('./includes/navigation.ejs') %>
+    <main class="main__dashbroad">
       <header>
         <div>
           <div>
@@ -16,8 +17,7 @@
         </div>
       </header>
       <article>
-        <h2>Latest Transactions</h2>
-        <table></table>
+        <%- include('./includes/table.ejs'), {id: 'ID' , User: 'User', Hotel: 'Hotel', Room: 'Room', Date: 'Date', Price: 'Price', Payment: 'PaymentMethod', status: 'Status'}%>
       </article>
     </main>
 

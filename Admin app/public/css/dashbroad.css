@@ -1,5 +1,14 @@
-.inforBroad {
-  color: red;
+header,
+article {
+  margin-top: 0%;
+  margin-left: 2rem;
+}
+
+.main__dashbroad {
+  border-top: 1.5px solid rgba(0, 0, 0, 0.233);
+  float: left;
+  width: 84.5%;
+  margin-top: 4.7em;
 }
 .transaction {
   color: black;
