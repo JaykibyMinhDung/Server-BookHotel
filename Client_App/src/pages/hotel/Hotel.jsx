@@ -11,10 +11,13 @@ import {
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import BookHotel from "../bookHotel/bookHotel";
 
 const Hotel = () => {
   const [slideNumber, setSlideNumber] = useState(0);
   const [open, setOpen] = useState(false);
+  const navigateBook = useNavigate();
 
   const photos = [
     {
@@ -37,6 +40,10 @@ const Hotel = () => {
     },
   ];
 
+  const handleBookhotel = () => {
+    navigateBook("/bookhotel/:id");
+  };
+
   const handleOpen = (i) => {
     setSlideNumber(i);
     setOpen(true);
@@ -51,7 +58,7 @@ const Hotel = () => {
       newSlideNumber = slideNumber === 5 ? 0 : slideNumber + 1;
     }
 
-    setSlideNumber(newSlideNumber)
+    setSlideNumber(newSlideNumber);
   };
 
   return (
@@ -132,10 +139,11 @@ const Hotel = () => {
               <h2>
                 <b>$945</b> (9 nights)
               </h2>
-              <button>Reserve or Book Now!</button>
+              <button onClick={handleBookhotel}>Reserve or Book Now!</button>
             </div>
           </div>
         </div>
+        <BookHotel />
         <MailList />
         <Footer />
       </div>

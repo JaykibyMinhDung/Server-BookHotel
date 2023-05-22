@@ -44,6 +44,7 @@ const Header = ({ type }) => {
   };
 
   const handleSearch = () => {
+    // page hotel sẽ bị lỗi khi chuyển hướng bằng url vì navigate không thiết lập dòng này khi chuyển hướng bằng url, đối số thứ 2 của navigate là tạo thêm một biến nữa trong useLocation().
     navigate("/hotels", { state: { destination, date, options } });
   };
 
@@ -87,6 +88,7 @@ const Header = ({ type }) => {
             </p>
             <button className="headerBtn">Sign in / Register</button>
             <div className="headerSearch">
+              {/* input chứa thông tin về local */}
               <div className="headerSearchItem">
                 <FontAwesomeIcon icon={faBed} className="headerIcon" />
                 <input
@@ -96,6 +98,7 @@ const Header = ({ type }) => {
                   onChange={(e) => setDestination(e.target.value)}
                 />
               </div>
+              {/* input chứa thông tin về canlender */}
               <div className="headerSearchItem">
                 <FontAwesomeIcon icon={faCalendarDays} className="headerIcon" />
                 <span

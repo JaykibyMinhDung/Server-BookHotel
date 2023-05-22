@@ -1,9 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Hotel from "./pages/hotel/Hotel";
+import bookHotel from "./pages/bookHotel/bookHotel";
 import List from "./pages/list/List";
 import Signup from "./components/form/sign_up";
 import Signin from "./components/form/sign_in";
+import Transaction from "./pages/transactions/Transaction";
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
         <Route path="/signin" element={<Signin />} />
         <Route path="/hotels" element={<List />} />
         <Route path="/hotels/:id" element={<Hotel />} />
+        {/* <Route path="/bookhotel/:id" element={<bookHotel />} /> */}
+        <Route path="/transaction" element={<Transaction />} />
       </Routes>
     </BrowserRouter>
   );
