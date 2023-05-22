@@ -1,0 +1,24 @@
+<%- include('../includes/head.ejs') %>
+
+    <link rel="stylesheet" href="/css/dashbroad.css" />
+    <link rel="stylesheet" href="/css/sidebar.css" />
+    <link rel="stylesheet" href="/css/table.css" />
+  </head>
+  <body>
+    <%- include('../includes/navigation.ejs') %>
+    <main class="main__dashbroad">
+        <header>
+      </header>
+      <article>
+        <div class='headerHotel__list'>
+            <h2 style="color: rgb(141, 141, 141)"><%= Heading %></h2>
+            <button>Add New</button>
+        </div>
+        <%-include('../includes/table.ejs') %>
+      </article>
+    </main>
+
+<%- include('../includes/foot.ejs') %>
+
+   <%#  include('../includes/table.ejs'), {titleHead: hotel}, , {titleHead: table} %> 
+      

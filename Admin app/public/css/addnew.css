@@ -1,0 +1,88 @@
+textarea {
+  width: 100%;
+  overflow-wrap: normal;
+  resize: none;
+  margin-bottom: 1rem;
+}
+textarea:focus {
+  text-align: left;
+  outline: none;
+}
+.heading {
+  width: 97%;
+  margin: 1rem;
+  color: rgb(150, 150, 150);
+  border: 1px solid rgb(182, 182, 182);
+  border-radius: 5px;
+  box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.267),
+    -1px 3px 5px 0px rgba(0, 0, 0, 0.116);
+}
+
+.heading h2 {
+  margin-left: 1rem;
+}
+.form__input {
+  width: 95%;
+}
+.form__input input {
+  width: 96%;
+  margin-top: 0.6vh;
+  margin-bottom: 2vh;
+  border: 0px;
+  border-bottom: 1px solid rgb(160, 160, 160);
+}
+/* .form__input label {
+  margin-right: 0.4vh;
+} */
+.form__input input:focus {
+  outline: none;
+}
+
+.form__input--flex {
+  display: flex;
+  justify-content: space-between;
+}
+
+.form__input--flex div {
+  /* display: inline-block; */
+  width: 40%;
+}
+
+.form__input button {
+  width: 14%;
+  padding: 0.6%;
+  margin-bottom: 3vh;
+  text-align: center;
+  color: white;
+  background-color: #49796b;
+  cursor: pointer;
+}
+.form__input button:hover {
+  color: white;
+  background-color: #55bda1;
+  border: 1px solid transparent;
+}
+
+.foot__newrooms {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1%;
+}
+.foot__newrooms div {
+  width: 100%;
+}
+.foot__newrooms--align {
+  text-align: center;
+}
+.foot__newrooms div select,
+option {
+  width: 40%;
+  padding: 2%;
+  background-color: transparent;
+  border: 1px solid rgb(156, 156, 156);
+}
+.foot__newrooms div button {
+  text-align: center;
+  width: 40%;
+  padding: 3%;
+}

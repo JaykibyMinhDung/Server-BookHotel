@@ -37,11 +37,14 @@ li {
   border-bottom: 1.5px solid rgba(0, 0, 0, 0.233);
 }
 .sidebar__horizontal a {
+  text-decoration: none;
+
   color: rgb(95, 95, 95);
 }
 .sidebar__horizontal a:active,
 .sidebar__horizontal a:hover,
 .sidebar__horizontal a.active {
-  color: default;
+  color: #5b2683;
+
   cursor: pointer;
 }

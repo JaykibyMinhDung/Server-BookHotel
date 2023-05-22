@@ -7,17 +7,39 @@
   <body>
     <%- include('./includes/navigation.ejs') %>
     <main class="main__dashbroad">
-      <header>
-        <div>
-          <div>
+      <header class='box__inforBroad'>
+        <div class="box__inforBroad--User">
+          <div >
             <h4>USER</h4>
             <p>100</p>
           </div>
-          <img src="" alt="" />
+          <i class="fa fa-user" aria-hidden="true"></i>
+        </div>
+        <div class="box__inforBroad--Order">
+          <div >
+            <h4>ORDER</h4>
+            <p>100</p>
+          </div> 
+          <i class="fa fa-cart-plus" aria-hidden="true"></i>
+        </div>
+        <div class="box__inforBroad--Earnings">
+          <div >
+            <h4>EARNINGS</h4>
+            <p>$100</p>
+          </div>      
+          <i class="fas fa-coins    "></i>
+        </div>
+        <div class="box__inforBroad--Blance">
+          <div >
+            <h4>BALANCE</h4>
+            <p>$100</p>
+          </div>     
+          <i class="fas fa-wallet   "></i>
         </div>
       </header>
-      <article>
-        <%- include('./includes/table.ejs'), {id: 'ID' , User: 'User', Hotel: 'Hotel', Room: 'Room', Date: 'Date', Price: 'Price', Payment: 'PaymentMethod', status: 'Status'}%>
+      <article >
+      <h2 style="color: rgb(141, 141, 141)"><%= Heading %></h2>
+        <%- include('./includes/table.ejs') %>
       </article>
     </main>
 

@@ -1,0 +1,52 @@
+<%- include('../includes/head.ejs') %>
+
+    <link rel="stylesheet" href="/css/dashbroad.css" />
+    <link rel="stylesheet" href="/css/sidebar.css" />
+    <link rel="stylesheet" href="/css/addnew.css" />
+  </head>
+  <body>
+    <%- include('../includes/navigation.ejs') %>
+    <main class="main__dashbroad">
+      <header class="heading">
+        <h2 style="color: rgb(141, 141, 141)"><%= Heading %></h2>
+      </header>
+      <article class="form__input">
+        <form action="" method="post">
+          <div class="form__input--flex">
+            <div>
+              <label for="Name">Title</label> <br>
+              <input type="text" placeholder="2 bed rooms" id="Name" value="" name="Name">
+              <label for="Price">Price</label> <br>
+              <input type="text" placeholder="100" id="Price" value="" name="Price">
+            </div>
+            <div>
+              <label for="Description">Description</label> <br>
+              <input type="text" placeholder="King size bed, 1 bathroom" id="Description" value="" name="Description">
+              <label for="Type">Max People</label> <br>
+              <input type="text" placeholder="2" id="Type" value="" name="Type">
+            </div>
+          </div>
+          <div class="foot__newrooms">
+            <div>
+              <label for="Rooms">Rooms</label>
+              <textarea style="width:90%" name="Rooms" id="Rooms" cols="30" rows="10" placeholder="give comma between room numbers" >
+                
+              </textarea>
+            </div>
+            <div class="foot__newrooms--align">
+              <label for="hotel">Choose a hotel</label>
+              <br>
+              <select id="Cau Giay">
+                <option value="Cau Giay">Cau Giay</option>
+              </select>
+              <br>
+            </div>
+            <div class="foot__newrooms--align">
+              <button type="submit">Send</button>
+            </div>
+          </div>
+        </form>
+      </article>
+    </main>
+
+<%- include('../includes/foot.ejs') %>
