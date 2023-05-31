@@ -1,5 +1,5 @@
 # Project fullstack
-Language Programming: ReactJS ( library of Javascript )
+Language Programming: Javascript
 
 Name Project: Web Booking Tour
 
