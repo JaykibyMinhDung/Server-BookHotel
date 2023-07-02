@@ -2,27 +2,31 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const roomsSchema = new Schema({
-  title: {
+const userSchema = new Schema({
+  username: {
     type: String,
     require: true,
   },
-  price: {
-    type: Number,
-    require: true,
-  },
-  maxPeople: {
-    type: Number,
-    require: true,
-  },
-  desc: {
+  password: {
     type: String,
     require: true,
   },
-  roomNumbers: {
-    type: Array,
+  fullName: {
+    type: String,
+    require: true,
+  },
+  phoneNumber: {
+    type: Number,
+    require: true,
+  },
+  email: {
+    type: String,
+    require: true,
+  },
+  isAdmin: {
+    type: Boolean,
     require: true,
   },
 });
 
-module.exports = mongoose.model("Rooms", roomsSchema);
+module.exports = mongoose.model("User", userSchema);

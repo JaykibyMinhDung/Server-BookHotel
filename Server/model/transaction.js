@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const transactionSchema = new Schema({
   user: {
-    type: String,
+    type: Schema.Types.ObjectId,
     ref: "User",
     require: true,
   },
@@ -14,7 +14,7 @@ const transactionSchema = new Schema({
     require: true,
   },
   room: {
-    type: Number,
+    type: Array,
     require: true,
   },
   dateStart: {
@@ -34,7 +34,7 @@ const transactionSchema = new Schema({
     require: true,
   },
   status: {
-    type: Boolean,
+    type: String,
     require: true,
   },
 });

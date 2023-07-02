@@ -23,8 +23,8 @@ const hotelSchema = new Schema({
     type: String,
     require: true,
   },
-  photo: {
-    type: String,
+  photos: {
+    type: Array,
     require: true,
   },
   desc: {
@@ -40,7 +40,7 @@ const hotelSchema = new Schema({
     require: true,
   },
   rooms: {
-    type: String,
+    type: Array,
     require: true,
   },
 });
