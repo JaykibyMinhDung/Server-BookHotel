@@ -1,90 +1,89 @@
-[
-  {
-    "_id": "6310dd998cfecfd90b30ca28",
-    "__v": 0,
-    "createdAt": "2022-09-01T16:28:09.506Z",
-    "desc": "King size bed",
-    "maxPeople": 3,
-    "price": 200,
-    "roomNumbers": [101, 102],
-    "title": "2 Bed Room",
-    "updatedAt": "2022-09-02T06:43:27.616Z"
-  },
-  {
-    "_id": "6310dd998cfecfd90b30ca28",
-    "__v": 0,
-    "createdAt": "2022-09-01T16:28:09.506Z",
-    "desc": "King size bed",
-    "maxPeople": 3,
-    "price": 200,
-    "roomNumbers": [101, 102],
-    "title": "2 Bed Room",
-    "updatedAt": "2022-09-02T06:43:27.616Z"
-  },
-  {
-    "_id": "6310e01a8cfecfd90b30ca30",
-    "__v": 0,
-    "createdAt": "2022-09-01T16:38:50.351Z",
-    "desc": "1 Bathroom",
-    "maxPeople": 2,
-    "price": 150,
-    "roomNumbers": [202],
-    "title": "1 Bed Room",
-    "updatedAt": "2022-09-01T16:38:50.351Z"
-  },
-  {
-    "_id": "6311b2a24a642f01423490d6",
-    "__v": 0,
-    "createdAt": "2022-09-02T07:37:06.178Z",
-    "desc": "Welcome drink, Coffee & tea, Express check-in, Free Premium Wifi, Free WiFi, Drinking water",
-    "maxPeople": 2,
-    "price": 600,
-    "roomNumbers": [101, 102],
-    "title": "Basement Double Room",
-    "updatedAt": "2022-09-02T07:37:06.178Z"
-  },
-  {
-    "_id": "6311b3944a642f01423490df",
-    "__v": 0,
-    "createdAt": "2022-09-02T07:41:08.213Z",
-    "desc": "Free breakfast for 2",
-    "maxPeople": 2,
-    "price": 700,
-    "roomNumbers": [202, 203, 205],
-    "title": "Superior basement room",
-    "updatedAt": "2022-09-02T07:41:08.213Z"
-  },
-  {
-    "_id": "6311b47b4a642f01423490f4",
-    "__v": 0,
-    "createdAt": "2022-09-02T07:44:59.829Z",
-    "desc": "Welcome drink, Coffee & tea, Express check-in, Free Premium Wifi, Free WiFi, Drinking water",
-    "maxPeople": 2,
-    "price": 700,
-    "roomNumbers": [303, 403, 404],
-    "title": "Deluxe Room",
-    "updatedAt": "2022-09-02T07:44:59.829Z"
-  },
-  {
-    "_id": "6311be30f2fce6ea18172fa8",
-    "__v": 0,
-    "createdAt": "2022-09-02T08:26:24.542Z",
-    "desc": "Welcome drink, Coffee & tea, Express check-in, Free WiFi, Drinking water, Free fitness center access",
-    "maxPeople": 2,
-    "price": 300,
-    "roomNumbers": [101, 102],
-    "title": "Deluxe Window",
-    "updatedAt": "2022-09-02T08:26:24.542Z"
-  },
-  {
-    "_id": "6311be52f2fce6ea18172faf",
-    "__v": 0,
-    "createdAt": "2022-09-02T08:26:58.319Z",
-    "desc": "Extra low price! (non-refundable)",
-    "maxPeople": 2,
-    "price": 425,
-    "roomNumbers": [202, 203, 205],
-    "title": "Premier City View Room",
-    "updatedAt": "2022-09-02T08:26:58.319Z"
-  }
-]
+{
+  "hotels": [
+    {
+      "_id": "6311a54a4a642f0142349086",
+      "__v": 0,
+      "address": "Hang Da, 95 Hang Bong Street, Old Quarter, Hanoi, Vietnam",
+      "cheapestPrice": 150,
+      "city": "Ha Noi",
+      "desc": "Get your trip off to a great start with a stay at this property, which offers free Wi-Fi in all rooms. Strategically situated in Old Quarter, allowing you access and proximity to local attractions and sights. Don't leave before paying a visit to the famous Old Quarter. Rated with 4 stars, this high-quality property provides guests with access to massage, restaurant and fitness center on-site.",
+      "distance": "10",
+      "featured": true,
+      "name": "HANOI ROYAL PALACE HOTEL 2",
+      "photos": [
+        "https://pix8.agoda.net/hotelImages/14501735/-1/25517748837ba92fcb96c176f627d498.jpg?ce=0&s=1024x",
+        "https://pix8.agoda.net/hotelImages/14501735/-1/0a77da6e3c4f95e95bd84f5dbaeb2a74.jpg?ca=11&ce=1&s=1024x",
+        "https://pix8.agoda.net/hotelImages/14501735/-1/e76962680bcc984f7b0876da6ac5caa8.jpg?ca=11&ce=1&s=1024x",
+        "https://pix8.agoda.net/hotelImages/14501735/-1/57474c14e32152ea509c39adaaf3f781.jpg?ca=11&ce=1&s=1024x"
+      ],
+      "rooms": ["6310dd998cfecfd90b30ca28"],
+      "title": "HANOI ROYAL PALACE HOTEL 2",
+      "type": "hotel",
+      "rating": 10
+    },
+    {
+      "_id": "6310dd998cfecfd90b30ca28",
+      "__v": 0,
+      "createdAt": "2022-09-01T16:28:09.506Z",
+      "desc": "King size bed",
+      "maxPeople": 3,
+      "price": 200,
+      "roomNumbers": [101, 102],
+      "title": "2 Bed Room",
+      "updatedAt": "2022-09-02T06:43:27.616Z"
+    },
+    {
+      "_id": "6311a9c64a642f01423490bf",
+      "__v": 0,
+      "address": "Hang Dau, Hoan Kiem District, Hanoi, Vietnam",
+      "cheapestPrice": 600,
+      "city": "Ha Noi",
+      "desc": "Get your trip off to a great start with a stay at this property, which offers free Wi-Fi in all rooms. Strategically situated in Hoan Kiem District, allowing you access and proximity to local attractions and sights. Don't leave before paying a visit to the famous Old Quarter. Rated with 4 stars, this high-quality property provides guests with access to massage, restaurant and hot tub on-site.",
+      "distance": "200",
+      "featured": true,
+      "name": "La Sinfonia del Rey Hotel and Spa",
+      "photos": [
+        "https://pix8.agoda.net/hotelImages/8315970/-1/95c472f9e927d2f62293cb721818e6ad.jpg?ca=15&ce=1&s=1024x",
+        "https://pix8.agoda.net/hotelImages/8315970/-1/70c9f415d4bbc7d2d86b492d46e5aa68.jpg?ca=10&ce=1&s=1024x",
+        "https://pix8.agoda.net/hotelImages/8315970/-1/202714c15017a85fdcc8ab6674605f94.jpg?ca=10&ce=1&s=1024x",
+        "https://pix8.agoda.net/hotelImages/8315970/-1/f6c5faa6f6fa8696a113fdefc0d259f8.jpg?ca=10&ce=1&s=1024x",
+        "https://pix8.agoda.net/hotelImages/8315970/-1/f20208fb8f2fadcbeb9c246761aa6aab.jpg?ca=15&ce=1&s=1024x"
+      ],
+      "rooms": [
+        "6310dd998cfecfd90b30ca28",
+        "6310e01a8cfecfd90b30ca30",
+        "6311b2a24a642f01423490d6",
+        "6311b3944a642f01423490df",
+        "6311b47b4a642f01423490f4"
+      ],
+      "title": "La Sinfonia del Rey Hotel and Spa",
+      "type": "hotel",
+      "rating": 9.5
+    },
+    {
+      "_id": "6310dd998cfecfd90b30ca28",
+      "__v": 0,
+      "createdAt": "2022-09-01T16:28:09.506Z",
+      "desc": "King size bed",
+      "maxPeople": 3,
+      "price": 200,
+      "roomNumbers": [101, 102],
+      "title": "2 Bed Room",
+      "updatedAt": "2022-09-02T06:43:27.616Z"
+    }
+  ],
+  "rooms": [
+    {
+      "rooms": ["6310dd998cfecfd90b30ca28"],
+      "name": "HANOI ROYAL PALACE HOTEL 2",
+      "distance": "10",
+      "tag": true,
+      "rating": 10,
+      "photos": "https://pix8.agoda.net/hotelImages/14501735/-1/25517748837ba92fcb96c176f627d498.jpg?ce=0&s=1024x",
+      "id": "6311a54a4a642f0142349086",
+      "rate_text": "exilent",
+      "type": "2 Bed Room",
+      "price": 200
+    }
+  ]
+}
