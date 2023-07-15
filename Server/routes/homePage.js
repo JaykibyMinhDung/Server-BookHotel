@@ -16,10 +16,11 @@ router.get("/counthotel", homepageControl.getCountHotel);
 
 router.get("/ratinghighest", homepageControl.getRatingHotel);
 
-router.post("/serchhotels", homepageControl.serchHotels);
+router.post("/searchhotels", homepageControl.serchHotels);
 
-// router.get("/signup", AuthenticateControl.getNewUser);
+router.post("/detailhotel", homepageControl.detailHotel);
 
+router.post("/detailhotel/reserve", homepageControl.reserveDetailHotel);
 // router.get("/signin", AuthenticateControl.getNewUser);
 
 router.post("/signup", AuthenticateControl.postNewUser);

@@ -12,18 +12,18 @@ import axios from "axios";
 
 const List = () => {
   const location = useLocation();
-  console.log(location.data);
+  console.log(location.state.data);
   // Cài đặt thêm nếu khách muốn đổi ý
-  const resultsHotel = location.state.data;
+  const resultsHotel = location.state.data.results;
   const [destination, setDestination] = useState(location.state.destination);
   const [date, setDate] = useState(location.state.date);
   const [openDate, setOpenDate] = useState(false);
   const [options, setOptions] = useState(location.state.options);
 
   const getDataSearchHotel = async () => {
-    const res = await axios.post("http://localhost:5000/serchhotels");
+    const res = await axios.post("http://localhost:5000/searchhotels");
     const changeData = res.data;
-    console.log(changeData);
+    // console.log(changeData);
   };
 
   // Tạo redux toolkit để quản lý các dữ liệu mà server gửi về
@@ -110,8 +110,8 @@ const List = () => {
             <button onClick={getDataSearchHotel}>Search</button>
           </div>
           <div className="listResult">
-            {resultsHotel.map((hotel) => (
-              <SearchItem data={hotel} />
+            {resultsHotel.map((hotel, i) => (
+              <SearchItem key={i} data={hotel} />
             ))}
             {/* 
             <SearchItem />

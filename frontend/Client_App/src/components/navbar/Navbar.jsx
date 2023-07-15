@@ -1,12 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import "./navbar.css";
-import { useState } from "react";
+// import { useState } from "react";
 
 const Navbar = () => {
   const navigate = useNavigate();
 
   // const [NameUser, setNameUser] = useState("");
-
+  const backHome = () => {
+    navigate("/");
+  };
   const Signup = () => {
     navigate("/signup");
   };
@@ -24,7 +26,9 @@ const Navbar = () => {
     <div className="navbar">
       <div className="navContainer">
         {/* Sử dụng redux để tạo case sau đó lấy biến đó sử dụng làm đối số trong câu điều kiện loại 3 để thay đổi giao diện */}
-        <span className="logo">{DataUser ? "Booking" : "Booking Website"}</span>
+        <span onClick={backHome} className="logo">
+          {DataUser ? "Booking" : "Booking Website"}
+        </span>
         {/* Booking */}
         <div className="navItems">
           <span>{DataUser ? DataUser[0].emailUser : ""}</span>

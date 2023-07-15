@@ -9,12 +9,12 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./header.css";
 import { DateRange } from "react-date-range";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
-import { NavLink } from "react-router-dom";
+// import { NavLink } from "react-router-dom";
 import axios from "../../util/baseUrl";
 
 const Header = ({ type }) => {
@@ -58,7 +58,7 @@ const Header = ({ type }) => {
     // page hotel sẽ bị lỗi khi chuyển hướng bằng url vì navigate không thiết lập dòng này khi chuyển hướng bằng url, đối số thứ 2 của navigate là tạo thêm một biến nữa trong useLocation().
     event.preventDefault();
     axios
-      .post("serchhotels", {
+      .post("searchhotels", {
         data: { city: destination, time: date, amountPeople: options },
       })
       .then((result) => {

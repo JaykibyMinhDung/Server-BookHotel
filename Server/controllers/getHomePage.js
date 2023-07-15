@@ -2,6 +2,10 @@ const Hotel = require("../model/hotel");
 
 const Rooms = require("../model/room");
 
+const Transactions = require("../model/transaction");
+
+const mongoose = require("mongoose");
+
 exports.getCountHotel = (req, res, next) => {
   Hotel.find()
     .then((hotels) => {
@@ -73,9 +77,6 @@ exports.getRatingHotel = (req, res, next) => {
         });
       }
       return res.status(200).json({
-        // nameHotel: Datahotel[0].name,
-        // cityHotel: Datahotel[0].city,
-        // priceHotel: Datahotel[0].cheapestPrice,
         Datahotel,
       });
     })
@@ -90,9 +91,6 @@ exports.serchHotels = (req, res, next) => {
   const totalPeople = people.adult + people.children;
 
   // thue bao nhieu phong, vd: 2 nguoi, 2 phong => khach san co 2 phong con trống va maxPeople > 1. Số người ở maxPeople sẽ bằng số người/ số phòng =>
-
-  // res.status(201).json("Server has search!");
-
   Rooms.find()
     .then((resultRooms) => {
       Hotel.find({ city: location }).then((resultHotel) => {
@@ -101,7 +99,6 @@ exports.serchHotels = (req, res, next) => {
           let hotelsSearch = [];
           let roomsSearch = [];
           let results = [];
-          let all = [];
           const suitableRooms = resultRooms.filter((e) => {
             return e.maxPeople >= totalPeople / people.room;
           });
@@ -115,39 +112,20 @@ exports.serchHotels = (req, res, next) => {
                     totalPeople && // Số người tối đa có thể ở
                   iterator.roomNumbers.length >= people.room // Tổng số phòng đặt phải có lượng phòng lớn hơn số phòng khách đặt
                 ) {
-                  hotelsSearch.push(resultHotel[i], iterator);
-                  // roomsSearch.push(iterator);
+                  // hotelsSearch.push(resultHotel[i], iterator);
+                  hotelsSearch.push(resultHotel[i]);
                   results.push(iterator);
-                  // const test = Object.assign(iterator, resultHotel[i]);
-                  // const test = Object.assign(...resultHotel, iterator);
-                  // hotelsSearch.push(iterator);
                 }
               });
             }
           }
-          // for (let i = 0; i < hotelsSearch.length; i++) {
-          //   const element = hotelsSearch[i];
-          //   if (element.rooms) {
-          //     const test = element.rooms.filter((e) => e === element.id);
-          //     roomsSearch.push({
-          //       rooms: element.rooms,
-          //       name: element.name,
-          //       distance: element.distance,
-          //       tag: element.featured,
-          //       rating: element.rating,
-          //       photos: element.photos[0],
-          //       id: element.id,
-          //       rate_text: element.rating > 8 ? "exilent" : "good",
-          //       type: element.title,
-          //       description: element.description,
-          //       price: element.price,
-          //     });
-          //   }
-          // }
 
           for (let i = 0; i < results.length; i++) {
             const element = hotelsSearch[i];
-            if (element.rooms) {
+            const numberArrRoom = element.rooms.length;
+            // if (element.rooms.length > 0) {
+            if (numberArrRoom) {
+              // console.log(element.rooms.length);
               element.rooms.map((e) => {
                 if (e === results[i].id) {
                   roomsSearch.push({
@@ -159,9 +137,10 @@ exports.serchHotels = (req, res, next) => {
                     free_cancel: element.featured,
                     price: results[i].price,
                     rating: element.rating,
-                    rate_text: element.rating > 8 ? "exilent" : "good",
+                    rate_text: element.rating > 8 ? "Excellent" : "Good",
                     photos: element.photos[0],
                     id: element.id,
+                    idRoom: results[i]._id,
                     rooms: element.rooms,
                   });
                 }
@@ -169,48 +148,9 @@ exports.serchHotels = (req, res, next) => {
             }
           }
 
-          // if (hotelsSearch.length > 1) {
-          //   const testFilterHotel = hotelsSearch[0].map((e) => {
-          //     return {
-          //       idHotel: e.id,
-          //       idRooms: e.rooms,
-          //       name: e.name,
-          //       distance: e.distance,
-          //       tag: e.featured ? "taxi" : "no",
-          //       free_cancel: e.featured,
-          //       rating: e.rating,
-          //       photos: e.photos[0],
-          //     };
-          //   });
-          //   const testFilterRooms = roomsSearch.map((e) => {
-          //     return {
-          //       id: e.id,
-          //       type: e.title,
-          //       description: e.description,
-          //       price: e.price,
-          //       rate_text: e.rating > 8 ? "exilent" : "good",
-          //     };
-          //   });
-
-          // for (let i = 0; i < hotelsSearch.length; i++) {
-          //   const element = hotelsSearch[i];
-          //   const test = roomsSearch.map((e) => {
-          //     // if (e.id === element.rooms) {
-          //     return {
-          //       maxPeople: e.maxPeople,
-          //       price: e.price,
-          //       ...element,
-          //     };
-          //     // }
-          //   });
-          //   hotelsSearch = [...test];
-          // }
-
           return res.json({
-            // hotels: hotelsSearch,
-            results: suitableRooms,
-            // rooms: roomsSearch,
-            // arraytest: test,
+            results: ans,
+            // test: results,
           });
           // }
           // return res.json("not found hotel");
@@ -236,43 +176,59 @@ exports.serchHotels = (req, res, next) => {
     });
 };
 
-// res.json({
-//   name: hotelsSearch[0].name,
-//   distance: hotelsSearch[0].distance,
-//   tag: hotelsSearch[0].featured ? "taxi" : "no",
-//   free_cancel: hotelsSearch[0].featured,
-//   rating: hotelsSearch[0].rating,
-//   photos: hotelsSearch[0].photos[0],
-//   type: roomsSearch.title,
-//   description: roomsSearch.description,
-//   price: roomsSearch.price,
-//   rate_text: roomsSearch.rating > 8 ? "exilent" : "good",
-// });
+exports.detailHotel = (req, res, next) => {
+  const idHotel = req.body.data.id;
+  const convertId = new mongoose.Types.ObjectId(idHotel);
+  console.log(idHotel);
+  Hotel.findById(convertId)
+    .then((hotel) => res.status(200).json(hotel))
+    .catch((err) => {
+      res.status(500).json("not found hotel");
+      console.log(err);
+    });
+};
 
-// const hotels = [
-//   {
-//     array: ["", "", ""],
-//   },
-//   {
-//     array: ["", ""],
-//   },
-//   {
-//     array: [""],
-//   },
-// ];
+exports.reserveDetailHotel = (req, res, next) => {
+  const TransactionsData = req.body.data; // fullname, email, phonenumber, cardnumber, date, informationDate, methodpayment
+  // const convertId = new mongoose.Types.ObjectId(idHotel);
+  // console.log(idHotel);
+  const transactions = new Transactions({
+    TransactionsData,
+  });
+  transactions
+    .save()
+    .then((results) => {
+      console.log(results);
+      return res.status(200).json({
+        status: 201,
+        message: "Đặt phòng thành công",
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(400).json({
+        status: 400,
+        message: "Đặt phòng không thành công, do thông tin không hợp lệ",
+      });
+    });
+};
 
-// const rooms = [{ 0: "" }, { 1: "" }, { 2: "" }];
-
-// hotels.filter(e => e.array.find((ele) => ele === rooms[i] ))
-
-// suitableRooms.filter((e) => {
-//   // return ;
-//   return hotelLocation.rooms.filter((ele) =>
-//     suitableRooms.filter((e) => e._id === ele)
-//     {
-//       for (let i = 0; i < suitableRooms.length; i++) {
-//         return suitableRooms[i]._id === ele;
-//       }
-//     }
-//   );
-//   });
+// for (let i = 0; i < hotelsSearch.length; i++) {
+//   const element = hotelsSearch[i];
+//   if (element.rooms) {
+//     const test = element.rooms.filter((e) => e === element.id);
+//     roomsSearch.push({
+//       rooms: element.rooms,
+//       name: element.name,
+//       distance: element.distance,
+//       tag: element.featured,
+//       rating: element.rating,
+//       photos: element.photos[0],
+//       id: element.id,
+//       rate_text: element.rating > 8 ? "exilent" : "good",
+//       type: element.title,
+//       description: element.description,
+//       price: element.price,
+//     });
+//   }
+// }
