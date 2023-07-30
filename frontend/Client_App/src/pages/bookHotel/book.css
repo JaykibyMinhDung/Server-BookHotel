@@ -25,16 +25,25 @@ h3 {
 }
 .form__chooseroom {
   width: 100%;
+  margin-bottom: calc(50% - 80vh);
   /* position: relative; */
   display: flex;
-  z-index: 0;
   justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  z-index: 0;
+}
+.form__chooseroom > div {
+  width: 46%;
 }
 .form_chooseroom--option {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
 }
 .form_chooseroom--numberRooms {
+  font-size: small;
   margin-left: 1rem;
   display: flex;
   text-align: center;

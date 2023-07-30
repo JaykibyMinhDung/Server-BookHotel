@@ -18,7 +18,7 @@ import defaultimg from "../../assets/notfound.png";
 
 const Hotel = () => {
   const [slideNumber, setSlideNumber] = useState(0);
-  const [dataHotels, setDataHotels] = useState(null);
+  const [dataHotels, setDataHotels] = useState([]);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   console.log(location.state);
@@ -35,7 +35,7 @@ const Hotel = () => {
       // }
     });
     const changeData = await res.data;
-    setDataHotels(changeData);
+    setDataHotels(changeData.ArrResults);
     setLoading(false);
     console.log(changeData);
   };
@@ -74,10 +74,14 @@ const Hotel = () => {
 
     if (direction === "l") {
       newSlideNumber =
-        slideNumber === 0 ? dataHotels.photos.length : slideNumber - 1;
+        slideNumber === 0
+          ? dataHotels.informationHotel.photos.length
+          : slideNumber - 1;
     } else {
       newSlideNumber =
-        slideNumber === dataHotels.photos.length ? 0 : slideNumber + 1;
+        slideNumber === dataHotels.informationHotel.photos.length
+          ? 0
+          : slideNumber + 1;
     }
 
     setSlideNumber(newSlideNumber);
@@ -112,8 +116,8 @@ const Hotel = () => {
               {/* <img src={photos[slideNumber].src} alt="" className="sliderImg" /> */}
               <img
                 src={
-                  dataHotels.photos[slideNumber]
-                    ? dataHotels.photos[slideNumber]
+                  dataHotels.informationHotel.photos[slideNumber]
+                    ? dataHotels.informationHotel.photos[slideNumber]
                     : defaultimg
                 }
                 alt=""
@@ -130,20 +134,21 @@ const Hotel = () => {
         {!loading ? (
           <div className="hotelWrapper">
             <button className="bookNow">Reserve or Book Now!</button>
-            <h1 className="hotelTitle">{dataHotels.name}</h1>
+            <h1 className="hotelTitle">{dataHotels.informationHotel.name}</h1>
             <div className="hotelAddress">
               <FontAwesomeIcon icon={faLocationDot} />
-              <span>{dataHotels.address}</span>
+              <span>{dataHotels.informationHotel.address}</span>
             </div>
             <span className="hotelDistance">
-              Excellent location – {dataHotels.distance}m from center
+              Excellent location – {dataHotels.informationHotel.distance}m from
+              center
             </span>
             <span className="hotelPriceHighlight">
-              Book a stay over ${dataHotels.cheapestPrice} at this property and
-              get a free airport taxi
+              Book a stay over ${dataHotels.informationHotel.cheapestPrice} at
+              this property and get a free airport taxi
             </span>
             <div className="hotelImages">
-              {dataHotels.photos.map((photo, i) => (
+              {dataHotels.informationHotel.photos.map((photo, i) => (
                 <div className="hotelImgWrapper" key={i}>
                   <img
                     onClick={() => handleOpen(i)}
@@ -157,17 +162,21 @@ const Hotel = () => {
             </div>
             <div className="hotelDetails">
               <div className="hotelDetailsTexts">
-                <h1 className="hotelTitle">{dataHotels.title}</h1>
-                <p className="hotelDesc">{dataHotels.desc}</p>
+                <h1 className="hotelTitle">
+                  {dataHotels.informationHotel.title}
+                </h1>
+                <p className="hotelDesc">{dataHotels.informationHotel.desc}</p>
               </div>
               <div className="hotelDetailsPrice">
                 <h1>Perfect for a 9-night stay!</h1>
                 <span>
-                  Located in the real heart of {dataHotels.city}, this property
-                  has an excellent location score of {dataHotels.rating}!
+                  Located in the real heart of{" "}
+                  {dataHotels.informationHotel.city}, this property has an
+                  excellent location score of{" "}
+                  {dataHotels.informationHotel.rating}!
                 </span>
                 <h2>
-                  <b>${dataHotels.cheapestPrice}</b> (1 nights)
+                  <b>${dataHotels.informationHotel.cheapestPrice}</b> (1 nights)
                 </h2>
                 <button onClick={handleBookhotel}>Reserve or Book Now!</button>
               </div>
@@ -185,7 +194,7 @@ const Hotel = () => {
             loading...
           </div>
         )}
-        <BookHotel />
+        <BookHotel detailRoom={dataHotels.informationRoom} />
         <MailList />
         <Footer />
       </div>
