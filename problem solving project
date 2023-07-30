@@ -66,3 +66,7 @@ const hotel = [
      }
  ]
 
+## Solustion phần 2:
+**Hôm nay khi làm dự án thì mình có gặp trường hợp phải lọc các dữ liệu ở gửi về nếu trùng ngày với lịch của phòng khác ( Tức là phòng đã đặt )**
+Mình đã có thể trả về một object hoàn hảo nếu phải lấy từ nhiều model khác nhau, và lấy đúng dữ liệu mình cần
+Cấu trúc là dùng vòng lặp for, câu điều kiện if, mảng mới, sau đó spread operator dữ liệu mình cần vào mảng
