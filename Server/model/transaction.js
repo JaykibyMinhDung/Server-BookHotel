@@ -4,13 +4,14 @@ const Schema = mongoose.Schema;
 
 const transactionSchema = new Schema({
   user: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
+    // type: Schema.Types.ObjectId, // Loại id, có thể dụng loại object và loại array
+    // ref: "User", // ref để lấy trùng id với model người dùng
+    type: Object,
     require: true,
   },
   hotel: {
-    type: Schema.Types.ObjectId,
-    ref: "Hotel",
+    type: String,
+    // ref: "Hotel",
     require: true,
   },
   room: {
