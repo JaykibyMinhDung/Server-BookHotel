@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../components/header/Header";
 import Navbar from "../../components/navbar/Navbar";
 import "./transactions.css";
+import axios from "axios";
 
 const Transaction = () => {
+  const [dataTransaction, setTransaction] = useState([])
+  const getData = async () => {
+    const data = await axios.get("http://localhost:5000/transaction");
+    const res = await setTransaction(data.data)
+    console.log(res)
+  }
+
+  useEffect(() => {
+    getData()
+  }, [])
   return (
     <React.Fragment>
       <Navbar />
@@ -14,7 +25,7 @@ const Transaction = () => {
           <thead>
             <tr>
               <th scope="col">
-                {/* <input type="checkbox" name="check" id="check" /> */}#
+                {/* <input type="checkbox" name="check" id="check" /> */ }#
               </th>
               <th scope="col">Hotel</th>
               <th scope="col">Room</th>
@@ -25,22 +36,25 @@ const Transaction = () => {
             </tr>
           </thead>
           <tbody id="">
-            <tr>
-              {/* <th scope="row">${pet.idpet}</th>
-              <td>${pet.namepet}</td>
-              <td>${pet.agepet}</td>
-              <td>${pet.typepet}</td>
-              <td>${pet.weightpet} kg</td>
-              <td>${pet.lengthpet} cm</td>
-              <td>${pet.breedpet}</td> */}
-              <td>
-                <i class="bi bi-square-fill"></i>
-              </td>
-              <td>time</td>
-              <td>
-                <input type="button" value="Booked" disabled />
-              </td>
-            </tr>
+            { dataTransaction.map((e, index) => (
+              <tr>
+                <th scope="col">
+                  {/* <input type="checkbox" name="check" id="check" /> */ }{ index > 9 ? "" : 0 }{ index + 1 }
+                </th>
+                <th scope="col">{ "name" }</th>
+                <th scope="col">{ e.room.map(element => (
+                  <span> { element } { element ? "," : "" } </span>
+                )
+                ) }</th>
+                <th scope="col">{ e.dateStart } - { e.dateEnd }</th>
+                <th scope="col">${ e.price }</th>
+                <th scope="col">{ e.payment }</th>
+
+                <td>
+                  <input type="button" style={ { backgroundColor: "green", color: "white" } } value={ e.status } disabled />
+                </td>
+              </tr>
+            )) }
           </tbody>
         </table>
       </main>
@@ -49,3 +63,24 @@ const Transaction = () => {
 };
 
 export default Transaction;
+
+
+/* <tr>
+  <td>
+    <i class="bi bi-square-fill"></i>
+  </td>
+  <th scope="col"></th>
+  <td>time</td>
+  <td>
+    <input type="button" value="Booked" disabled />
+  </td>
+</tr> */
+
+/* <th scope="row">${pet.idpet}</th>
+  <td>${pet.namepet}</td>
+  <td>${pet.agepet}</td>
+  <td>${pet.typepet}</td>
+  <td>${pet.weightpet} kg</td>
+  <td>${pet.lengthpet} cm</td>
+  <td>${pet.breedpet}</td> */
+

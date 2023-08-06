@@ -156,16 +156,12 @@ exports.serchHotels = (req, res, next) => {
           const b = [];
           for (const element of roomsSearch) {
             results.map((e) => {
-              // console.log(e.id.toString());
               if (element.id === e.hotel) {
                 const isMatchDate =
                   new Date(e.dateStart).getDate() >
                     new Date(timeClient[0].endDate).getDate() ||
                   new Date(e.dateEnd).getDate() <
                     new Date(timeClient[0].startDate).getDate();
-                // e.filter(
-                //   (rooms) =>
-                // );
                 console.log(
                   new Date(e.dateStart).getDate(),
                   new Date(timeClient[0].endDate).getDate()
@@ -208,7 +204,12 @@ exports.serchHotels = (req, res, next) => {
 exports.detailHotel = (req, res, next) => {
   const idHotel = req.body.data.id;
   const convertId = new mongoose.Types.ObjectId(idHotel);
-  // console.log(idHotel);
+  if (!idHotel) {
+    return res.json({
+      statusCode: 500,
+      message: "Chưa nhận được id người dùng, vui lòng reload lại trang",
+    });
+  }
   Hotel.findById(convertId)
     .then((hotel) => {
       Rooms.find().then((results) => {
@@ -248,9 +249,32 @@ exports.detailHotel = (req, res, next) => {
 
 exports.reserveDetailHotel = (req, res, next) => {
   const TransactionsData = req.body.data; // fullname, email, phonenumber, cardnumber, date, informationDate, methodpayment
-  // const convertId = new mongoose.Types.ObjectId(idHotel);
-  // console.log(TransactionsData);
-  const transactions = new Transactions(TransactionsData);
+  // if (TransactionsData) {
+  //   res.json({
+  //     status: 201,
+  //     message: "Đặt phòng thành công",
+  //   });
+  // }
+  // Tim eamil de save
+
+  // Doi chieu thoi gian trong server
+  const totalPrice = () => {
+    return TransactionsData.detailRoom.reduce(
+      (pre, after) => pre.price + after.price,
+      0
+    );
+  };
+  const ArrayDataTransaction = {
+    user: TransactionsData.user.FullName,
+    hotel: TransactionsData.detailHotel,
+    room: [...TransactionsData.detailRoom.numberRoom],
+    dateStart: TransactionsData.date.startDate,
+    dateEnd: TransactionsData.date.endDate,
+    price: totalPrice(),
+    payment: TransactionsData.user.payment,
+    status: "Booked",
+  };
+  const transactions = new Transactions(ArrayDataTransaction);
   transactions
     .save()
     .then((results) => {
@@ -271,6 +295,7 @@ exports.reserveDetailHotel = (req, res, next) => {
 
 exports.transactionHotel = (req, res, next) => {
   // const TransactionsData = req.body.data;
+  // Lấy name hotel
   Transactions.find()
     .then((DataTransactionHotel) => {
       if (!DataTransactionHotel) {
@@ -279,8 +304,12 @@ exports.transactionHotel = (req, res, next) => {
           message: "Not found data",
         });
       }
-      return res.status(200).json({
-        DataTransactionHotel,
+      Hotel.findById(DataTransactionHotel.hotel).then((e) => {
+        console.log(DataTransactionHotel.hotel);
+        return res.status(200).json([
+          ...DataTransactionHotel,
+          // nameHotel: e.name,
+        ]);
       });
     })
     .catch((err) => {
@@ -291,23 +320,3 @@ exports.transactionHotel = (req, res, next) => {
       });
     });
 };
-
-// for (let i = 0; i < hotelsSearch.length; i++) {
-//   const element = hotelsSearch[i];
-//   if (element.rooms) {
-//     const test = element.rooms.filter((e) => e === element.id);
-//     roomsSearch.push({
-//       rooms: element.rooms,
-//       name: element.name,
-//       distance: element.distance,
-//       tag: element.featured,
-//       rating: element.rating,
-//       photos: element.photos[0],
-//       id: element.id,
-//       rate_text: element.rating > 8 ? "exilent" : "good",
-//       type: element.title,
-//       description: element.description,
-//       price: element.price,
-//     });
-//   }
-// }

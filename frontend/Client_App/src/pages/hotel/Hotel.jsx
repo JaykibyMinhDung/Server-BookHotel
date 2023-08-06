@@ -20,8 +20,9 @@ const Hotel = () => {
   const [slideNumber, setSlideNumber] = useState(0);
   const [dataHotels, setDataHotels] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [formReverse, setFormReverse] = useState(false)
   const location = useLocation();
-  console.log(location.state);
+  // console.log(location.state);
   const [open, setOpen] = useState(false);
   const navigateBook = useNavigate();
   const getDetailHotel = async () => {
@@ -37,31 +38,11 @@ const Hotel = () => {
     const changeData = await res.data;
     setDataHotels(changeData.ArrResults);
     setLoading(false);
-    console.log(changeData);
+    // console.log(changeData);
   };
-  // const photos = [
-  //   {
-  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707778.jpg?k=56ba0babbcbbfeb3d3e911728831dcbc390ed2cb16c51d88159f82bf751d04c6&o=&hp=1",
-  //   },
-  //   {
-  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707367.jpg?k=cbacfdeb8404af56a1a94812575d96f6b80f6740fd491d02c6fc3912a16d8757&o=&hp=1",
-  //   },
-  //   {
-  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261708745.jpg?k=1aae4678d645c63e0d90cdae8127b15f1e3232d4739bdf387a6578dc3b14bdfd&o=&hp=1",
-  //   },
-  //   {
-  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707776.jpg?k=054bb3e27c9e58d3bb1110349eb5e6e24dacd53fbb0316b9e2519b2bf3c520ae&o=&hp=1",
-  //   },
-  //   {
-  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261708693.jpg?k=ea210b4fa329fe302eab55dd9818c0571afba2abd2225ca3a36457f9afa74e94&o=&hp=1",
-  //   },
-  //   {
-  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707389.jpg?k=52156673f9eb6d5d99d3eed9386491a0465ce6f3b995f005ac71abc192dd5827&o=&hp=1",
-  //   },
-  // ];
 
   const handleBookhotel = () => {
-    navigateBook("/hotels/:id");
+    return setFormReverse(true)
   };
 
   const handleOpen = (i) => {
@@ -87,6 +68,7 @@ const Hotel = () => {
     setSlideNumber(newSlideNumber);
   };
 
+  // console.log(dataHotels.informationHotel._id)
   useEffect(() => {
     getDetailHotel();
   }, [location.state]);
@@ -100,20 +82,20 @@ const Hotel = () => {
       <Navbar />
       <Header type="list" />
       <div className="hotelContainer">
-        {open && (
+        { open && (
           <div className="slider">
             <FontAwesomeIcon
-              icon={faCircleXmark}
+              icon={ faCircleXmark }
               className="close"
-              onClick={() => setOpen(false)}
+              onClick={ () => setOpen(false) }
             />
             <FontAwesomeIcon
-              icon={faCircleArrowLeft}
+              icon={ faCircleArrowLeft }
               className="arrow"
-              onClick={() => handleMove("l")}
+              onClick={ () => handleMove("l") }
             />
             <div className="sliderWrapper">
-              {/* <img src={photos[slideNumber].src} alt="" className="sliderImg" /> */}
+              {/* <img src={photos[slideNumber].src} alt="" className="sliderImg" /> */ }
               <img
                 src={
                   dataHotels.informationHotel.photos[slideNumber]
@@ -125,76 +107,79 @@ const Hotel = () => {
               />
             </div>
             <FontAwesomeIcon
-              icon={faCircleArrowRight}
+              icon={ faCircleArrowRight }
               className="arrow"
-              onClick={() => handleMove("r")}
+              onClick={ () => handleMove("r") }
             />
           </div>
-        )}
-        {!loading ? (
+        ) }
+        { !loading ? (
           <div className="hotelWrapper">
             <button className="bookNow">Reserve or Book Now!</button>
-            <h1 className="hotelTitle">{dataHotels.informationHotel.name}</h1>
+            <h1 className="hotelTitle">{ dataHotels.informationHotel.name }</h1>
             <div className="hotelAddress">
-              <FontAwesomeIcon icon={faLocationDot} />
-              <span>{dataHotels.informationHotel.address}</span>
+              <FontAwesomeIcon icon={ faLocationDot } />
+              <span>{ dataHotels.informationHotel.address }</span>
             </div>
             <span className="hotelDistance">
-              Excellent location – {dataHotels.informationHotel.distance}m from
+              Excellent location – { dataHotels.informationHotel.distance }m from
               center
             </span>
             <span className="hotelPriceHighlight">
-              Book a stay over ${dataHotels.informationHotel.cheapestPrice} at
+              Book a stay over ${ dataHotels.informationHotel.cheapestPrice } at
               this property and get a free airport taxi
             </span>
             <div className="hotelImages">
-              {dataHotels.informationHotel.photos.map((photo, i) => (
-                <div className="hotelImgWrapper" key={i}>
+              { dataHotels.informationHotel.photos.map((photo, i) => (
+                <div className="hotelImgWrapper" key={ i }>
                   <img
-                    onClick={() => handleOpen(i)}
-                    src={photo ? photo : defaultimg}
+                    onClick={ () => handleOpen(i) }
+                    src={ photo ? photo : defaultimg }
                     alt=""
                     className="hotelImg"
                     loading="lazy"
                   />
                 </div>
-              ))}
+              )) }
             </div>
             <div className="hotelDetails">
               <div className="hotelDetailsTexts">
                 <h1 className="hotelTitle">
-                  {dataHotels.informationHotel.title}
+                  { dataHotels.informationHotel.title }
                 </h1>
-                <p className="hotelDesc">{dataHotels.informationHotel.desc}</p>
+                <p className="hotelDesc">{ dataHotels.informationHotel.desc }</p>
               </div>
               <div className="hotelDetailsPrice">
                 <h1>Perfect for a 9-night stay!</h1>
                 <span>
-                  Located in the real heart of{" "}
-                  {dataHotels.informationHotel.city}, this property has an
-                  excellent location score of{" "}
-                  {dataHotels.informationHotel.rating}!
+                  Located in the real heart of{ " " }
+                  { dataHotels.informationHotel.city }, this property has an
+                  excellent location score of{ " " }
+                  { dataHotels.informationHotel.rating }!
                 </span>
                 <h2>
-                  <b>${dataHotels.informationHotel.cheapestPrice}</b> (1 nights)
+                  <b>${ dataHotels.informationHotel.cheapestPrice }</b> (1 nights)
                 </h2>
-                <button onClick={handleBookhotel}>Reserve or Book Now!</button>
+                <button onClick={ handleBookhotel }>Reserve or Book Now!</button>
               </div>
             </div>
           </div>
         ) : (
           <div
-            style={{
+            style={ {
               textAlign: "center",
               fontSize: "150%",
               fontWeight: 700,
               marginBottom: "2rem",
-            }}
+            } }
           >
             loading...
           </div>
-        )}
-        <BookHotel detailRoom={dataHotels.informationRoom} />
+        ) }
+        {
+          formReverse &&
+          <BookHotel detailRoom={ dataHotels.informationRoom } hotel={ dataHotels.informationHotel } />
+        }
         <MailList />
         <Footer />
       </div>
