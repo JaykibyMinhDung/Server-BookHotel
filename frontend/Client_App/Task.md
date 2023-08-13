@@ -12,3 +12,14 @@ Ví dụ: Khách đang ở dấu tích $120 thì khi tăng số ngày sẽ tăng
 ## Chỉnh lại giao diện lại transaction
 
 Học cách chuyển màu từng row, chỉnh lại size chữ và độ đậm nhạt
+
+
+## Một số yêu cầu của Asm :
+
+- Người dùng sẽ cần bắt buộc chọn ngày nhận và trả phòng dự kiến. Sau khi chọn ở phần DatePicker thì bạn sẽ lọc các Room trống trong thời gian phù hợp đó và hiển thị bên dưới form như ảnh trên.
+
+- Sau đó, người dùng nhập đầy đủ các thông tin Booking ở form bên tay phải (giá trị ban đầu của các ô sẽ tương ứng với thông tin của User đang đăng nhập).
+
+- Tiếp theo, người dùng chọn các phòng muốn đặt. Hệ thống sẽ tính tổng giá tiền tương ứng (số tiền 1 phòng * số phòng * số ngày).
+
+- Người dùng chọn cách thức thanh toán và nhấn "Reserve Now". Lúc này bạn sẽ gọi xuống API ở server để tạo giao dịch, nếu thành công sẽ chuyển người dùng về Transaction Dashboard (yêu cầu số 8).
