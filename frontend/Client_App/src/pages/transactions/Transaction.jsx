@@ -38,19 +38,19 @@ const Transaction = () => {
           <tbody id="">
             { dataTransaction.map((e, index) => (
               <tr>
-                <th scope="col">
-                  {/* <input type="checkbox" name="check" id="check" /> */ }{ index > 9 ? "" : 0 }{ index + 1 }
+                <th style={{width: '50px'}} scope="col">
+                  { index > 9 ? "" : 0 }{ index + 1 }
                 </th>
-                <th scope="col">{ "name" }</th>
-                <th scope="col">{ e.room.map(element => (
-                  <span> { element } { element ? "," : "" } </span>
+                <th scope="col">{ e.hotel }</th>
+                <th style={{fontSize: 'small'}} scope="col">{ e.room.map(element => (
+                  <span> { element.numberRoom } { element ? "," : "" } </span>
                 )
                 ) }</th>
-                <th scope="col">{ e.dateStart } - { e.dateEnd }</th>
-                <th scope="col">${ e.price }</th>
+                <th style={{maxWidth: '300px', fontSize: 'small'}} scope="col">{ new Date(e.dateStart).toLocaleDateString("en-GB") } - { new Date(e.dateEnd).toLocaleDateString("en-GB") }</th>
+                <th style={{width: '100px'}} scope="col">${ e.price }</th>
                 <th scope="col">{ e.payment }</th>
 
-                <td>
+                <td style={{width: '100px', textAlign: 'center'}}>
                   <input type="button" style={ { backgroundColor: "green", color: "white" } } value={ e.status } disabled />
                 </td>
               </tr>

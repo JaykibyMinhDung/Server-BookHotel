@@ -11,28 +11,29 @@ import "./book.css";
 import axios from "axios";
 import { toast, Toaster } from "react-hot-toast";
 
-const BookHotel = ({ detailRoom, hotel }) => {
+const BookHotel = ({ detailRoom, hotel, dateProps }) => {
+  const totalRooms = [];
   const User = JSON.parse(localStorage.getItem("User"))
+  let test = false;
   const { register, handleSubmit } = useForm({
     defaultValues: {
       FullName: "Minh Dũng",
       Email: User[0].emailUser,
       PhoneNumber: "0945758347",
-  }
+    }
   })
-  const [totalBill, setTotalBill] = useState(0)
-  // const [valueRoom, setvalueRoom] = useState("")
+  // const [valueRoom, setvalueRoom] = useState([])
+	console.log(dateProps)
   const [date, setDate] = useState(
     [{
-      startDate: new Date(), // 2  biến này đang là null để valid dữ liệu đầu vào
-      endDate: new Date(),
-      key: "selection", // 
+      startDate: dateProps[0].startDate,
+      endDate: dateProps[0].endDate,
+      key: "selection",
     }]
   );
-
-  const totalRoom = [];
   const start = date[0].startDate;
   const end = date[0].endDate;
+  const [totalBill, setTotalBill] = useState(0)
 
   const rangeDateBooking = () => {
     if (start && end) {
@@ -42,38 +43,20 @@ const BookHotel = ({ detailRoom, hotel }) => {
 
   const handleChange = (data) => {
     // e.predefault()
-  if (rangeDateBooking() < 1) {
-    return toast.error("Bạn cần đăng kí lớn hơn 2 ngày trước khi đặt phòng.")
-  }
-  if (data.isCheck && rangeDateBooking() > 1) {
-      // console.log(getValues("NumberRooms"))
-      // setTotalBill((totalBill + data.informationRoom.price * (end.getDate() - start.getDate() || 1)))
-      totalRoom.push(data.informationRoom)
+    if (rangeDateBooking() < 1) {
+      return toast.error("Bạn cần đăng kí lớn hơn 2 ngày trước khi đặt phòng.")
+    }
+    test = data.isCheck
+    if (data.isCheck && rangeDateBooking() > 1) {
+      totalRooms.push(data.informationRoom)
     } else if (!data.isCheck && rangeDateBooking() > 1) {
-      // setTotalBill((totalBill - data.informationRoom.price * (end.getDate() - start.getDate() || 1)))
-      totalRoom.pop()
+      totalRooms.pop()
     }
   };
 
   // Lỗi handle là do trong hàm này đang xử lý thêm giá cả
-  // const handleChange = (data) => {
-  //   if (data.isCheck && rangeDateBooking() > 1) {
-  //     // console.log(getValues("NumberRooms"))
-  //     // setTotalBill((totalBill + data.informationRoom.price * (end.getDate() - start.getDate() || 1)))
-  //     totalRoom.push(data)
-  //   }
-  //   else if (!data.isCheck && rangeDateBooking() > 1) {
-  //     // setTotalBill((totalBill - data.informationRoom.price * (end.getDate() - start.getDate() || 1)))
-  //     totalRoom.pop()
-  //   }
-  // };
-
-  // const caculatorBill = 
 
   const onSubmit = (data) => {
-    // Người dùng sẽ cần bắt buộc chọn ngày nhận và trả phòng dự kiến. Sau khi chọn ở phần DatePicker thì bạn sẽ lọc các Room trống trong thời gian phù hợp đó và hiển thị bên dưới form như ảnh trên.
-
-    // event.preventDefault()
     // axios.post("http://localhost:5000/detailhotel/reserve",)
     if (rangeDateBooking() < 1) {
       return toast.error("Giao dịch không thành công do chưa đặt ngày")
@@ -87,14 +70,26 @@ const BookHotel = ({ detailRoom, hotel }) => {
           key: "selection",
         },
         detailHotel: hotel._id,
-        detailRoom: totalRoom
+        detailRoom: totalRooms
       }
     )
 
   }
-  // useEffect(() => {
-  //   caculatorBill(totalRoom)
-  // }, [totalRoom])
+    const caculatorBill = () => {
+      console.log(totalRooms)
+      for (let i = 0; i < totalRooms.length; i++) {
+        const element = totalRooms[i];
+        return test 
+          ? setTotalBill(totalBill + element?.price * (end.getDate() - start.getDate()))
+          : setTotalBill(totalBill - element?.price * (end.getDate() - start.getDate()))
+      }
+    };
+
+  useEffect(() => {
+    console.log(totalBill)
+    caculatorBill()
+  }, [test, totalBill, totalRooms, end, start])
+
   if (!detailRoom) {
     return <div>Không có phòng nào cả</div>;
   }
@@ -180,7 +175,7 @@ const BookHotel = ({ detailRoom, hotel }) => {
                 Total Bill: $
                 {totalBill}
               </h2>
-              <select style={{ marginTop: "0.5rem" }} {...register("payment")}>
+              <select onChange={caculatorBill} style={{ marginTop: "0.5rem" }} {...register("payment")}>
                 <option value="auto">Select Payment Method</option>
                 {/* bắt buộc chọn 1 trong 2 phương bên dưới  */}
                 <option value="cash">Thanh toán tại quầy</option>

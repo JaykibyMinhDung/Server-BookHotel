@@ -12,7 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom"; // , useNavigate
 import BookHotel from "../bookHotel/bookHotel";
 import defaultimg from "../../assets/notfound.png";
 
@@ -24,12 +24,14 @@ const Hotel = () => {
   const location = useLocation();
   // console.log(location.state);
   const [open, setOpen] = useState(false);
-  const navigateBook = useNavigate();
+  // const navigateBook = useNavigate();
   const getDetailHotel = async () => {
     setLoading(true);
     const res = await axios.post("http://localhost:5000/detailhotel", {
       data: {
-        id: location.state,
+        id: location.state.id,
+        start_date: location.state.date,
+        end_date: location.state.end_date 
       },
       // headers: {
       //   Authorization: "Bearer " + token,
@@ -71,7 +73,7 @@ const Hotel = () => {
   // console.log(dataHotels.informationHotel._id)
   useEffect(() => {
     getDetailHotel();
-  }, [location.state]);
+  }, [location.state.id]);
 
   // if (loading) {
   //   return
@@ -178,7 +180,10 @@ const Hotel = () => {
         ) }
         {
           formReverse &&
-          <BookHotel detailRoom={ dataHotels.informationRoom } hotel={ dataHotels.informationHotel } />
+          <BookHotel 
+					detailRoom={ dataHotels.informationRoom } 
+					hotel={ dataHotels.informationHotel } 
+					dateProps={location.state.date} />
         }
         <MailList />
         <Footer />

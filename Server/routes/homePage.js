@@ -26,6 +26,7 @@ router.post("/detailhotel/reserve", homepageControl.reserveDetailHotel);
 // router.get("/signin", AuthenticateControl.getNewUser);
 router.get("/transaction", homepageControl.transactionHotel);
 
+router.get("/transaction/test", homepageControl.getRoomsNotBooked);
 // Authentication
 router.post("/signup", AuthenticateControl.postNewUser);
 

@@ -5,10 +5,12 @@ tr {
   border-collapse: collapse;
 }
 table {
-  width: 98.5%;
+  width: 100%;
+  font-weight: 500;
+  padding-left: 20px ;
 }
 th {
-  width: 10%;
+  /* width: 20%; */
   border-right: 1px groove black;
   padding: 1%;
 }

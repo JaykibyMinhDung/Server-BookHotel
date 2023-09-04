@@ -18,11 +18,15 @@ const SearchItem = (props) => {
     rate_text, // hotel ( logical follow point rating ) not rooms and hotel
     photos, // image first album in hotel
   } = props.data;
+	const {date} = props
 
   const navigateHandle = () => {
-    navigate(`/hotels/${idRoom}`, { state: id });
+    navigate(`/hotels/${idRoom}`, { state: {
+			id,
+			date
+		} });
   };
-  console.log(props);
+  console.log(date);
 
   return (
     <div className="searchItem">
