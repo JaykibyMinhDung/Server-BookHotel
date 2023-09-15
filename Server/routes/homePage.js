@@ -22,11 +22,12 @@ router.post("/searchhotels", homepageControl.serchHotels);
 // detail page
 router.post("/detailhotel", homepageControl.detailHotel); // add paramter
 
+// router.post("/detailhotel", homepageControl.detailHotel); // add paramter
+
 router.post("/detailhotel/reserve", homepageControl.reserveDetailHotel);
 // router.get("/signin", AuthenticateControl.getNewUser);
 router.get("/transaction", homepageControl.transactionHotel);
 
-router.get("/transaction/test", homepageControl.getRoomsNotBooked);
 // Authentication
 router.post("/signup", AuthenticateControl.postNewUser);
 

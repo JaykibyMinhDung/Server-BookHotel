@@ -11,6 +11,11 @@
       <header class="heading">
         <h2 style="color: rgb(141, 141, 141)"><%= Heading %></h2>
       </header>
+      <% if(erorrsMessage.length || erorrsMessage) { %>
+        <div>
+          <h2 style="color: rgb(255, 0, 0); text-align: center;"><%= erorrsMessage %></h2>
+        </div>
+      <%} %>
       <article class="form__input">
         <form action="" method="post">
           <div class="form__input--flex">
@@ -43,9 +48,9 @@
             </div>
           </div>
           <label for="Rooms">Rooms</label>
-          <textarea name="Rooms" id="Rooms" cols="30" rows="10" >
-            2 bed Rooms
-            1 bed rooms
+          <textarea name="Rooms" id="Rooms" cols="30" rows="5" >
+            2 Bed Rooms
+            1 Bed Rooms
             Basement Double Room
             Superior basement room
             Deliver rooms

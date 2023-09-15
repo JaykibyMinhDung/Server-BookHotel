@@ -16,6 +16,7 @@ import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 // import { NavLink } from "react-router-dom";
 import axios from "../../util/baseUrl";
+import { Toaster, toast } from "react-hot-toast";
 
 const Header = ({ type }) => {
   const [destination, setDestination] = useState("");
@@ -56,6 +57,12 @@ const Header = ({ type }) => {
 
   const handleSearch = async (event) => {
     // page hotel sẽ bị lỗi khi chuyển hướng bằng url vì navigate không thiết lập dòng này khi chuyển hướng bằng url, đối số thứ 2 của navigate là tạo thêm một biến nữa trong useLocation().
+    if (!destination) {
+      return toast.error('Vui lòng điền địa điểm')
+    }
+    if (!date.length) {
+      return toast.error('Vui lòng điền thời gian')
+    }
     event.preventDefault();
     axios
       .post("searchhotels", {
@@ -75,6 +82,7 @@ const Header = ({ type }) => {
 
   return (
     <div className="header">
+      <Toaster />
       <div
         className={
           type === "list" ? "headerContainer listMode" : "headerContainer"

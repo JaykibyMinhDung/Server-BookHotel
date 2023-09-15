@@ -1,4 +1,4 @@
-<table>
+<table style="text-align: center; margin-bottom: 4rem;">
   <thead>
     <tr>
       <th scope="col"><input type="checkbox" name="check" id="check" /></th>
@@ -7,27 +7,50 @@
       <% } %>
     </tr>
   </thead>
-  <tbody id="">
-    <tr>
-      <!-- <th scope="row">${pet.idpet}</th>
-      <td>${pet.namepet}</td>
-      <td>${pet.agepet}</td>
-      <td>${pet.typepet}</td>
-      <td>${pet.weightpet} kg</td>
-      <td>${pet.lengthpet} cm</td>
-      <td>${pet.breedpet}</td>
-      <td><i class="bi bi-square-fill"></i></td>
-      <td>time</td>
-      <td>
-        <input type="button" value="Booked" disabled />
-      </td> -->
-    </tr>
-  </tbody>
+  <% if (pageTitle === "Admin Page") { %>
+    <tbody id="1">
+      <% for (let i = 0; i < products.length; i++ ) { %>
+      <tr>
+        <th scope="row"><%= i %></th>
+        <td><%= products[i]._id %></td>
+        <td><%= products[i].user %></td>
+        <td><%= products[i].hotel %></td>
+        <td>
+          <% products[i].room.forEach((e) => {%>
+            <span><%= e.numberRoom %> </span>
+          <% }); %>
+        </td>
+        <td><%= new Date(products[i].dateStart).toLocaleDateString("en-GB") %></td>
+        <td><%= new Date(products[i].dateEnd).toLocaleDateString("en-GB") %></td>
+        <td>$<%= products[i].price %></td>
+        <td><%= products[i].payment %></td>
+        <td>
+          <input type="button" value='<%= products[i].status %>' disabled />
+        </td>
+      </tr>
+      <% } %>
+    </tbody>
+    <% } else if (pageTitle === "hotel List") { %>
+      <tbody id="2">
+        <% for (let i = 0; i < products.length; i++ ) { %>
+        <tr>
+          <th scope="col"><input type="checkbox" name="check" id="check" /></th>
+          <td><%= products[i]._id %></td>
+          <td><%= products[i].name %></td>
+          <td><%= products[i].type %></td>
+          <td><%= products[i].title %></td>
+          <td><%= products[i].city %></td>
+          <td>
+            <input style="background-color: red; color: white; border: 0px; padding: 5px; border-radius: 5px;" type="button" value='Delete' />
+          </td>
+        </tr>
+        <% } %>
+      </tbody>
+      <% } %>
 </table>
 
 <!-- 
-
-        <th scope="col">User</th>
+      <th scope="col">User</th>
       <th scope="col">Hotel</th>
       <th scope="col">Weight</th>
       <th scope="col">Length</th>

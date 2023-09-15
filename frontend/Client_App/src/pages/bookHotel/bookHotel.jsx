@@ -130,6 +130,7 @@ const BookHotel = ({ detailRoom, hotel, dateProps }) => {
           </div>
           {/* in số phòng từ khách sạn */}
           <h3>Select Rooms</h3>
+          {detailRoom.length === 0 && 'Hiện tại khách sạn đã hết phòng!'}
           <div className="form__chooseroom">
             {detailRoom.map((e) => (
               <div key={e.idRooms}>

@@ -4,6 +4,7 @@ const path = require("path");
 const app = express();
 
 const bodyParse = require("body-parser");
+const flash = require("connect-flash");
 
 const mongoose = require("mongoose");
 const session = require("express-session");
@@ -35,12 +36,13 @@ app.use(
   })
 );
 
-// app.use(flash())
+app.use(flash())
 
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.session.isLoggedIn; // error
   // res.locals.csrfToken = req.csrfToken();
   res.locals.adminHotel = req.session.isAdmin;
+  res.locals.message= req.flash();
   next();
 });
 

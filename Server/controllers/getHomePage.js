@@ -12,7 +12,7 @@ exports.getCountHotel = (req, res, next) => {
       if (!hotels) {
         res.json({
           statusCode: 500,
-          message: " Not found hotel.",
+          message: "Không tìm thấy khách sạn",
         });
       }
       const filterCity = (city) => {
@@ -93,7 +93,6 @@ exports.serchHotels = (req, res, next) => {
   // Tong so nguoi
   const totalPeople = people.adult + people.children; // Tổng số người đặt phòng
 
-  // thue bao nhieu phong, vd: 2 nguoi, 2 phong => khach san co 2 phong con trống va maxPeople > 1. Số người ở maxPeople sẽ bằng số người/ số phòng =>
   Rooms.find()
     .then((resultRooms) => {
       Hotel.find({ city: location }).then((resultHotel) => {
@@ -122,7 +121,6 @@ exports.serchHotels = (req, res, next) => {
             }
           }
 
-          // Dữ liệu trả về cho front-end có phòng phù hợp số lượng người và địa điểm tìm kiếm
           for (let i = 0; i < results.length; i++) {
             const element = hotelsSearch[i];
             const numberArrRoom = element.rooms.length;
@@ -157,7 +155,7 @@ exports.serchHotels = (req, res, next) => {
           // Lọc các khách sạn giống nhau
           const UniqueHotel = [];
           function lonelyarr(a) {
-            a.sort(); // && a[i - 1]?.name !== a[i].name
+            a.sort(); 
             for (let i = 0; i < a.length; i++) {
               if (a[i + 1]?.name !== a[i].name) {
                 UniqueHotel.push(a[i]);
@@ -229,16 +227,13 @@ exports.serchHotels = (req, res, next) => {
                   const hasbooked = element.room.find(
                     (e) => e.id === AllRoomHotelTransaction.toString()
                   );
-                  // push phòng chưa đặt
                   if (!hasbooked) {
                     return ArrayDetailRooms.push(informationRoom);
                   }
                 }
               }
             };
-            // In ra toàn bộ phòng thỏa mãn 2 điều kiện trên
             for (const element of roomsSearch) {
-              // In ra toàn bộ kết quả trùng với ngày: Nếu có dữ liệu là [...], nếu không có dữ liệu là []
               results.map((e) => {
                 // Tìm khách sạn có trùng tên với khách sạn đã book từ trước
                 if (element.id === e.hotel) {
@@ -269,7 +264,10 @@ exports.serchHotels = (req, res, next) => {
 
 // Trả về chi tiết khách sạn sau khi tìm kiếm
 exports.detailHotel = (req, res, next) => {
-  const idHotel = req.body.data.id;
+  // const idHotel = req.body.data.id;
+  const idHotel = req.query.id;
+  const start_date = new Date(req.query.start_date).toISOString();
+  const end_date = new Date(req.query.end_date).toISOString();
   // const convertId = new mongoose.Types.ObjectId(idHotel);
   if (!idHotel) {
     return res.json({
@@ -277,11 +275,7 @@ exports.detailHotel = (req, res, next) => {
       message: "Chưa có thông tin người dùng, vui lòng reload lại trang",
     });
   }
-  // Valid một là trả về các hotel có phòng trống trong ngày đó và phù hợp với nhu cầu phòng
-  // Valid hai là trả về id hotel khách muốn xem chi tiết, khi khách xem 1 hotel phải trả về phòng trống của khách sạn đó, rooms cũng phải trả về là các room trống
-
-      // Có thể là mảng hoặc một string
-      Hotel.findById(transaction[0]?.hotel).then((hotel) => {
+      Hotel.findById(idHotel).then((hotel) => {
         if (!hotel) {
           return res.status(200).json({
             statusCode: 0,
@@ -289,78 +283,119 @@ exports.detailHotel = (req, res, next) => {
           });
         }
         Rooms.find().then((results) => {
-          const ArrRoom = [];
-          for (let i = 0; i < hotel.rooms.length; i++) {
-            const element = hotel.rooms[i];
-            results.map((e) => {
-              if (element === e.id) {
-                ArrRoom.push({
-                  idRooms: e.id,
-                  numberRooms: e.roomNumbers,
-                  maxPeople: e.maxPeople,
-                  typeRoom: e.title,
-                  description: e.desc,
-                  price: e.price,
-                });
+          Transactions.find({
+            $or: [
+              {
+                // Ngày kết thúc trong khoảng đang đặt
+                $and: [
+                  {
+                    dateStart: {
+                      $lt: new Date(start_date),
+                    },
+                  },
+                  {
+                    dateEnd: {
+                      $gt: new Date(start_date), // Lớn hơn thời gian bắt đầu
+                      $lt: new Date(end_date), // Bé hơn thời gian kết thúc
+                    },
+                  },
+                ],
+              },
+              {
+                // Trong khoảng đang đặt
+                $and: [
+                  {
+                    dateStart: {
+                      $lt: new Date(start_date), // Ít hơn
+                    },
+                  },
+                  {
+                    dateEnd: {
+                      $gt: new Date(end_date), // Lớn hơn
+                    },
+                  },
+                ],
+              },
+              {
+                // Ngày bắt đầu trong khoảng đang đặt
+                $and: [
+                  {
+                    dateStart: {
+                      $gt: new Date(start_date), // Lớn hơn thời gian bắt đầu
+                      $lt: new Date(end_date), // nhỏ hơn thời gian kết thúc
+                    },
+                  },
+                  {
+                    dateEnd: {
+                      $gt: new Date(end_date), // lớn hơn ngày kết thúc
+                    },
+                  },
+                ],
+              },
+            ],
+          }).then(transactions => {
+            const ArrRoom = [];
+            const filterRooms = (AllRoomHotelTransaction, informationRoom) => {
+              // Lấy từng giao dịch trong transaction ra
+              for (let i = 0; i < results.length; i++) {
+                // Lấy id phòng đã booked so sánh với tất cả các phòng trong khách sạn
+                const element = transactions[i];
+                if (element) {
+                  const hasbooked = element.room.find(
+                    (e) => e.id === AllRoomHotelTransaction.toString()
+                  );
+                  if (!hasbooked) {
+                    return ArrRoom.push({
+                      idRooms: informationRoom.id,
+                      numberRooms: informationRoom.roomNumbers,
+                      maxPeople: informationRoom.maxPeople,
+                      typeRoom: informationRoom.title,
+                      description: informationRoom.desc,
+                      price: informationRoom.price,
+                    });
+                  }
+                } else {
+                  return ArrRoom.push({
+                    idRooms: informationRoom.id,
+                    numberRooms: informationRoom.roomNumbers,
+                    maxPeople: informationRoom.maxPeople,
+                    typeRoom: informationRoom.title,
+                    description: informationRoom.desc,
+                    price: informationRoom.price,
+                  });
+                }
               }
+            };
+            for (let i = 0; i < hotel.rooms.length; i++) {
+              const element = hotel.rooms[i];
+              results.map((e) => {
+                if (element === e.id) {
+                  filterRooms(e.id, e)
+                }
+              });
+            }
+            const ArrResults = {
+              informationHotel: { ...hotel._doc }, // Cái này để lấy dữ liệu từ một schema vì cấu trúc khi lấy hơi khác mà ta cop toàn bộ sẽ ra một kiểu dữ liệu khác
+              informationRoom: ArrRoom,
+            };
+            res.status(200).json({
+              statusCode: 200,
+              message: "Nhận dữ liệu thành công",
+              RecordInformationRoom: ArrRoom.length,
+              ArrResults: ArrResults,
             });
-          }
-          const ArrResults = {
-            informationHotel: { ...hotel._doc }, // Cái này để lấy dữ liệu từ một schema vì cấu trúc khi lấy hơi khác mà ta cop toàn bộ sẽ ra một kiểu dữ liệu khác
-            informationRoom: ArrRoom,
-          };
-          // Lấy mảng phòng tìm tất cả các phòng phù hợp với phòng người dùng tìm ( ví dụ: tìm khoảng 2 phòng có 3 chỗ ngủ, thì trả đúng phòng đó với số phòng đúng)
-          res.status(200).json({
-            statusCode: 0,
-            message: "Nhận dữ liệu thành công",
-            ArrResults,
+            console.log(ArrRoom)
           });
-        });
+            
+          })
       })
-      // res.status(200).json({
-      //   statusCode: 0,
-      //   message: "Nhận dữ liệu thành công",
-      //   ArrResults: transaction,
-      // });
     .catch((err) => {
       res.status(500).json("Không tìm thấy thông tin chi tiết hotel");
       console.log(err);
     });
 };
 
-// Kiểm tra các phòng còn trống ngày hôm đó
-exports.getRoomsNotBooked = (req, res, next) => {
-  const inputDate = req.query;
-  // const input = req.data.hotel
-  console.log(inputDate);
-  const startDateIOSString = new Date(inputDate.StartDate).toISOString();
-  const endDateIOSString = new Date(inputDate.EndDate).toISOString();
-  Transactions.find({
-    $or: [
-      {
-        dateStart: {
-          $gt: new Date(startDateIOSString),
-          $lt: new Date(endDateIOSString),
-        },
-      },
-      {
-        dateEnd: {
-          $gt: new Date(startDateIOSString),
-          $lt: new Date(endDateIOSString),
-        },
-      },
-    ],
-  })
-    .then((rooms) => {
-      // Hotel.find({ _id: rooms.hotel }).then((motel) => motel.rooms);
-      return res.status(200).json({
-        results: rooms,
-        message: rooms.length ? "Phòng đã được đặt" : "Chưa có phòng nào đặt", // Thế thì in ra các phòng chưa đặt
-      });
-    })
-    .catch((e) => console.log(e, "Check middleware RoomNotBooked"));
-};
-
+// Booked phòng
 exports.reserveDetailHotel = (req, res, next) => {
   const TransactionsData = req.body.data; // fullname, email, phonenumber, cardnumber, date, informationDate, methodpayment
   // const BookedRooms = [...TransactionsData.detailRoom.numberRoom];
@@ -404,6 +439,7 @@ exports.reserveDetailHotel = (req, res, next) => {
   // });
   const ArrayDataTransaction = {
     user: TransactionsData.user.FullName,
+    user_id: TransactionsData.user.id,
     hotel: TransactionsData.detailHotel,
     room: TransactionsData.detailRoom,
     dateStart: new Date(TransactionsData.date.startDate),
@@ -431,30 +467,43 @@ exports.reserveDetailHotel = (req, res, next) => {
     });
 };
 
+// Hiển thị giao dịch đặt phòng
 exports.transactionHotel = (req, res, next) => {
-  // const TransactionsData = req.body.data;
+  const user_id = req.query.userId;
+  const username = req.query.username;
+  console.log(user_id, username)
   // Lấy name hotel
-  Transactions.find()
+  Transactions.find({
+    $or: [{
+      user_id: user_id ? user_id : {$exists: false},
+      user: username
+    }]
+  })
     .then((DataTransactionHotel) => {
       if (!DataTransactionHotel) {
         return res.json({
           statusCode: 500,
-          message: "Not found data",
+          message: "Chưa có giao dịch của người dùng này",
         });
       }
       Hotel.findById(DataTransactionHotel.hotel).then((e) => {
-        console.log(DataTransactionHotel.hotel);
-        return res.status(200).json([
-          ...DataTransactionHotel,
-          // nameHotel: e.name,
-        ]);
+        // console.log(DataTransactionHotel.hotel);
+        return res.status(200).json({
+          statusCode: 200,
+          message: 'Tìm dữ liệu thành công',
+          Transactions: [
+            ...DataTransactionHotel,
+            // nameHotel: e.name,
+          ],
+          recordTransaction: DataTransactionHotel.length
+        });
       });
     })
     .catch((err) => {
       console.log("getRatingHotel" + err);
       res.status(400).json({
         status: 200,
-        message: "Not found transaction",
+        message: "Không tìm thấy dữ liệu về giao dịch",
       });
     });
 };

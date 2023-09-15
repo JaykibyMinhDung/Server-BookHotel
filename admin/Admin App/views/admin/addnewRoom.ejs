@@ -11,7 +11,7 @@
         <h2 style="color: rgb(141, 141, 141)"><%= Heading %></h2>
       </header>
       <article class="form__input">
-        <form action="" method="post">
+        <form action="/hotellist/newhotel" method="post">
           <div class="form__input--flex">
             <div>
               <label for="Name">Title</label> <br>
@@ -29,8 +29,13 @@
           <div class="foot__newrooms">
             <div>
               <label for="Rooms">Rooms</label>
-              <textarea style="width:90%" name="Rooms" id="Rooms" cols="30" rows="10" placeholder="give comma between room numbers" >
-                
+              <textarea 
+              style="width:90%" 
+              name="Rooms" 
+              id="Rooms" 
+              cols="30" 
+              rows="10" 
+              placeholder="give comma between room numbers" >
               </textarea>
             </div>
             <div class="foot__newrooms--align">

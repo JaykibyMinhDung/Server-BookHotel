@@ -26,17 +26,21 @@ const Hotel = () => {
   const [open, setOpen] = useState(false);
   // const navigateBook = useNavigate();
   const getDetailHotel = async () => {
+    const start_date = new Date(location.state.date[0].startDate).toLocaleDateString('en-US');
+    const end_date = new Date(location.state.date[0].endDate).toLocaleDateString('en-US');
     setLoading(true);
-    const res = await axios.post("http://localhost:5000/detailhotel", {
-      data: {
-        id: location.state.id,
-        start_date: location.state.date,
-        end_date: location.state.end_date 
-      },
+    const res = await axios.post(`http://localhost:5000/detailhotel?id=${location.state.id}&start_date=${start_date}&end_date=${end_date}`
+    // , {
+    //   data: {
+    //     id: location.state.id,
+    //     start_date: location.state.date,
+    //     end_date: location.state.end_date 
+    //   },
       // headers: {
       //   Authorization: "Bearer " + token,
       // }
-    });
+    // }
+    );
     const changeData = await res.data;
     setDataHotels(changeData.ArrResults);
     setLoading(false);
@@ -70,7 +74,6 @@ const Hotel = () => {
     setSlideNumber(newSlideNumber);
   };
 
-  // console.log(dataHotels.informationHotel._id)
   useEffect(() => {
     getDetailHotel();
   }, [location.state.id]);
