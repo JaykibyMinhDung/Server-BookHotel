@@ -1,4 +1,4 @@
-<table style="text-align: center; margin-bottom: 4rem;">
+<table style="text-align: center; margin-bottom: 4rem">
   <thead>
     <tr>
       <th scope="col"><input type="checkbox" name="check" id="check" /></th>
@@ -8,46 +8,159 @@
     </tr>
   </thead>
   <% if (pageTitle === "Admin Page") { %>
-    <tbody id="1">
-      <% for (let i = 0; i < products.length; i++ ) { %>
-      <tr>
-        <th scope="row"><%= i %></th>
-        <td><%= products[i]._id %></td>
-        <td><%= products[i].user %></td>
-        <td><%= products[i].hotel %></td>
-        <td>
-          <% products[i].room.forEach((e) => {%>
-            <span><%= e.numberRoom %> </span>
-          <% }); %>
-        </td>
-        <td><%= new Date(products[i].dateStart).toLocaleDateString("en-GB") %></td>
-        <td><%= new Date(products[i].dateEnd).toLocaleDateString("en-GB") %></td>
-        <td>$<%= products[i].price %></td>
-        <td><%= products[i].payment %></td>
-        <td>
-          <input type="button" value='<%= products[i].status %>' disabled />
-        </td>
-      </tr>
-      <% } %>
-    </tbody>
-    <% } else if (pageTitle === "hotel List") { %>
-      <tbody id="2">
-        <% for (let i = 0; i < products.length; i++ ) { %>
-        <tr>
-          <th scope="col"><input type="checkbox" name="check" id="check" /></th>
-          <td><%= products[i]._id %></td>
-          <td><%= products[i].name %></td>
-          <td><%= products[i].type %></td>
-          <td><%= products[i].title %></td>
-          <td><%= products[i].city %></td>
-          <td>
-            <input style="background-color: red; color: white; border: 0px; padding: 5px; border-radius: 5px;" type="button" value='Delete' />
-          </td>
-        </tr>
-        <% } %>
-      </tbody>
-      <% } %>
+  <tbody id="1">
+    <% for (let i = 0; i < products.length; i++ ) { %>
+    <tr>
+      <th scope="row"><%= i %></th>
+      <td><%= products[i]._id %></td>
+      <td><%= products[i].user %></td>
+      <td><%= namehotel[i] %></td>
+      <td>
+        <% products[i].room.forEach((e) => {%>
+        <span><%= e.numberRoom %> </span>
+        <% }); %>
+      </td>
+      <td>
+        <%= new Date(products[i].dateStart).toLocaleDateString("en-GB") %>
+      </td>
+      <td><%= new Date(products[i].dateEnd).toLocaleDateString("en-GB") %></td>
+      <td>$<%= products[i].price %></td>
+      <td><%= products[i].payment %></td>
+      <td>
+        <input type="button" style='background-color: <%= products[i].status ===
+        'Booked' ? 'red' : products[i].status === 'Checkout' ? 'gray' : 'green'
+        %>; color: white; border: 0px; padding: 5px; border-radius: 5px;'
+        value='<%= products[i].status %>' disabled />
+      </td>
+    </tr>
+    <% } %>
+  </tbody>
+  <% } else if (pageTitle === "hotel List") { %>
+  <tbody id="2">
+    <% for (let i = 0; i < products.length; i++ ) { %>
+    <tr>
+      <th scope="col"><input type="checkbox" name="check" id="check" /></th>
+      <td><%= products[i]._id %></td>
+      <td><%= products[i].name %></td>
+      <td><%= products[i].type %></td>
+      <td><%= products[i].title %></td>
+      <td><%= products[i].city %></td>
+      <td>
+        <form action="/hotellist/<%=products[i]._id%>" method="post">
+          <input
+          style="
+            background-color: red;
+            color: white;
+            border: 0px;
+            padding: 5px;
+            border-radius: 5px;
+          "
+          type="submit"
+          value="Delete"
+        />
+        </form>
+      </td>
+      <td>
+        <input
+          style="
+            background-color: rgb(0, 255, 55);
+            color: white;
+            border: 0px;
+            padding: 5px;
+            border-radius: 5px;
+          "
+          type="button"
+          value="Edit"
+        />
+      </td>
+    </tr>
+    <% } %>
+  </tbody>
+  <% } else if (pageTitle === "rooms List") { %>
+  <tbody id="3">
+    <% for (let i = 0; i < products.length; i++ ) { %>
+    <tr>
+      <th scope="col"><input type="checkbox" name="check" id="check" /></th>
+      <td><%= products[i]._id %></td>
+      <td><%= products[i].title %></td>
+      <td><%= products[i].desc %></td>
+      <td><%= products[i].price %></td>
+      <td><%= products[i].maxPeople %></td>
+      <td>
+        <input
+          style='
+            background-color: red;
+            color: white;
+            border: 0px;
+            padding: 5px;
+            border-radius: 5px;
+          '
+          type="button"
+          value="Delete"
+        />
+      </td>
+      <td>
+        <input
+          style="
+            background-color: rgb(0, 255, 55);
+            color: white;
+            border: 0px;
+            padding: 5px;
+            border-radius: 5px;
+          "
+          type="button"
+          value="Edit"
+        />
+      </td>
+    </tr>
+    <% } %>
+  </tbody>
+  <% } else if (pageTitle === "transaction List") { %>
+  <tbody id="3">
+    <% for (let i = 0; i < products.length; i++ ) { %>
+    <tr>
+      <th scope="col"><input type="checkbox" name="check" id="check" /></th>
+      <td><%= products[i]._id %></td>
+      <td><%= products[i].user %></td>
+      <td><%= Namehotel[i] %></td>
+      <td>
+        <% products[i].room.forEach((e) => {%>
+        <span><%= e.numberRoom %> </span>
+        <% }); %>
+      </td>
+      <td>
+        <%= new Date(products[i].dateStart).toLocaleDateString('en-GB') %> - <%=
+        new Date(products[i].dateEnd).toLocaleDateString('en-GB') %>
+      </td>
+      <td>$<%= products[i].price %></td>
+      <td><%= products[i].payment %></td>
+      <td>
+        <input
+          style='
+            background-color: <%= products[i].status ===
+            'Booked' ? 'red' : products[i].status === 'Checkout' ? 'gray' : 'green'
+            %>;
+            color: white;
+            border: 0px;
+            padding: 5px;
+            border-radius: 5px;
+          '
+          type="button"
+          value="<%= products[i].status %>"
+          disabled
+        />
+      </td>
+    </tr>
+    <% } %>
+  </tbody>
+  <% } %>
 </table>
+
+<script>
+  const navigationFormNewHotel = () => {
+    location.assign("/roomlist/newroom");
+  };
+</script>
 
 <!-- 
       <th scope="col">User</th>

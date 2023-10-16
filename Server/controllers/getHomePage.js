@@ -438,7 +438,7 @@ exports.reserveDetailHotel = (req, res, next) => {
   //   }
   // });
   const ArrayDataTransaction = {
-    user: TransactionsData.user.FullName,
+    user: TransactionsData.user.Email,
     user_id: TransactionsData.user.id,
     hotel: TransactionsData.detailHotel,
     room: TransactionsData.detailRoom,
@@ -471,7 +471,7 @@ exports.reserveDetailHotel = (req, res, next) => {
 exports.transactionHotel = (req, res, next) => {
   const user_id = req.query.userId;
   const username = req.query.username;
-  console.log(user_id, username)
+  // console.log(user_id, username)
   // Lấy name hotel
   Transactions.find({
     $or: [{
@@ -486,18 +486,30 @@ exports.transactionHotel = (req, res, next) => {
           message: "Chưa có giao dịch của người dùng này",
         });
       }
-      Hotel.findById(DataTransactionHotel.hotel).then((e) => {
+      const arrNameHotel = [];
+      Hotel.find().then((e) => {
         // console.log(DataTransactionHotel.hotel);
+        for (let i = 0; i < DataTransactionHotel.length; i++) {
+          const element = DataTransactionHotel[i];
+          // const convertId = new mongoose.Types.ObjectId(element.hotel);
+          const filterNameHotel = e.find(data => data._id.toString() === element.hotel)          
+          if (filterNameHotel) {
+            arrNameHotel.push(filterNameHotel.name);
+            element.nameHotel = filterNameHotel.name;
+          }
+        }
+        return DataTransactionHotel;
+      }).then(e => {
         return res.status(200).json({
           statusCode: 200,
           message: 'Tìm dữ liệu thành công',
           Transactions: [
-            ...DataTransactionHotel,
-            // nameHotel: e.name,
+            ...e,
           ],
-          recordTransaction: DataTransactionHotel.length
+          nameHotel: arrNameHotel,
+          recordTransaction: e.length
         });
-      });
+      })
     })
     .catch((err) => {
       console.log("getRatingHotel" + err);

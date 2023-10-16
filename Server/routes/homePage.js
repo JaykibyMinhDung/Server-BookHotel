@@ -7,6 +7,7 @@ const router = express.Router();
 const homepageControl = require("../controllers/getHomePage");
 
 const AuthenticateControl = require("../controllers/AuthenticateForm");
+const isAuth = require("../middleware/isAuth"); // tường lửa
 
 // router.get("/", homepageControl.getCountHotel);
 
@@ -20,7 +21,7 @@ router.get("/ratinghighest", homepageControl.getRatingHotel);
 router.post("/searchhotels", homepageControl.serchHotels);
 
 // detail page
-router.post("/detailhotel", homepageControl.detailHotel); // add paramter
+router.get("/detailhotel", homepageControl.detailHotel); // add paramter
 
 // router.post("/detailhotel", homepageControl.detailHotel); // add paramter
 

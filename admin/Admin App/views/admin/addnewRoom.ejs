@@ -11,19 +11,19 @@
         <h2 style="color: rgb(141, 141, 141)"><%= Heading %></h2>
       </header>
       <article class="form__input">
-        <form action="/hotellist/newhotel" method="post">
+        <form action="/room-list/new-room" method="post">
           <div class="form__input--flex">
             <div>
               <label for="Name">Title</label> <br>
-              <input type="text" placeholder="2 bed rooms" id="Name" value="" name="Name">
+              <input type="text" placeholder="2 bed rooms" id="Name" value="" name="title">
               <label for="Price">Price</label> <br>
-              <input type="text" placeholder="100" id="Price" value="" name="Price">
+              <input type="text" placeholder="100" id="Price" value="" name="price">
             </div>
             <div>
               <label for="Description">Description</label> <br>
-              <input type="text" placeholder="King size bed, 1 bathroom" id="Description" value="" name="Description">
+              <input type="text" placeholder="King size bed, 1 bathroom" id="Description" value="" name="description">
               <label for="Type">Max People</label> <br>
-              <input type="text" placeholder="2" id="Type" value="" name="Type">
+              <input type="text" placeholder="2" id="Type" value="" name="numberPeople">
             </div>
           </div>
           <div class="foot__newrooms">
@@ -31,7 +31,7 @@
               <label for="Rooms">Rooms</label>
               <textarea 
               style="width:90%" 
-              name="Rooms" 
+              name="roomNumbers" 
               id="Rooms" 
               cols="30" 
               rows="10" 
@@ -41,8 +41,10 @@
             <div class="foot__newrooms--align">
               <label for="hotel">Choose a hotel</label>
               <br>
-              <select id="Cau Giay">
-                <option value="Cau Giay">Cau Giay</option>
+              <select id="">
+                <% for(let i=0; i < name.length; i++ ) { %>
+                <option value="<%= name[i] %>"><%= name[i] %></option>
+                <% } %>
               </select>
               <br>
             </div>

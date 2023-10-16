@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Style from "./SignUp.module.css";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 const Signin = (props) => {
   const {
@@ -29,14 +30,16 @@ const Signin = (props) => {
           password: e.password,
         }),
       })
-        .then((data) => {
-          if (data.SatusCode === 500) {
-            throw new Error(data.message);
+        .then(async (data) => {
+          if (data.status === 401 || data.status === 500) {
+            const response = await data.json()
+            throw new Error(response.message);
+          } else {
+            return data.json();
           }
-          return data.json();
         })
         .then((results) => {
-          console.log(results.token);
+          // console.log(results);
           localStorage.setItem(
             "User",
             JSON.stringify([
@@ -52,7 +55,7 @@ const Signin = (props) => {
           navigate("/");
         })
         .catch((err) => {
-          console.log(err);
+          toast.error(err.message);
         });
     }
   };
@@ -62,6 +65,7 @@ const Signin = (props) => {
   // }, []);
   return (
     <div>
+      <Toaster position="top-center" reverseOrder={false} />
       <div className={Style.nav}>
         <h2>Booking</h2>
         <div>

@@ -12,83 +12,102 @@ import axios from "axios";
 import { toast, Toaster } from "react-hot-toast";
 
 const BookHotel = ({ detailRoom, hotel, dateProps }) => {
-  const totalRooms = [];
-  const User = JSON.parse(localStorage.getItem("User"))
-  let test = false;
+  // const totalRooms = [];
+  let flag = false;
+  const User = JSON.parse(localStorage.getItem("User"));
   const { register, handleSubmit } = useForm({
     defaultValues: {
       FullName: "Minh Dũng",
       Email: User[0].emailUser,
       PhoneNumber: "0945758347",
-    }
-  })
-  // const [valueRoom, setvalueRoom] = useState([])
-	console.log(dateProps)
-  const [date, setDate] = useState(
-    [{
+    },
+  });
+  const [valueRoom, setvalueRoom] = useState([]);
+  // console.log("Thời gian" ,dateProps)
+  const [totalBill, setTotalBill] = useState(0);
+  const [chooseRoom, setChooseRoom] = useState({});
+  const [date, setDate] = useState([
+    {
       startDate: dateProps[0].startDate,
       endDate: dateProps[0].endDate,
       key: "selection",
-    }]
-  );
+    },
+  ]);
   const start = date[0].startDate;
   const end = date[0].endDate;
-  const [totalBill, setTotalBill] = useState(0)
 
   const rangeDateBooking = () => {
     if (start && end) {
-      return date[0].endDate.getDate() - date[0].startDate.getDate()
+      return date[0].endDate.getDate() - date[0].startDate.getDate();
     }
   };
 
   const handleChange = (data) => {
-    // e.predefault()
-    if (rangeDateBooking() < 1) {
-      return toast.error("Bạn cần đăng kí lớn hơn 2 ngày trước khi đặt phòng.")
-    }
-    test = data.isCheck
-    if (data.isCheck && rangeDateBooking() > 1) {
-      totalRooms.push(data.informationRoom)
-    } else if (!data.isCheck && rangeDateBooking() > 1) {
-      totalRooms.pop()
+    setChooseRoom({ ...data });
+  };
+
+  const caculatorBill = (room) => {
+    console.log("Tổng số phòng", room); // Tổng số phòng
+    for (let i = 0; i < room.length; i++) {
+      const element = room[i];
+      return flag
+        ? setTotalBill(
+            totalBill + element?.price * (end.getDate() - start.getDate())
+          )
+        : setTotalBill(
+            totalBill - element?.price * (end.getDate() - start.getDate())
+          );
     }
   };
 
-  // Lỗi handle là do trong hàm này đang xử lý thêm giá cả
+  function handleChangeRooms(rooms) {
+    if (rangeDateBooking() < 1) {
+      return toast.error("Bạn cần đăng kí lớn hơn 2 ngày trước khi đặt phòng.");
+    }
+    flag = rooms?.isCheck;
+    console.log("Hàm valid các giá trị cùng phòng", rooms);
+    caculatorBill(valueRoom); // rooms.informationRoom
+    if (rooms.isCheck && rangeDateBooking() > 1) {
+      console.log(rooms.isCheck && rangeDateBooking() > 1);
+      setvalueRoom([...valueRoom, rooms.informationRoom]); // rooms.informationRoom
+      return caculatorBill([...valueRoom, rooms.informationRoom]);
+    } else if (!rooms.isCheck && rangeDateBooking() > 1 && valueRoom.length > 0) {
+      // const removeChoose = [...valueRoom, rooms.informationRoom].find(room => room?.id !== rooms?.informationRoom.id && room?.numberRoom === rooms?.informationRoom.numberRoom)
+      console.log(valueRoom)
+      return setvalueRoom(oldRoom => {
+        const indexRoom = oldRoom.findIndex(room => room?.id === rooms?.informationRoom.id && room?.numberRoom === rooms?.informationRoom.numberRoom)
+        console.log(indexRoom)
+        return oldRoom.splice(indexRoom, 1)
+        })
+    }
+  }
 
+  // Lỗi handle là do trong hàm này đang xử lý thêm giá cả
   const onSubmit = (data) => {
     // axios.post("http://localhost:5000/detailhotel/reserve",)
     if (rangeDateBooking() < 1) {
-      return toast.error("Giao dịch không thành công do chưa đặt ngày")
+      return toast.error("Giao dịch không thành công do chưa đặt ngày");
     }
-    console.log(
-      {
-        user: data,
-        date: {
-          startDate: date[0].startDate.toLocaleDateString("es-CL"),
-          endDate: date[0].endDate.toLocaleDateString("es-CL"),
-          key: "selection",
-        },
-        detailHotel: hotel._id,
-        detailRoom: totalRooms
-      }
-    )
+    console.log({
+      user: data,
+      date: {
+        startDate: date[0].startDate.toLocaleDateString("es-CL"),
+        endDate: date[0].endDate.toLocaleDateString("es-CL"),
+        key: "selection",
+      },
+      detailHotel: hotel._id,
+      detailRoom: [...valueRoom],
+    });
+  };
 
-  }
-    const caculatorBill = () => {
-      console.log(totalRooms)
-      for (let i = 0; i < totalRooms.length; i++) {
-        const element = totalRooms[i];
-        return test 
-          ? setTotalBill(totalBill + element?.price * (end.getDate() - start.getDate()))
-          : setTotalBill(totalBill - element?.price * (end.getDate() - start.getDate()))
-      }
-    };
+  // useEffect(() => {
+  //   console.log("Tổng số tiền: ", totalBill) // Tổng số tiền
+  //   caculatorBill()
+  // }, [test, totalBill, totalRooms, end, start, chooseRoom])
 
   useEffect(() => {
-    console.log(totalBill)
-    caculatorBill()
-  }, [test, totalBill, totalRooms, end, start])
+    handleChangeRooms(chooseRoom, valueRoom);
+  }, [chooseRoom]);
 
   if (!detailRoom) {
     return <div>Không có phòng nào cả</div>;
@@ -97,7 +116,7 @@ const BookHotel = ({ detailRoom, hotel, dateProps }) => {
     <React.Fragment>
       <main>
         <Toaster />
-        <form onSubmit={handleSubmit(onSubmit)} >
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="form__bookhotel">
             {/* action="" method="post" */}
             <div className="">
@@ -114,23 +133,42 @@ const BookHotel = ({ detailRoom, hotel, dateProps }) => {
             <div className="form__bookhotel--booking">
               <h3>Reverve Infor</h3>
               <label htmlFor="">Your Full Name:</label>
-              <input {...register("FullName")} type="text" placeholder="Full Name" id="" />
+              <input
+                {...register("FullName")}
+                type="text"
+                placeholder="Full Name"
+                id=""
+              />
               <br />
               <label htmlFor="">Your Email:</label>
-              <input {...register("Email")} type="text" placeholder="Email" id="" />
+              <input
+                {...register("Email")}
+                type="text"
+                placeholder="Email"
+                id=""
+              />
               <br />
               <label htmlFor="">Your Phone Number:</label>
-              <input {...register("PhoneNumber")} type="text" placeholder="Phone Number" id="" />
+              <input
+                {...register("PhoneNumber")}
+                type="text"
+                placeholder="Phone Number"
+                id=""
+              />
               <br />
               <label htmlFor="">Your Identity Card Number:</label>
-              <input {...register("CardNumber")} type="text" placeholder="Card Number " id="" />
+              <input
+                {...register("CardNumber")}
+                type="text"
+                placeholder="Card Number "
+                id=""
+              />
               {/* <input type="submit" value="test" /> */}
-
             </div>
           </div>
           {/* in số phòng từ khách sạn */}
           <h3>Select Rooms</h3>
-          {detailRoom.length === 0 && 'Hiện tại khách sạn đã hết phòng!'}
+          {detailRoom.length === 0 && "Hiện tại khách sạn đã hết phòng!"}
           <div className="form__chooseroom">
             {detailRoom.map((e) => (
               <div key={e.idRooms}>
@@ -153,13 +191,16 @@ const BookHotel = ({ detailRoom, hotel, dateProps }) => {
                           // {...register("NumberRooms")}
                           name="checkbox"
                           type="checkbox"
-                          onChange={event => handleChange(
-                            {
+                          onChange={(event) =>
+                            handleChange({
                               isCheck: event.target.checked,
                               informationRoom: {
-                                id: e.idRooms, numberRoom: number, price: e.price
-                              }
-                            })}
+                                id: e.idRooms,
+                                numberRoom: number,
+                                price: e.price,
+                              },
+                            })
+                          }
                           id={number}
                         />
                       </div>
@@ -172,11 +213,12 @@ const BookHotel = ({ detailRoom, hotel, dateProps }) => {
           </div>
           <div className="form__payment">
             <div>
-              <h2>
-                Total Bill: $
-                {totalBill}
-              </h2>
-              <select onChange={caculatorBill} style={{ marginTop: "0.5rem" }} {...register("payment")}>
+              <h2>Total Bill: ${totalBill}</h2>
+              <select
+                onChange={caculatorBill}
+                style={{ marginTop: "0.5rem" }}
+                {...register("payment")}
+              >
                 <option value="auto">Select Payment Method</option>
                 {/* bắt buộc chọn 1 trong 2 phương bên dưới  */}
                 <option value="cash">Thanh toán tại quầy</option>
@@ -190,7 +232,7 @@ const BookHotel = ({ detailRoom, hotel, dateProps }) => {
           </div>
         </form>
       </main>
-    </React.Fragment >
+    </React.Fragment>
   );
 };
 

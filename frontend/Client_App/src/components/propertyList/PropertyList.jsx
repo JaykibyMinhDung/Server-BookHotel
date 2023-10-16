@@ -8,7 +8,7 @@ const PropertyList = () => {
   const amountHotel = async () => {
     axios.get("counthotel").then((results) => {
       setGenreProperty(results.data);
-      console.log(results);
+      // console.log(results);
     });
   };
   useEffect(() => {

@@ -12,6 +12,18 @@ router.get("/admin", isAuth, adminPage.getDashbroad);
 
 router.get("/hotellist", isAuth, adminPage.gethotelList);
 
+router.post("/hotellist/:id", isAuth, adminPage.deleteHotelList);
+
+router.put("/hotellist/:id", [
+    body('createdAt').notEmpty().trim(),         
+    body('updatedAt').notEmpty().trim(),  
+    body('description').notEmpty().trim(),
+    body('maxPeople').notEmpty().trim().isFloat(),
+    body('price').notEmpty().trim().isFloat(),
+    body('numberRooms').notEmpty().trim(),
+    body('Title').notEmpty().trim().isString(),
+], isAuth, adminPage.postNewHotelList);
+
 router.post("/hotellist/newhotel", [
     body('Address').notEmpty().trim(),         
     body('City').notEmpty().trim(),  
@@ -28,7 +40,20 @@ router.post("/hotellist/newhotel", [
 
 router.get("/hotellist/newhotel", isAuth, adminPage.getAddnewHotel);
 
-router.post("/room-list/new-room", [
+router.post("/room-list/new-room", [ 
+    body('description').notEmpty().trim(),
+    body('numberPeople').notEmpty().trim().isFloat(),
+    body('price').notEmpty().trim().isFloat(),
+    body('roomNumbers').notEmpty().trim(),
+    body('title').notEmpty().trim().isString(),
+    body('hotel'),
+], isAuth, adminPage.postNewRoomList);
+
+router.get("/roomlist", isAuth, adminPage.getroomsList);
+
+router.delete("/roomlist/:id", isAuth, adminPage.deleteRoomList);
+
+router.put("/roomlist/:id", [
     body('createdAt').notEmpty().trim(),         
     body('updatedAt').notEmpty().trim(),  
     body('description').notEmpty().trim(),
@@ -37,8 +62,6 @@ router.post("/room-list/new-room", [
     body('numberRooms').notEmpty().trim(),
     body('Title').notEmpty().trim().isString(),
 ], isAuth, adminPage.postNewRoomList);
-
-router.get("/roomlist", isAuth, adminPage.getroomsList);
 
 router.get("/roomlist/newroom", isAuth, adminPage.getaddnewRooms);
 

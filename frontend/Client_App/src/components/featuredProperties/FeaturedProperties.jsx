@@ -13,17 +13,17 @@ const FeaturedProperties = () => {
         if (!response) {
           throw new Error(response.message);
         }
-        console.log(
-          response.data.Datahotel.sort(
-            (a, b) => b.cheapestPrice - a.cheapestPrice
-          )
-        );
+        // console.log(
+        //   response.data.Datahotel.sort(
+        //     (a, b) => b.cheapestPrice - a.cheapestPrice
+        //   )
+        // );
         return setHotels(response.data);
       })
       .then(() => setIsLoadding(false))
       .catch((err) => console.log(err));
   };
-  console.log(hotels);
+  // console.log(hotels);
   useEffect(() => {
     highestHotel();
   }, []);

@@ -76,7 +76,7 @@ textarea:focus {
 }
 .foot__newrooms div select,
 option {
-  width: 40%;
+  width: 60%;
   padding: 2%;
   background-color: transparent;
   border: 1px solid rgb(156, 156, 156);

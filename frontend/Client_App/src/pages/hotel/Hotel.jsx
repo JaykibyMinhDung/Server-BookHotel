@@ -29,7 +29,7 @@ const Hotel = () => {
     const start_date = new Date(location.state.date[0].startDate).toLocaleDateString('en-US');
     const end_date = new Date(location.state.date[0].endDate).toLocaleDateString('en-US');
     setLoading(true);
-    const res = await axios.post(`http://localhost:5000/detailhotel?id=${location.state.id}&start_date=${start_date}&end_date=${end_date}`
+    const res = await axios.get(`http://localhost:5000/detailhotel?id=${location.state.id}&start_date=${start_date}&end_date=${end_date}`
     // , {
     //   data: {
     //     id: location.state.id,

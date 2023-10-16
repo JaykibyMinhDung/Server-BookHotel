@@ -1,10 +1,10 @@
 // strict mode
 const path = require("path");
-const {validationResult} = require('express-validator')
+const { validationResult } = require("express-validator");
 const Hotels = require("../models/hotel");
 const Users = require("../models/user");
 const Transactions = require("../models/transaction");
-const Rooms = require('../models/room')
+const Rooms = require("../models/room");
 
 exports.getDashbroad = (req, res, next) => {
   const date = new Date();
@@ -31,29 +31,42 @@ exports.getDashbroad = (req, res, next) => {
     $and: [{ dateStart: { $gt: firstDay } }, { dateEnd: { $lt: lastDay } }],
   })
     .sort({ dateStart: "asc" }) //desc
+    .limit(8)
     .exec()
     .then((transaction) => {
       Users.find().then((user) => {
-        if (!transaction) {
-          res.render("Dashbroad", {
-            path: "/dashbroad",
-            pageTitle: "Admin Page",
-            Heading: "Latest Transactions",
-            titleHead: titleTable,
-            products: [],
-            users: user,
-            notfound: "Không tìm thấy khách sạn nào",
+        Hotels.find().then((hotel) => {
+          const ArrayHotel = [];
+          transaction.map((trans) => {
+            for (let i = 0; i < hotel.length; i++) {
+              const element = hotel[i];
+              if (trans.hotel === element._id.toString()) {
+                ArrayHotel.push(element.name);
+              }
+            }
           });
-        } else {
-          res.render("Dashbroad", {
-            path: "/dashbroad",
-            pageTitle: "Admin Page",
-            Heading: "Latest Transactions",
-            titleHead: titleTable,
-            users: user,
-            products: transaction,
-          });
-        }
+          if (!transaction) {
+            res.render("Dashbroad", {
+              path: "/dashbroad",
+              pageTitle: "Admin Page",
+              Heading: "Latest Transactions",
+              titleHead: titleTable,
+              products: [],
+              users: user,
+              notfound: "Không tìm thấy khách sạn nào",
+            });
+          } else {
+            res.render("Dashbroad", {
+              path: "/dashbroad",
+              pageTitle: "Admin Page",
+              Heading: "Latest Transactions",
+              titleHead: titleTable,
+              users: user,
+              products: transaction,
+              namehotel: ArrayHotel,
+            });
+          }
+        });
       });
       // return res.json({
       //   array: transaction,
@@ -71,37 +84,72 @@ exports.getDashbroad = (req, res, next) => {
 };
 
 exports.gethotelList = (req, res, next) => {
-  const hotelList = ["ID", "Name", "Type", "Title", "City", "Action"];
-  Hotels.find().then(hotel => {
-    if (hotel.length > 0) {
-      res.render("admin/hotelList", {
-        path: "/hotelList",
-        pageTitle: "hotel List",
-        Heading: "Hotels List",
-        titleHead: hotelList,
-        products: hotel,
-      });
-    } else {
-      res.render("admin/hotelList", {
-        path: "/hotelList",
-        pageTitle: "hotel List",
-        Heading: "Hotels List",
-        titleHead: hotelList,
-        products: hotel,
-        notfound: 'Không tìm thấy dữ liệu khách sạn nào'
-      });
-    }
-  }).catch((err) => {
-    const error = new Error(err);
-    error.httpStatusCode = 500;
-  })
+  const hotelList = [
+    "ID",
+    "Name",
+    "Type",
+    "Title",
+    "City",
+    "Action",
+    "Updated",
+  ];
+  Hotels.find()
+    .skip()
+    .limit(8)
+    .then((hotel) => {
+      if (hotel.length > 0) {
+        res.render("admin/hotelList", {
+          path: "/hotelList",
+          pageTitle: "hotel List",
+          Heading: "Hotels List",
+          titleHead: hotelList,
+          products: hotel,
+        });
+      } else {
+        res.render("admin/hotelList", {
+          path: "/hotelList",
+          pageTitle: "hotel List",
+          Heading: "Hotels List",
+          titleHead: hotelList,
+          products: hotel,
+          notfound: "Không tìm thấy dữ liệu khách sạn nào",
+        });
+      }
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+    });
 };
 
+exports.deleteHotelList = (req, res, next) => {
+  const id = req.params;
+  res.json({id});
+  // Hotels.deleteOne({_id: id})
+};
+
+// exports.updatedHotelList = (req, res, next) => {
+//   const id = req.param;
+//   console.log(id);
+// };
+
 exports.postNewHotelList = (req, res, next) => {
-  const {Name, City, Description, far, Type, Address, Title, Price, Feature, Rooms, Images} = req.body;
+  const {
+    Name,
+    City,
+    Description,
+    far,
+    Type,
+    Address,
+    Title,
+    Price,
+    Feature,
+    Rooms,
+    Images,
+  } = req.body;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(422).render('admin/addnewhotel', {
+    return res.status(422).render("admin/addnewhotel", {
       pageTitle: "Add Product",
       Heading: "Add New Hotel",
       path: "/hotel-list/new-hotel",
@@ -120,7 +168,7 @@ exports.postNewHotelList = (req, res, next) => {
         type: Type,
       },
       erorrsMessage: errors.array()[0].msg,
-    })
+    });
   }
   const newHotel = new Hotels({
     address: Address,
@@ -134,22 +182,24 @@ exports.postNewHotelList = (req, res, next) => {
     rooms: Rooms,
     title: Title,
     type: Type,
-    rating: '',
+    rating: "",
   });
   newHotel
     .save()
     .then(() => {
-      req.flash('success', 'Tạo khách sạn thành công'); 
-      res.redirect('/hotellist') 
+      req.flash("success", "Tạo khách sạn thành công");
+      res.redirect("/hotellist");
       // {
       //   Heading: "Hotels List"
       // },
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
-      res.send('<h2 style="text-align: center">Lỗi hệ thống, vui lòng quay lại trang trước</h2>')
-    })
-}
+      res.send(
+        '<h2 style="text-align: center">Lỗi hệ thống, vui lòng quay lại trang trước</h2>'
+      );
+    });
+};
 
 exports.getAddnewHotel = (req, res, next) => {
   // const hotelList = ["ID", "Name", "Type", "Title", "City", "Action"];
@@ -170,38 +220,45 @@ exports.getroomsList = (req, res, next) => {
     "Price",
     "Max People",
     "Action",
+    "Updated",
   ];
   Rooms.find()
-  .then(room => {
-    if(room.length > 0) {
-      res.render("admin/roomsList", {
-      path: "/rooms-list",
-      pageTitle: "Rooms List",
-        Heading: "Rooms List",
-        titleHead: roomList,
-        products: room,
-        erorrsMessage: [],
-      });
-    } else {
-      res.render("admin/hotelList", {
-        path: "/hotelList",
-        pageTitle: "hotel List",
-        Heading: "Hotels List",
-        titleHead: roomList,
-        products: room,
-        notfound: 'Không tìm thấy dữ liệu'
-      });
-    }
-  })
-  .catch()
+    .then((room) => {
+      if (room.length > 0) {
+        res.render("admin/roomsList", {
+          path: "/rooms-list",
+          pageTitle: "rooms List",
+          Heading: "Rooms List",
+          titleHead: roomList,
+          products: room,
+          erorrsMessage: [],
+        });
+      } else {
+        res.render("admin/hotelList", {
+          path: "/hotelList",
+          pageTitle: "hotel List",
+          Heading: "Hotels List",
+          titleHead: roomList,
+          products: room,
+          notfound: "Không tìm thấy dữ liệu",
+        });
+      }
+    })
+    .catch();
 };
 
+exports.deleteRoomList = (req, res, next) => {
+  const id = req.param;
+  // console.log(id);
+  // Hotels.deleteOne({_id: id})
+};
 
 exports.postNewRoomList = (req, res, next) => {
-  const { description, title, price, numberPeople, hotel, roomNumbers} = req.body;
+  const { description, title, price, numberPeople, hotel, roomNumbers } =
+    req.body;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(422).render('admin/addnewroom', {
+    return res.status(422).render("admin/addnewroom", {
       pageTitle: "Add Product",
       Heading: "Add New Room",
       path: "/room-list/new-room",
@@ -213,7 +270,7 @@ exports.postNewRoomList = (req, res, next) => {
         title: title,
       },
       erorrsMessage: errors.array()[0].msg,
-    })
+    });
   }
   const newRoom = new Rooms({
     createdAt: new Date(),
@@ -226,29 +283,37 @@ exports.postNewRoomList = (req, res, next) => {
   });
   newRoom
     .save()
-    .then(new_room => {
-      Hotels.find({name: hotel}).then(hotel => {
-        hotel.rooms.push(new_room._id.toString())
-        return hotel.save()
-      })
+    .then((new_room) => {
+      Hotels.find({ name: hotel }).then((hotel) => {
+        hotel.rooms.push(new_room._id.toString());
+        return hotel.save();
+      });
     })
     .then(() => {
-      req.flash('success', 'Tạo phòng thành công'); 
-      res.redirect('/roomlist') 
+      req.flash("success", "Tạo phòng thành công");
+      res.redirect("/roomlist");
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
-      res.send('<h2 style="text-align: center">Lỗi hệ thống, vui lòng quay lại trang trước</h2>')
-    })
+      res.send(
+        '<h2 style="text-align: center">Lỗi hệ thống, vui lòng quay lại trang trước</h2>'
+      );
+    });
 };
 
 exports.getaddnewRooms = (req, res, next) => {
-  res.render("admin/addnewRoom", {
-    path: "/addnewrooms",
-    pageTitle: "Add New Room",
-    Heading: "Add New Room",
-    erorrsMessage: [],
-  });
+  Hotels.find().then(hotel => {
+    const nameHotel = hotel.map(e => e.name)
+    res.render("admin/addnewRoom", {
+      path: "/addnewrooms",
+      pageTitle: "Add New Room",
+      Heading: "Add New Room",
+      erorrsMessage: [],
+      name: nameHotel,
+    });
+  }).catch(err => {
+    console.log(err);
+  })
 };
 
 exports.gettransactionList = (req, res, next) => {
@@ -262,10 +327,25 @@ exports.gettransactionList = (req, res, next) => {
     "Payment Method",
     "Status",
   ];
-  res.render("admin/transactionList", {
-    path: "/alltransaction",
-    pageTitle: "Transaction List",
-    Heading: "Transactions List",
-    titleHead: titleTable,
+  Transactions.find().then((transaction) => {
+    Hotels.find().then((hotel) => {
+      const ArrayHotel = [];
+      transaction.map((trans) => {
+        for (let i = 0; i < hotel.length; i++) {
+          const element = hotel[i];
+          if (trans.hotel === element._id.toString()) {
+            ArrayHotel.push(element.name);
+          }
+        }
+      });
+      res.render("admin/transactionList", {
+        path: "/alltransaction",
+        pageTitle: "transaction List",
+        Heading: "Transactions List",
+        titleHead: titleTable,
+        products: transaction,
+        Namehotel: ArrayHotel,
+      });
+    });
   });
 };
