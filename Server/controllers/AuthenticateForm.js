@@ -83,7 +83,8 @@ exports.postValidUser = (req, res, next) => {
     })
 
     .catch((err) => {
-      res.status(401).json({ message: "Not found user !", StatusCode: 500 });
+      res.status(401).json({ message: err.message, StatusCode: 0 });
+      // "Not found user !"
       console.log(err);
     });
 };

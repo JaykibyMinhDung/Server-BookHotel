@@ -9,6 +9,9 @@ const Navbar = () => {
   const backHome = () => {
     navigate("/");
   };
+  const transaction = () => {
+    navigate("/transaction");
+  };
   const Signup = () => {
     navigate("/signup");
   };
@@ -33,7 +36,7 @@ const Navbar = () => {
         <div className="navItems">
           <span>{DataUser ? DataUser[0].emailUser : ""}</span>
           {/* Thay đổi dấu 3 ngôi ở onClick để chuyển hướng sang trang transaction */}
-          <button className="navButton" onClick={Signup}>
+          <button className="navButton" onClick={DataUser ? transaction : Signup}>
             {DataUser ? "Transaction" : "Register"}
           </button>
           {/* Transaction */}

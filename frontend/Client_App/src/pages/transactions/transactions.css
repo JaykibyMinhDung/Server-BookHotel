@@ -5,10 +5,17 @@ tr {
   border-collapse: collapse;
 }
 table {
-  width: 98.5%;
+  width: 100%;
+  font-weight: 400 !important;
+  padding-left: 20px ;
 }
 th {
-  width: 10%;
+  /* width: 20%; */
   border-right: 1px groove black;
   padding: 1%;
+}
+.layout_transaction {
+  max-width: 95vw;
+  padding: 10px 20px ;
+  width: 100%;
 }

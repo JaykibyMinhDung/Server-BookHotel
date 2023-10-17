@@ -12,7 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom"; // , useNavigate
 import BookHotel from "../bookHotel/bookHotel";
 import defaultimg from "../../assets/notfound.png";
 
@@ -22,19 +22,32 @@ const Hotel = () => {
   const [loading, setLoading] = useState(true);
   const [formReverse, setFormReverse] = useState(false)
   const location = useLocation();
+  const start_date = new Date(location.state.date[0].startDate).toLocaleDateString('en-US');
+  const end_date = new Date(location.state.date[0].endDate).toLocaleDateString('en-US');
   // console.log(location.state);
   const [open, setOpen] = useState(false);
-  const navigateBook = useNavigate();
+  const [changeDate, setChangeDate] = useState([
+    {
+      startDate: location.state.date[0].startDate, // .toLocaleDateString("es-CL")
+      endDate: location.state.date[0].endDate,
+      key: "selection",
+    },
+  ]);
+  // const navigateBook = useNavigate();
+  const convertDateServer = (date) => {
+    const dateFormatted = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    }).format(date);
+    return dateFormatted
+  }
   const getDetailHotel = async () => {
     setLoading(true);
-    const res = await axios.post("http://localhost:5000/detailhotel", {
-      data: {
-        id: location.state,
-      },
-      // headers: {
-      //   Authorization: "Bearer " + token,
-      // }
-    });
+    const newStartDate = convertDateServer(changeDate[0]?.startDate);
+    const newEndDate = convertDateServer(changeDate[0]?.endDate);
+    const res = await axios.get(`http://localhost:5000/detailhotel?id=${location.state.id}&start_date=${start_date !== newStartDate ? newStartDate : start_date}&end_date=${end_date !== newEndDate ? newEndDate : end_date}`
+    );
     const changeData = await res.data;
     setDataHotels(changeData.ArrResults);
     setLoading(false);
@@ -68,10 +81,10 @@ const Hotel = () => {
     setSlideNumber(newSlideNumber);
   };
 
-  // console.log(dataHotels.informationHotel._id)
   useEffect(() => {
     getDetailHotel();
-  }, [location.state]);
+    console.log(changeDate)
+  }, [location.state.id, changeDate]);
 
   // if (loading) {
   //   return
@@ -178,7 +191,11 @@ const Hotel = () => {
         ) }
         {
           formReverse &&
-          <BookHotel detailRoom={ dataHotels.informationRoom } hotel={ dataHotels.informationHotel } />
+          <BookHotel 
+					detailRoom={ dataHotels.informationRoom } 
+					hotel={ dataHotels.informationHotel } 
+          newDate={setChangeDate}
+					dateProps={location.state.date} />
         }
         <MailList />
         <Footer />

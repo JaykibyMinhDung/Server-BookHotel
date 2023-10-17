@@ -23,3 +23,12 @@ Học cách chuyển màu từng row, chỉnh lại size chữ và độ đậm 
 - Tiếp theo, người dùng chọn các phòng muốn đặt. Hệ thống sẽ tính tổng giá tiền tương ứng (số tiền 1 phòng * số phòng * số ngày).
 
 - Người dùng chọn cách thức thanh toán và nhấn "Reserve Now". Lúc này bạn sẽ gọi xuống API ở server để tạo giao dịch, nếu thành công sẽ chuyển người dùng về Transaction Dashboard (yêu cầu số 8).
+
+# Hướng giải yêu cầu 1:
+ - Khi ấn chọn xong ngày đi và đến thì màn hình sẽ thay đổi theo các phòng, nghĩa là phải gắn api vào useEffect và cho thêm date vào depences. Mỗi lần thay đổi date và phòng sẽ hiển thị theo api trả về. Khi click vào phòng thì sẽ lấy được dữ liệu người dùng qua check
+
+ - Khi chọn phương thức thanh toán thì có thể hiển thị ra số tiền
+
+
+ 7. (Client) Tạo giao diện book một khách sạn
+ - Chỉnh lại date khi gửi về server

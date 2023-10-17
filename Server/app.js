@@ -39,7 +39,7 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-// app.use(bodyParser.urlencoded({ extended: false })); // Nhan tu form
+app.use(bodyParser.urlencoded({ extended: false })); // Nhan tu form
 app.use(bodyParser.json()); // Nhận file kiểu json
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")

@@ -1,0 +1,204 @@
+{
+    "comment_1": {
+        "statusCode": 200,
+        "message": "Nhận dữ liệu thành công",
+        "RecordInformationRoom": 5,
+        "ArrResults": {
+            "informationHotel": {
+                "_id": "6311a9c64a642f01423490bf",
+                "__v": 0,
+                "address": "Hang Dau, Hoan Kiem District, Hanoi, Vietnam",
+                "cheapestPrice": 600,
+                "city": "Ha Noi",
+                "desc": "Get your trip off to a great start with a stay at this property, which offers free Wi-Fi in all rooms. Strategically situated in Hoan Kiem District, allowing you access and proximity to local attractions and sights. Don't leave before paying a visit to the famous Old Quarter. Rated with 4 stars, this high-quality property provides guests with access to massage, restaurant and hot tub on-site.",
+                "distance": "200",
+                "featured": true,
+                "name": "La Sinfonia del Rey Hotel and Spa",
+                "photos": [
+                    "https://pix8.agoda.net/hotelImages/8315970/-1/95c472f9e927d2f62293cb721818e6ad.jpg?ca=15&ce=1&s=1024x",
+                    "https://pix8.agoda.net/hotelImages/8315970/-1/70c9f415d4bbc7d2d86b492d46e5aa68.jpg?ca=10&ce=1&s=1024x",
+                    "https://pix8.agoda.net/hotelImages/8315970/-1/202714c15017a85fdcc8ab6674605f94.jpg?ca=10&ce=1&s=1024x",
+                    "https://pix8.agoda.net/hotelImages/8315970/-1/f6c5faa6f6fa8696a113fdefc0d259f8.jpg?ca=10&ce=1&s=1024x",
+                    "https://pix8.agoda.net/hotelImages/8315970/-1/f20208fb8f2fadcbeb9c246761aa6aab.jpg?ca=15&ce=1&s=1024x"
+                ],
+                "rooms": [
+                    "6310dd998cfecfd90b30ca28",
+                    "6310e01a8cfecfd90b30ca30",
+                    "6311b2a24a642f01423490d6",
+                    "6311b3944a642f01423490df",
+                    "6311b47b4a642f01423490f4"
+                ],
+                "title": "La Sinfonia del Rey Hotel and Spa",
+                "type": "hotel",
+                "rating": 9.5
+            },
+            "informationRoom": [
+                {
+                    "idRooms": "6310dd998cfecfd90b30ca28",
+                    "numberRooms": [
+                        101,
+                        102
+                    ],
+                    "maxPeople": 3,
+                    "typeRoom": "2 Bed Room",
+                    "description": "King size bed",
+                    "price": 200
+                },
+                {
+                    "idRooms": "6310e01a8cfecfd90b30ca30",
+                    "numberRooms": [
+                        202
+                    ],
+                    "maxPeople": 2,
+                    "typeRoom": "1 Bed Room",
+                    "description": "1 Bathroom",
+                    "price": 150
+                },
+                {
+                    "idRooms": "6311b2a24a642f01423490d6",
+                    "numberRooms": [
+                        101,
+                        102
+                    ],
+                    "maxPeople": 2,
+                    "typeRoom": "Basement Double Room",
+                    "description": "Welcome drink, Coffee & tea, Express check-in, Free Premium Wifi, Free WiFi, Drinking water",
+                    "price": 600
+                },
+                {
+                    "idRooms": "6311b3944a642f01423490df",
+                    "numberRooms": [
+                        202,
+                        203,
+                        205
+                    ],
+                    "maxPeople": 2,
+                    "typeRoom": "Superior basement room",
+                    "description": "Free breakfast for 2",
+                    "price": 700
+                },
+                {
+                    "idRooms": "6311b47b4a642f01423490f4",
+                    "numberRooms": [
+                        303,
+                        403,
+                        404
+                    ],
+                    "maxPeople": 2,
+                    "typeRoom": "Deluxe Room",
+                    "description": "Welcome drink, Coffee & tea, Express check-in, Free Premium Wifi, Free WiFi, Drinking water",
+                    "price": 700
+                }
+            ]
+        }
+    },
+    "comment_2": {
+        "statusCode": 1,
+        "message": "Giao dịch thành công",
+        "RecordInformationRoom": 7,
+        "ArrResults": {
+            "informationHotel": {
+                "_id": "6311a9c64a642f01423490bf",
+                "__v": 0,
+                "address": "Hang Dau, Hoan Kiem District, Hanoi, Vietnam",
+                "cheapestPrice": 600,
+                "city": "Ha Noi",
+                "desc": "Get your trip off to a great start with a stay at this property, which offers free Wi-Fi in all rooms. Strategically situated in Hoan Kiem District, allowing you access and proximity to local attractions and sights. Don't leave before paying a visit to the famous Old Quarter. Rated with 4 stars, this high-quality property provides guests with access to massage, restaurant and hot tub on-site.",
+                "distance": "200",
+                "featured": true,
+                "name": "La Sinfonia del Rey Hotel and Spa",
+                "photos": [
+                    "https://pix8.agoda.net/hotelImages/8315970/-1/95c472f9e927d2f62293cb721818e6ad.jpg?ca=15&ce=1&s=1024x",
+                    "https://pix8.agoda.net/hotelImages/8315970/-1/70c9f415d4bbc7d2d86b492d46e5aa68.jpg?ca=10&ce=1&s=1024x",
+                    "https://pix8.agoda.net/hotelImages/8315970/-1/202714c15017a85fdcc8ab6674605f94.jpg?ca=10&ce=1&s=1024x",
+                    "https://pix8.agoda.net/hotelImages/8315970/-1/f6c5faa6f6fa8696a113fdefc0d259f8.jpg?ca=10&ce=1&s=1024x",
+                    "https://pix8.agoda.net/hotelImages/8315970/-1/f20208fb8f2fadcbeb9c246761aa6aab.jpg?ca=15&ce=1&s=1024x"
+                ],
+                "rooms": [
+                    "6310dd998cfecfd90b30ca28",
+                    "6310e01a8cfecfd90b30ca30",
+                    "6311b2a24a642f01423490d6",
+                    "6311b3944a642f01423490df",
+                    "6311b47b4a642f01423490f4"
+                ],
+                "title": "La Sinfonia del Rey Hotel and Spa",
+                "type": "hotel",
+                "rating": 9.5
+            },
+            "informationRoom": [
+                {
+                    "idRooms": "6310dd998cfecfd90b30ca28",
+                    "numberRooms": [],
+                    "maxPeople": 3,
+                    "typeRoom": "2 Bed Room",
+                    "description": "King size bed",
+                    "price": 200
+                },
+                {
+                    "idRooms": "6310dd998cfecfd90b30ca28",
+                    "numberRooms": [],
+                    "maxPeople": 3,
+                    "typeRoom": "2 Bed Room",
+                    "description": "King size bed",
+                    "price": 200
+                },
+                {
+                    "idRooms": "6310e01a8cfecfd90b30ca30",
+                    "numberRooms": [
+                        202
+                    ],
+                    "maxPeople": 2,
+                    "typeRoom": "1 Bed Room",
+                    "description": "1 Bathroom",
+                    "price": 150
+                },
+                {
+                    "idRooms": "6311b2a24a642f01423490d6",
+                    "numberRooms": [
+                        101,
+                        102
+                    ],
+                    "maxPeople": 2,
+                    "typeRoom": "Basement Double Room",
+                    "description": "Welcome drink, Coffee & tea, Express check-in, Free Premium Wifi, Free WiFi, Drinking water",
+                    "price": 600
+                },
+                {
+                    "idRooms": "6311b2a24a642f01423490d6",
+                    "numberRooms": [
+                        101,
+                        102
+                    ],
+                    "maxPeople": 2,
+                    "typeRoom": "Basement Double Room",
+                    "description": "Welcome drink, Coffee & tea, Express check-in, Free Premium Wifi, Free WiFi, Drinking water",
+                    "price": 600
+                },
+                {
+                    "idRooms": "6311b3944a642f01423490df",
+                    "numberRooms": [
+                        202,
+                        203,
+                        205
+                    ],
+                    "maxPeople": 2,
+                    "typeRoom": "Superior basement room",
+                    "description": "Free breakfast for 2",
+                    "price": 700
+                },
+                {
+                    "idRooms": "6311b47b4a642f01423490f4",
+                    "numberRooms": [
+                        303,
+                        403,
+                        404
+                    ],
+                    "maxPeople": 2,
+                    "typeRoom": "Deluxe Room",
+                    "description": "Welcome drink, Coffee & tea, Express check-in, Free Premium Wifi, Free WiFi, Drinking water",
+                    "price": 700
+                }
+            ]
+        }
+    }
+}

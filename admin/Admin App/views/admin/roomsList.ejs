@@ -12,13 +12,18 @@
       <article>
         <div class='headerHotel__list'>
             <h2 style="color: rgb(141, 141, 141)"><%= Heading %></h2>
-            <button>Add New</button>
+            <button id="btn" style="padding: 5px;" onclick="navigationFormNewHotel()">Add New</button>
         </div>
         <%-include('../includes/table.ejs') %>
       </article>
     </main>
 
 <%- include('../includes/foot.ejs') %>
+<script>
+  const navigationFormNewHotel = () => {
+location.assign('/roomlist/newroom');
+}
+</script>
 
    <%#  include('../includes/table.ejs'), {titleHead: hotel}, , {titleHead: table} %> 
       
