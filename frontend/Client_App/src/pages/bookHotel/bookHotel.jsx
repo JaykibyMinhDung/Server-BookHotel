@@ -11,8 +11,8 @@ import "./book.css";
 import axios from "axios";
 import { toast, Toaster } from "react-hot-toast";
 
-const BookHotel = ({ detailRoom, hotel, dateProps }) => {
-  // const totalRooms = [];
+const BookHotel = ({ detailRoom, hotel, dateProps, newDate }) => {
+  const dataUserLocal = JSON.parse(localStorage.getItem('User'));
   let flag = false;
   const User = JSON.parse(localStorage.getItem("User"));
   const { register, handleSubmit } = useForm({
@@ -23,12 +23,11 @@ const BookHotel = ({ detailRoom, hotel, dateProps }) => {
     },
   });
   const [valueRoom, setvalueRoom] = useState([]);
-  // console.log("Thời gian" ,dateProps)
   const [totalBill, setTotalBill] = useState(0);
   const [chooseRoom, setChooseRoom] = useState({});
   const [date, setDate] = useState([
     {
-      startDate: dateProps[0].startDate,
+      startDate: dateProps[0].startDate, // .toLocaleDateString("es-CL")
       endDate: dateProps[0].endDate,
       key: "selection",
     },
@@ -47,7 +46,6 @@ const BookHotel = ({ detailRoom, hotel, dateProps }) => {
   };
 
   const caculatorBill = (room) => {
-    console.log("Tổng số phòng", room); // Tổng số phòng
     for (let i = 0; i < room.length; i++) {
       const element = room[i];
       return flag
@@ -60,53 +58,51 @@ const BookHotel = ({ detailRoom, hotel, dateProps }) => {
     }
   };
 
-  function handleChangeRooms(rooms) {
+  console.log(valueRoom);
+  const handleChangeRooms = (rooms) => {
     if (rangeDateBooking() < 1) {
       return toast.error("Bạn cần đăng kí lớn hơn 2 ngày trước khi đặt phòng.");
     }
     flag = rooms?.isCheck;
-    console.log("Hàm valid các giá trị cùng phòng", rooms);
-    caculatorBill(valueRoom); // rooms.informationRoom
+    caculatorBill(valueRoom);
     if (rooms.isCheck && rangeDateBooking() > 1) {
-      console.log(rooms.isCheck && rangeDateBooking() > 1);
-      setvalueRoom([...valueRoom, rooms.informationRoom]); // rooms.informationRoom
+      setvalueRoom([...valueRoom, rooms.informationRoom]);
       return caculatorBill([...valueRoom, rooms.informationRoom]);
-    } else if (!rooms.isCheck && rangeDateBooking() > 1 && valueRoom.length > 0) {
-      // const removeChoose = [...valueRoom, rooms.informationRoom].find(room => room?.id !== rooms?.informationRoom.id && room?.numberRoom === rooms?.informationRoom.numberRoom)
-      console.log(valueRoom)
-      return setvalueRoom(oldRoom => {
-        const indexRoom = oldRoom.findIndex(room => room?.id === rooms?.informationRoom.id && room?.numberRoom === rooms?.informationRoom.numberRoom)
-        console.log(indexRoom)
-        return oldRoom.splice(indexRoom, 1)
-        })
+    } 
+    if (
+      !rooms.isCheck &&
+      rangeDateBooking() > 1
+    ) {
+      const indexRoom = valueRoom.findIndex(
+        (room) =>
+          room?.id === rooms?.informationRoom.id &&
+          room?.numberRoom === rooms?.informationRoom.numberRoom
+      )
+      const test = valueRoom.splice(indexRoom, 1)
     }
-  }
+  };
 
   // Lỗi handle là do trong hàm này đang xử lý thêm giá cả
   const onSubmit = (data) => {
-    // axios.post("http://localhost:5000/detailhotel/reserve",)
     if (rangeDateBooking() < 1) {
       return toast.error("Giao dịch không thành công do chưa đặt ngày");
     }
-    console.log({
+    data.id = dataUserLocal.length > 0 ? dataUserLocal[0].userId : '';
+    axios.post("http://localhost:5000/detailhotel/reserve", {
       user: data,
       date: {
-        startDate: date[0].startDate.toLocaleDateString("es-CL"),
-        endDate: date[0].endDate.toLocaleDateString("es-CL"),
+        startDate: date[0].startDate, // .toLocaleDateString("es-US")
+        endDate: date[0].endDate, // .toLocaleDateString("es-US")
         key: "selection",
       },
       detailHotel: hotel._id,
-      detailRoom: [...valueRoom],
-    });
+      detailRoom: valueRoom,
+      totalPrice: totalBill
+    }).then((res) => toast(res.message))    
   };
 
-  // useEffect(() => {
-  //   console.log("Tổng số tiền: ", totalBill) // Tổng số tiền
-  //   caculatorBill()
-  // }, [test, totalBill, totalRooms, end, start, chooseRoom])
-
   useEffect(() => {
-    handleChangeRooms(chooseRoom, valueRoom);
+    handleChangeRooms(chooseRoom);
   }, [chooseRoom]);
 
   if (!detailRoom) {
@@ -123,7 +119,7 @@ const BookHotel = ({ detailRoom, hotel, dateProps }) => {
               <h3>Dates</h3>
               <DateRange
                 editableDateInputs={true}
-                onChange={(item) => setDate([item.selection])}
+                onChange={(item) => {setDate([item.selection]); newDate([item.selection])}}
                 moveRangeOnFirstSelection={false}
                 ranges={date}
                 className="datebook"
@@ -170,8 +166,8 @@ const BookHotel = ({ detailRoom, hotel, dateProps }) => {
           <h3>Select Rooms</h3>
           {detailRoom.length === 0 && "Hiện tại khách sạn đã hết phòng!"}
           <div className="form__chooseroom">
-            {detailRoom.map((e) => (
-              <div key={e.idRooms}>
+            {detailRoom.map((e, index) => (
+              <div key={index}>
                 <div className="form_chooseroom--option">
                   <div>
                     <h4>{e.typeRoom}</h4>
@@ -184,8 +180,8 @@ const BookHotel = ({ detailRoom, hotel, dateProps }) => {
                     </p>
                   </div>
                   <div className="form_chooseroom--numberRooms">
-                    {e.numberRooms.map((number) => (
-                      <div>
+                    {e.numberRooms.map((number, index) => (
+                      <div key={index}>
                         <label htmlFor={number}>{number}</label>
                         <input
                           // {...register("NumberRooms")}

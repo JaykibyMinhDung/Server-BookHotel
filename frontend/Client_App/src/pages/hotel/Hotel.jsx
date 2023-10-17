@@ -22,24 +22,31 @@ const Hotel = () => {
   const [loading, setLoading] = useState(true);
   const [formReverse, setFormReverse] = useState(false)
   const location = useLocation();
+  const start_date = new Date(location.state.date[0].startDate).toLocaleDateString('en-US');
+  const end_date = new Date(location.state.date[0].endDate).toLocaleDateString('en-US');
   // console.log(location.state);
   const [open, setOpen] = useState(false);
+  const [changeDate, setChangeDate] = useState([
+    {
+      startDate: location.state.date[0].startDate, // .toLocaleDateString("es-CL")
+      endDate: location.state.date[0].endDate,
+      key: "selection",
+    },
+  ]);
   // const navigateBook = useNavigate();
+  const convertDateServer = (date) => {
+    const dateFormatted = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    }).format(date);
+    return dateFormatted
+  }
   const getDetailHotel = async () => {
-    const start_date = new Date(location.state.date[0].startDate).toLocaleDateString('en-US');
-    const end_date = new Date(location.state.date[0].endDate).toLocaleDateString('en-US');
     setLoading(true);
-    const res = await axios.get(`http://localhost:5000/detailhotel?id=${location.state.id}&start_date=${start_date}&end_date=${end_date}`
-    // , {
-    //   data: {
-    //     id: location.state.id,
-    //     start_date: location.state.date,
-    //     end_date: location.state.end_date 
-    //   },
-      // headers: {
-      //   Authorization: "Bearer " + token,
-      // }
-    // }
+    const newStartDate = convertDateServer(changeDate[0]?.startDate);
+    const newEndDate = convertDateServer(changeDate[0]?.endDate);
+    const res = await axios.get(`http://localhost:5000/detailhotel?id=${location.state.id}&start_date=${start_date !== newStartDate ? newStartDate : start_date}&end_date=${end_date !== newEndDate ? newEndDate : end_date}`
     );
     const changeData = await res.data;
     setDataHotels(changeData.ArrResults);
@@ -76,7 +83,8 @@ const Hotel = () => {
 
   useEffect(() => {
     getDetailHotel();
-  }, [location.state.id]);
+    console.log(changeDate)
+  }, [location.state.id, changeDate]);
 
   // if (loading) {
   //   return
@@ -186,6 +194,7 @@ const Hotel = () => {
           <BookHotel 
 					detailRoom={ dataHotels.informationRoom } 
 					hotel={ dataHotels.informationHotel } 
+          newDate={setChangeDate}
 					dateProps={location.state.date} />
         }
         <MailList />
