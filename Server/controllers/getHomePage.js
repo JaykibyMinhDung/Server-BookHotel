@@ -280,6 +280,21 @@ exports.detailHotel = (req, res, next) => {
         // }
         {
           $or: [
+            // {
+            //   $and: [
+            //     {
+            //       dateStart: {
+            //         $gt: new Date(start_date),
+            //       },
+            //     },
+            //     {
+            //       dateEnd: {
+            //         $gt: new Date(start_date),
+            //         $lt: new Date(end_date),
+            //       },
+            //     },
+            //   ],
+            // },
             {
               $and: [
                 {
@@ -305,6 +320,21 @@ exports.detailHotel = (req, res, next) => {
                 {
                   dateEnd: {
                     $gt: new Date(end_date),
+                  },
+                },
+              ],
+            },
+            {
+              $and: [
+                {
+                  dateStart: {
+                    $gt: new Date(start_date),
+                    $lt: new Date(end_date),
+                  },
+                },
+                {
+                  dateEnd: {
+                    $lt: new Date(end_date),
                   },
                 },
               ],
@@ -335,26 +365,13 @@ exports.detailHotel = (req, res, next) => {
             arrIdHasBookRoom.push(inforRoom);
           }
         }
-        // console.log(arrIdHasBookRoom);
         Rooms.find()
           .then((room) => {
-            // function deleteRoomHasBookHandle() {
-            //   const indexHasBooked = arrIdHasBookRoom.findIndex(
-            //     (e) => e.id === detailRoom.id
-            //   );
-            //   arrIdHasBookRoom
-            //         .sort((a, b) => a.id - b.id)
-            //         .splice(indexHasBooked, 1);
-            //       detailRoom.roomNumbers.splice(indexHasBooked, 1);
-            //       const existRoom = ArrRoom.find(
-            //         (exist) => exist.idRooms === e.id
-            //       );
-            // }
             function updatedRoomHandle(detailRoom) {
               const hasExist = ArrRoom.findIndex(
                 (e) => e.idRooms === detailRoom.id
               );
-              console.log("Index đã tồn tại", ArrRoom);
+              // console.log("Index đã tồn tại", ArrRoom);
               if (hasExist === -1) {
                 return ArrRoom.push({
                   idRooms: detailRoom.id,
@@ -366,49 +383,52 @@ exports.detailHotel = (req, res, next) => {
                 });
               }
             }
-            function deleteRoomNumbersHotelDetail(
-              detailRoom,
-              roomOther,
-              callback
-            ) {
-              const indexHasBooked = arrIdHasBookRoom.findIndex(
-                (e) => e.id === detailRoom.id
-              );
+            function deleteRoomNumbersHotelDetail(detailRoom, roomOther) {
+              // const indexHasBooked = arrIdHasBookRoom.findIndex(
+              //   (e) => e.id === detailRoom.id
+              // );
+              // arrIdHasBookRoom
+              //   .sort((a, b) => a.id - b.id)
+              //   .splice(indexHasBooked, 1);
               const testIndex = detailRoom.roomNumbers.findIndex(
                 (e) => e === roomOther.numberRoom
               );
-              arrIdHasBookRoom
-                .sort((a, b) => a.id - b.id)
-                .splice(indexHasBooked, 1);
-              detailRoom.roomNumbers.splice(testIndex, 1);
-              // detailRoom.roomNumbers.splice(indexHasBooked, 1);
-              // console.log(
-              //   "Index ở trong number để nó xóa đúng",
-              //   testIndex,
-              //   roomOther.numberRoom,
-              //   detailRoom.roomNumbers
-              // );
+              if (roomOther.id === detailRoom.id) {
+                detailRoom.roomNumbers.splice(testIndex, 1);
+                // detailRoom.roomNumbers.splice(indexHasBooked, 1);
+                console.log(
+                  "Index ở trong number để nó xóa đúng",
+                  testIndex,
+                  roomOther.numberRoom,
+                  detailRoom.roomNumbers
+                );
+              }
             }
             for (const detailRoom of room) {
-              arrIdHasBookRoom.map((e, index) => {
+              console.log(arrIdHasBookRoom);
+              arrIdHasBookRoom.map((e) => {
                 const roomOther = hotel.rooms.findIndex((r) => r === e.id);
+                deleteRoomNumbersHotelDetail(detailRoom, e); // roomOther
                 if (e.id === detailRoom.id) {
-                  deleteRoomNumbersHotelDetail(detailRoom, e); // roomOther
-                  // console.log(e);
-                  // updatedRoomHandle(detailRoom);
+                  // console.log("check", e);
                   if (roomOther !== -1) {
                     updatedRoomHandle(detailRoom);
                   }
                 }
               });
               // Tất cả các phòng của khách sạn này
+              // console.log(arrIdHasBookRoom);
+              const checkunique = () => {
+                for (const elment of arrIdHasBookRoom) {
+                  return ArrRoom.findIndex((e) => e.idRooms === elment.id);
+                }
+              };
               hotel.rooms.map((e) => {
                 if (e === detailRoom.id) {
                   // Không có phòng nào đặt sẽ trả về tất cả các phòng của khách sạn
                   const existRoom = arrIdHasBookRoom.find(
                     (exist) => exist.id === detailRoom.id
                   );
-                  cốnle.log(arrIdHasBookRoom.id);
                   if (!existRoom) {
                     return ArrRoom.push({
                       idRooms: detailRoom.id,
@@ -424,6 +444,13 @@ exports.detailHotel = (req, res, next) => {
             }
           })
           .then(() => {
+            function onlyUnique(value, index, array) {
+              if (array.indexOf(value) !== index) {
+                ArrRoom.splice(index, 1);
+              }
+              return array.indexOf(value) === index;
+            }
+            ArrRoom.map((e) => e.idRooms).filter(onlyUnique);
             const ArrResults = {
               informationHotel: { ...hotel._doc },
               informationRoom: ArrRoom,
