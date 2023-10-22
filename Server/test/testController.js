@@ -22,48 +22,45 @@ exports.detailHotel = (req, res, next) => {
         Transactions.find({
           $or: [
             {
-              // Ngày kết thúc trong khoảng đang đặt
               $and: [
                 {
                   dateStart: {
-                    $lt: new Date(start_date),
+                    $lt: new Date("2023-10-16"),
                   },
                 },
                 {
                   dateEnd: {
-                    $gt: new Date(start_date), // Lớn hơn thời gian bắt đầu
-                    $lt: new Date(end_date), // Bé hơn thời gian kết thúc
+                    $gt: new Date("2023-10-16"),
+                    $lt: new Date("2023-10-19"),
                   },
                 },
               ],
             },
             {
-              // Trong khoảng đang đặt
               $and: [
                 {
                   dateStart: {
-                    $lt: new Date(start_date), // Ít hơn
+                    $lt: new Date("2023-10-16"),
                   },
                 },
                 {
                   dateEnd: {
-                    $gt: new Date(end_date), // Lớn hơn
+                    $gt: new Date("2023-10-19"),
                   },
                 },
               ],
             },
             {
-              // Ngày bắt đầu trong khoảng đang đặt
               $and: [
                 {
                   dateStart: {
-                    $gt: new Date(start_date), // Lớn hơn thời gian bắt đầu
-                    $lt: new Date(end_date), // nhỏ hơn thời gian kết thúc
+                    $gt: new Date("2023-10-16"),
+                    $lt: new Date("2023-10-19"),
                   },
                 },
                 {
                   dateEnd: {
-                    $gt: new Date(end_date), // lớn hơn ngày kết thúc
+                    $gt: new Date("2023-10-19"),
                   },
                 },
               ],

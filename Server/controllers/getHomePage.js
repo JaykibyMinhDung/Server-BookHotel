@@ -335,34 +335,69 @@ exports.detailHotel = (req, res, next) => {
             arrIdHasBookRoom.push(inforRoom);
           }
         }
-        // console.log(hasTransaction);
+        // console.log(arrIdHasBookRoom);
         Rooms.find()
           .then((room) => {
+            // function deleteRoomHasBookHandle() {
+            //   const indexHasBooked = arrIdHasBookRoom.findIndex(
+            //     (e) => e.id === detailRoom.id
+            //   );
+            //   arrIdHasBookRoom
+            //         .sort((a, b) => a.id - b.id)
+            //         .splice(indexHasBooked, 1);
+            //       detailRoom.roomNumbers.splice(indexHasBooked, 1);
+            //       const existRoom = ArrRoom.find(
+            //         (exist) => exist.idRooms === e.id
+            //       );
+            // }
+            function updatedRoomHandle(detailRoom) {
+              const hasExist = ArrRoom.findIndex(
+                (e) => e.idRooms === detailRoom.id
+              );
+              console.log("Index đã tồn tại", ArrRoom);
+              if (hasExist === -1) {
+                return ArrRoom.push({
+                  idRooms: detailRoom.id,
+                  numberRooms: detailRoom.roomNumbers,
+                  maxPeople: detailRoom.maxPeople,
+                  typeRoom: detailRoom.title,
+                  description: detailRoom.desc,
+                  price: detailRoom.price,
+                });
+              }
+            }
+            function deleteRoomNumbersHotelDetail(
+              detailRoom,
+              roomOther,
+              callback
+            ) {
+              const indexHasBooked = arrIdHasBookRoom.findIndex(
+                (e) => e.id === detailRoom.id
+              );
+              const testIndex = detailRoom.roomNumbers.findIndex(
+                (e) => e === roomOther.numberRoom
+              );
+              arrIdHasBookRoom
+                .sort((a, b) => a.id - b.id)
+                .splice(indexHasBooked, 1);
+              detailRoom.roomNumbers.splice(testIndex, 1);
+              // detailRoom.roomNumbers.splice(indexHasBooked, 1);
+              // console.log(
+              //   "Index ở trong number để nó xóa đúng",
+              //   testIndex,
+              //   roomOther.numberRoom,
+              //   detailRoom.roomNumbers
+              // );
+            }
             for (const detailRoom of room) {
-              // Mảng chứa các phòng đã được đặt của khách sạn này
-              arrIdHasBookRoom.map((e) => {
-                // Có phòng đã book
+              arrIdHasBookRoom.map((e, index) => {
+                const roomOther = hotel.rooms.findIndex((r) => r === e.id);
                 if (e.id === detailRoom.id) {
-                  const indexHasBooked = arrIdHasBookRoom.findIndex(
-                    (e) => e.id === detailRoom.id
-                  );
-                  // const filterRoomHasBooked = detailRoom.roomNumbers.filter(
-                  //   (number) => number !== e.numberRoom
-                  // );
-                  detailRoom.roomNumbers.splice(indexHasBooked, 1);
-                  const existRoom = arrIdHasBookRoom.filter(
-                    (exist) => exist.id === detailRoom.id
-                  );
-                  console.log(existRoom);
-                  if (existRoom.length < 2) {
-                    return ArrRoom.push({
-                      idRooms: detailRoom.id,
-                      numberRooms: detailRoom.roomNumbers,
-                      maxPeople: detailRoom.maxPeople,
-                      typeRoom: detailRoom.title,
-                      description: detailRoom.desc,
-                      price: detailRoom.price,
-                    });
+                  deleteRoomNumbersHotelDetail(detailRoom, e); // roomOther
+                  // console.log(e);
+                  // updatedRoomHandle(detailRoom);
+                  if (roomOther !== -1) {
+                    updatedRoomHandle(detailRoom);
                   }
                 }
               });
@@ -373,6 +408,7 @@ exports.detailHotel = (req, res, next) => {
                   const existRoom = arrIdHasBookRoom.find(
                     (exist) => exist.id === detailRoom.id
                   );
+                  cốnle.log(arrIdHasBookRoom.id);
                   if (!existRoom) {
                     return ArrRoom.push({
                       idRooms: detailRoom.id,
