@@ -19,6 +19,14 @@ const roomsSchema = new Schema({
     type: String,
     require: true,
   },
+  createAt: {
+    type: Date,
+    require: true,
+  },
+  updatedAt: {
+    type: Date,
+    require: true,
+  },
   roomNumbers: {
     type: Array,
     require: true,

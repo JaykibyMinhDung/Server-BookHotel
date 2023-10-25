@@ -37,7 +37,7 @@
           <div class="box__inforBroad--Blance">
             <div>
               <h4>BALANCE</h4>
-              <p>$<%= products.reduce((pre, aft)=> (pre + aft.price)/products.length, 0) %></p>
+              <p>$<%= products.reduce((pre, aft)=> (pre + aft.price)/products.length, 0).toFixed(2) %></p>
             </div>
             <i class="fas fa-wallet   "></i>
           </div>

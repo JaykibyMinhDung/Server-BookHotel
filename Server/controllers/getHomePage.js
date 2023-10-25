@@ -396,33 +396,25 @@ exports.detailHotel = (req, res, next) => {
               if (roomOther.id === detailRoom.id) {
                 detailRoom.roomNumbers.splice(testIndex, 1);
                 // detailRoom.roomNumbers.splice(indexHasBooked, 1);
-                console.log(
-                  "Index ở trong number để nó xóa đúng",
-                  testIndex,
-                  roomOther.numberRoom,
-                  detailRoom.roomNumbers
-                );
+                // console.log(
+                //   "Index ở trong number để nó xóa đúng",
+                //   testIndex,
+                //   roomOther.numberRoom,
+                //   detailRoom.roomNumbers
+                // );
               }
             }
             for (const detailRoom of room) {
-              console.log(arrIdHasBookRoom);
               arrIdHasBookRoom.map((e) => {
                 const roomOther = hotel.rooms.findIndex((r) => r === e.id);
                 deleteRoomNumbersHotelDetail(detailRoom, e); // roomOther
                 if (e.id === detailRoom.id) {
-                  // console.log("check", e);
                   if (roomOther !== -1) {
                     updatedRoomHandle(detailRoom);
                   }
                 }
               });
               // Tất cả các phòng của khách sạn này
-              // console.log(arrIdHasBookRoom);
-              const checkunique = () => {
-                for (const elment of arrIdHasBookRoom) {
-                  return ArrRoom.findIndex((e) => e.idRooms === elment.id);
-                }
-              };
               hotel.rooms.map((e) => {
                 if (e === detailRoom.id) {
                   // Không có phòng nào đặt sẽ trả về tất cả các phòng của khách sạn
@@ -456,14 +448,6 @@ exports.detailHotel = (req, res, next) => {
               informationRoom: ArrRoom,
             };
             return res.json({
-              // data: {
-              //   Record_informationRoom: ArrRoom.length,
-              //   ArrResults: ArrResults,
-              // },
-              // meta: {
-              //   message: "Giao dịch thành công",
-              //   statusCode: 1,
-              // },
               statusCode: 1,
               message: "Giao dịch thành công",
               RecordInformationRoom: ArrRoom.length,

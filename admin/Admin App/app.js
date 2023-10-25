@@ -5,6 +5,7 @@ const app = express();
 
 const bodyParse = require("body-parser");
 const flash = require("connect-flash");
+const multer = require("multer");
 
 const mongoose = require("mongoose");
 const session = require("express-session");
@@ -36,13 +37,40 @@ app.use(
   })
 );
 
-app.use(flash())
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, __dirname + "/public");
+  },
+  // destination: (req, file, cb) => {
+  //   cb(null, path.join(__dirname, "/images/"));
+  // },
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      new Date().setTime(new Date().getTime()) + "-" + file.originalname
+    );
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/jpeg"
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+app.use(flash());
 
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.session.isLoggedIn; // error
   // res.locals.csrfToken = req.csrfToken();
   res.locals.adminHotel = req.session.isAdmin;
-  res.locals.message= req.flash();
+  res.locals.message = req.flash();
   next();
 });
 
@@ -52,6 +80,14 @@ app.set("views", "views");
 app.use(express.static(path.join(__dirname, "public"))); // Lây đường dẫn tương đối từ các tệp trong file public, nghĩa là href="/css/style.css"
 app.use(bodyParse.urlencoded({ extended: false })); // Lấy các dữ liệu từ body và header
 app.use(bodyParse.json());
+app.use(
+  multer({
+    storage: fileStorage,
+    limits: { fileSize: 1 * 1024 * 1024 },
+    fileFilter: fileFilter,
+  }).any()
+  // multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
+);
 
 app.use((req, res, next) => {
   // req là gì

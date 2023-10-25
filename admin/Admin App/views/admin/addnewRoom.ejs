@@ -1,59 +1,114 @@
 <%- include('../includes/head.ejs') %>
 
-    <link rel="stylesheet" href="/css/dashbroad.css" />
-    <link rel="stylesheet" href="/css/sidebar.css" />
-    <link rel="stylesheet" href="/css/addnew.css" />
+  <link rel="stylesheet" href="/css/dashbroad.css" />
+  <link rel="stylesheet" href="/css/sidebar.css" />
+  <link rel="stylesheet" href="/css/addnew.css" />
   </head>
+
   <body>
     <%- include('../includes/navigation.ejs') %>
-    <main class="main__dashbroad">
-      <header class="heading">
-        <h2 style="color: rgb(141, 141, 141)"><%= Heading %></h2>
-      </header>
-      <article class="form__input">
-        <form action="/room-list/new-room" method="post">
-          <div class="form__input--flex">
-            <div>
-              <label for="Name">Title</label> <br>
-              <input type="text" placeholder="2 bed rooms" id="Name" value="" name="title">
-              <label for="Price">Price</label> <br>
-              <input type="text" placeholder="100" id="Price" value="" name="price">
-            </div>
-            <div>
-              <label for="Description">Description</label> <br>
-              <input type="text" placeholder="King size bed, 1 bathroom" id="Description" value="" name="description">
-              <label for="Type">Max People</label> <br>
-              <input type="text" placeholder="2" id="Type" value="" name="numberPeople">
-            </div>
+      <main class="main__dashbroad">
+        <header class="heading">
+          <h2 style="color: rgb(141, 141, 141)">
+            <%= Heading %>
+          </h2>
+        </header>
+        <% if(erorrsMessage.length || erorrsMessage) { %>
+          <div>
+            <h2 style="color: rgb(255, 0, 0); text-align: center;">
+              <%= erorrsMessage %>
+            </h2>
           </div>
-          <div class="foot__newrooms">
-            <div>
-              <label for="Rooms">Rooms</label>
-              <textarea 
-              style="width:90%" 
-              name="roomNumbers" 
-              id="Rooms" 
-              cols="30" 
-              rows="10" 
-              placeholder="give comma between room numbers" >
+          <%} %>
+            <article class="form__input">
+              <% if (updated) { %>
+                <form action="/roomlist/updated/<%= updated._id %>" method="post">
+                  <div class="form__input--flex">
+                    <div>
+                      <label for="Name">Title</label> <br>
+                      <input type="text" placeholder="2 bed rooms" id="Name" value="<%= updated.title %>" name="title">
+                      <label for="Price">Price</label> <br>
+                      <input type="text" placeholder="100" id="Price" value="<%= updated.price %>" name="price">
+                    </div>
+                    <div>
+                      <label for="Description">Description</label> <br>
+                      <input type="text" placeholder="King size bed, 1 bathroom" id="Description"
+                        value="<%= updated.desc %>" name="description">
+                      <label for="Type">Max People</label> <br>
+                      <input type="text" placeholder="2" id="Type" value="<%= updated.maxPeople %>" name="numberPeople">
+                    </div>
+                  </div>
+                  <div class="foot__newrooms">
+                    <div>
+                      <label for="Rooms">Rooms</label>
+                      <textarea style="width:90%" name="roomNumbers" id="Rooms" cols="30" rows="10"
+                        placeholder="give comma between room numbers">
+              <%= updated.roomNumbers %>
               </textarea>
-            </div>
-            <div class="foot__newrooms--align">
-              <label for="hotel">Choose a hotel</label>
-              <br>
-              <select id="">
-                <% for(let i=0; i < name.length; i++ ) { %>
-                <option value="<%= name[i] %>"><%= name[i] %></option>
-                <% } %>
-              </select>
-              <br>
-            </div>
-            <div class="foot__newrooms--align">
-              <button type="submit">Send</button>
-            </div>
-          </div>
-        </form>
-      </article>
-    </main>
+                    </div>
+                    <div class="foot__newrooms--align">
+                      <label for="hotel">Choose a hotel</label>
+                      <br>
+                      <select name="hotel" id="hotel">
+                        <option value="<%= nameHotelUpdated %>">
+                          <%= nameHotelUpdated %>
+                        </option>
+                        <% for(let i=0; i < name.length; i++ ) { %>
+                          <option value="<%= name[i] %>">
+                            <%= name[i] %>
+                          </option>
+                          <% } %>
+                      </select>
+                      <br>
+                    </div>
+                    <div class="foot__newrooms--align">
+                      <button type="submit">Send</button>
+                    </div>
+                  </div>
+                </form>
+                <% } else { %>
+                  <form action="/room-list/new-room" method="post">
+                    <div class="form__input--flex">
+                      <div>
+                        <label for="Name">Title</label> <br>
+                        <input type="text" placeholder="2 bed rooms" id="Name" name="title">
+                        <label for="Price">Price</label> <br>
+                        <input type="text" placeholder="100" id="Price" name="price">
+                      </div>
+                      <div>
+                        <label for="Description">Description</label> <br>
+                        <input type="text" placeholder="King size bed, 1 bathroom" id="Description" name="description">
+                        <label for="Type">Max People</label> <br>
+                        <input type="text" placeholder="2" id="Type" name="numberPeople">
+                      </div>
+                    </div>
+                    <div class="foot__newrooms">
+                      <div>
+                        <label for="Rooms">Rooms</label>
+                        <textarea style="width:90%" name="roomNumbers" id="Rooms" cols="30" rows="10"
+                          placeholder="give comma between room numbers">
+              </textarea>
+                      </div>
+                      <div class="foot__newrooms--align">
+                        <label for="hotel">Choose a hotel</label>
+                        <br>
+                        <select name="hotel" id="hotel">
+                          <option selected>Vui lòng chọn khách sạn</option>
+                          <% for(let i=0; i < name.length; i++ ) { %>
+                            <option value="<%= name[i] %>">
+                              <%= name[i] %>
+                            </option>
+                            <% } %>
+                        </select>
+                        <br>
+                      </div>
+                      <div class="foot__newrooms--align">
+                        <button type="submit">Send</button>
+                      </div>
+                    </div>
+                  </form>
+                  <% } %>
+            </article>
+      </main>
 
-<%- include('../includes/foot.ejs') %>
+      <%- include('../includes/foot.ejs') %>

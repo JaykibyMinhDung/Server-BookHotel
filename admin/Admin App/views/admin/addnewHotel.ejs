@@ -1,64 +1,123 @@
 <%- include('../includes/head.ejs') %>
 
-    <link rel="stylesheet" href="/css/dashbroad.css" />
-    <link rel="stylesheet" href="/css/sidebar.css" />
-    <link rel="stylesheet" href="/css/table.css" />
-    <link rel="stylesheet" href="/css/addnew.css" />
+  <link rel="stylesheet" href="/css/dashbroad.css" />
+  <link rel="stylesheet" href="/css/sidebar.css" />
+  <link rel="stylesheet" href="/css/table.css" />
+  <link rel="stylesheet" href="/css/addnew.css" />
   </head>
+
   <body>
     <%- include('../includes/navigation.ejs') %>
-    <main class="main__dashbroad">
-      <header class="heading">
-        <h2 style="color: rgb(141, 141, 141)"><%= Heading %></h2>
-      </header>
-      <% if(erorrsMessage.length || erorrsMessage) { %>
-        <div>
-          <h2 style="color: rgb(255, 0, 0); text-align: center;"><%= erorrsMessage %></h2>
-        </div>
-      <%} %>
-      <article class="form__input">
-        <form action="" method="post">
-          <div class="form__input--flex">
-            <div>
-              <label for="Name">Name</label> <br>
-              <input type="text" placeholder="My Hotel" id="Name" value="" name="Name">
-              <label for="City">City</label> <br>
-              <input type="text" placeholder="New York" id="City" value="" name="City">
-              <label for="far">Distance from city center</label> <br>
-              <input type="text" placeholder="500" id="far" value="" name="far">
-              <label for="Description">Description</label> <br>
-              <input type="text" placeholder="Description" id="Description" value="" name="Description">
-              <label for="Images">Images</label> <br>
-              <input type="file" placeholder="Images" id="Images" value="" name="Images">
-            </div>
-            <div>
-              <label for="Type">Type</label> <br>
-              <input type="text" placeholder="hotel" id="Type" value="" name="Type">
-              <label for="Address">Address</label> <br>
-              <input type="text" placeholder="elton st, 216" id="Address" value="" name="Address">
-              <label for="Title">Title</label> <br>
-              <input type="text" placeholder="The best hotel" id="Title" value="" name="Title">
-              <label for="Price">Price</label> <br>
-              <input type="text" placeholder="100" id="Price" value="" name="Price">
-              <label for="Feature">Feature</label> <br>
-              <select name="Feature" id="Feature">
-                <option value="yes">yes</option>
-                <option value="no">no</option>
-              </select>
-            </div>
+      <main class="main__dashbroad">
+        <header class="heading">
+          <h2 style="color: rgb(141, 141, 141)">
+            <%= Heading %>
+          </h2>
+        </header>
+        <% if(erorrsMessage.length || erorrsMessage) { %>
+          <div>
+            <h2 style="color: rgb(255, 0, 0); text-align: center;">
+              <%= erorrsMessage %>
+            </h2>
           </div>
-          <label for="Rooms">Rooms</label>
-          <textarea name="Rooms" id="Rooms" cols="30" rows="5" >
-            2 Bed Rooms
-            1 Bed Rooms
-            Basement Double Room
-            Superior basement room
-            Deliver rooms
-          </textarea>
-          <br>
-          <button type="submit">Send</button>
-        </form>
-      </article>
-    </main>
+          <%} %>
+            <article class="form__input">
+              <% if (updated) { %>
+                <form action="/hotellist/updated/<%= updated._id %>" method="post" enctype="multipart/form-data">
+                  <div class="form__input--flex">
+                    <div>
+                      <label for="Name">Name</label> <br>
+                      <input type="text" value="<%= updated.name %>" placeholder="My Hotel" id="Name" name="Name">
+                      <label for="City">City</label> <br>
+                      <input type="text" value="<%= updated.city %>" placeholder="New York" id="City" name="City">
+                      <label for="far">Distance from city center</label> <br>
+                      <input type="text" value="<%= updated.distance %>" placeholder="500" id="far" name="far">
+                      <label for="Description">Description</label> <br>
+                      <input type="text" value="<%= updated.desc %>" placeholder="Description" id="Description"
+                        name="Description">
+                      <label for="Images">Images</label> <br>
+                      <input type="file" value="<%= updated.photos %>" placeholder="Images" id="Images" name="Images" multiple>
+                    </div>
+                    <div>
+                      <label for="Type">Type</label> <br>
+                      <input type="text" value="<%= updated.type %>" placeholder="hotel" id="Type" name="Type">
+                      <label for="Address">Address</label> <br>
+                      <input type="text" value="<%= updated.address %>" placeholder="elton st, 216" id="Address"
+                        name="Address">
+                      <label for="Title">Title</label> <br>
+                      <input type="text" value="<%= updated.title %>" placeholder="The best hotel" id="Title"
+                        name="Title">
+                      <label for="Price">Price</label> <br>
+                      <input type="text" value="<%= updated.cheapestPrice %>" placeholder="100" id="Price" name="Price">
+                      <label for="Feature">Feature</label> <br>
+                      <select name="Feature" id="Feature">
+                        <option value="yes">yes</option>
+                        <option value="no">no</option>
+                      </select>
+                    </div>
+                  </div>
+                  <label for="Rooms">Rooms</label>
+                  <textarea name="Rooms" id="Rooms" cols="30" rows="5">
+              <%= updated.rooms %>
+            </textarea>
+                  <br>
+                  <button type="submit">Send</button>
+                  <%# <input type="submit" value="Send"> có dòng enctype="multipart/form-data" này để tạo dữ liệu binary cho file ảnh %>
+                </form>
+                <% } else { %>
+                  <form action="/hotellist/newhotel" method="post" enctype="multipart/form-data">
+                    <div class="form__input--flex">
+                      <div>
+                        <label for="Name">Name</label> <br>
+                        <input type="text" placeholder="My Hotel" id="Name" name="Name">
+                        <label for="City">City</label> <br>
+                        <input type="text" placeholder="New York" id="City" name="City">
+                        <label for="far">Distance from city center</label> <br>
+                        <input type="text" placeholder="500" id="far" name="far">
+                        <label for="Description">Description</label> <br>
+                        <input type="text" placeholder="Description" id="Description" name="Description">
+                        <label for="Images">Images</label> <br>
+                        <input type="file" placeholder="Images" id="Images" name="Images" multiple>
+                      </div>
+                      <div>
+                        <label for="Type">Type</label> <br>
+                        <input type="text" placeholder="hotel" id="Type" name="Type">
+                        <label for="Address">Address</label> <br>
+                        <input type="text" placeholder="elton st, 216" id="Address" name="Address">
+                        <label for="Title">Title</label> <br>
+                        <input type="text" placeholder="The best hotel" id="Title" name="Title">
+                        <label for="Price">Price</label> <br>
+                        <input type="text" placeholder="100" id="Price" name="Price">
+                        <label for="Feature">Feature</label> <br>
+                        <select name="Feature" id="Feature">
+                          <option value="yes">yes</option>
+                          <option value="no">no</option>
+                        </select>
+                      </div>
+                    </div>
+                    <label for="Rooms">Rooms</label>
+                    <textarea 
+                    name="Rooms" 
+                    placeholder="
+                    2 Bed Rooms,
+                    1 Bed Rooms,
+                    Basement Double Room,
+                    Superior basement room,
+                    Deliver rooms" 
+                    id="Rooms" 
+                    cols="30" 
+                    rows="5"
+                    value=""></textarea>
+                    <br>
+                    <button type="submit">Send</button>
+                    <%# <input type="submit" value="Send"> %>
+                  </form>
+                  <% } %>
+            </article>
+      </main>
 
-<%- include('../includes/foot.ejs') %>
+      <%- include('../includes/foot.ejs') %>
+
+        <script>
+
+        </script>

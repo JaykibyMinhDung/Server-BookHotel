@@ -1,36 +1,36 @@
 <%- include('../includes/head.ejs') %>
 
-    <link rel="stylesheet" href="/css/dashbroad.css" />
-    <link rel="stylesheet" href="/css/sidebar.css" />
-    <link rel="stylesheet" href="/css/table.css" />
+  <link rel="stylesheet" href="/css/dashbroad.css" />
+  <link rel="stylesheet" href="/css/sidebar.css" />
+  <link rel="stylesheet" href="/css/table.css" />
   </head>
+
   <body>
     <%- include('../includes/navigation.ejs') %>
-    <main class="main__dashbroad">
+      <main class="main__dashbroad">
         <header>
-      </header>
-      <article>
-        <div class='headerHotel__list'>
-            <h2 style="color: rgb(141, 141, 141)"><%= Heading %></h2>
-            <button id="btn" style="padding: 5px;" onclick="navigationFormNewHotel()">Add New</button>
-        </div>
-        <% if(message) { %>
-          <h2 style="text-align: center; color: red; font-size: large;">
-            <%= message.success %>
-          </h2>
-        <% } %>
-        <%- include('../includes/table.ejs') %>
-      </article>
-    </main>
+        </header>
+        <article>
+          <div class='headerHotel__list'>
+            <h2 style="color: rgb(141, 141, 141)">
+              <%= Heading %>
+            </h2>
+            <button id="btn-newHotel" style="padding: 5px;" onclick="navigationFormNewHotel()">Add New</button>
+          </div>
+          <% if(message) { %>
+            <h2 style="text-align: center; color: red; font-size: large;">
+              <%= message.success %>
+            </h2>
+            <% } %>
+              <%- include('../includes/table.ejs') %>
+        </article>
+      </main>
 
-<%- include('../includes/foot.ejs') %>
-<script>
-  // const btn = document.getelementbyid('btn');
-// btn.onclick = function() {
-  const navigationFormNewHotel = () => {
-location.assign('/hotellist/newhotel');
-}
-</script>
+      <%- include('../includes/foot.ejs') %>
+        <script>
+          const navigationFormNewHotel = () => {
+            location.assign('/hotellist/newhotel');
+          }
+        </script>
 
-   <%#  include('../includes/table.ejs'), {titleHead: hotel}, , {titleHead: table} %> 
-      
+        <%# include('../includes/table.ejs'), {titleHead: hotel}, , {titleHead: table} %>
