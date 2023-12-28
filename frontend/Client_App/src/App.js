@@ -6,18 +6,36 @@ import List from "./pages/list/List";
 import Signup from "./components/form/sign_up";
 import Signin from "./components/form/sign_in";
 import Transaction from "./pages/transactions/Transaction";
+import { useEffect } from "react";
 
 function App() {
+  const isLogin = localStorage.getItem("User");
+  const test = () => {
+    return isLogin;
+  };
+  useEffect(() => {
+    test();
+  }, [isLogin]);
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/:id" element={<Home />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/signin" element={<Signin />} />
-        <Route path="/hotels" element={<List />} />
-        <Route path="/hotels/:id" element={<Hotel />} />
-        <Route path="/transaction" element={<Transaction />} />
+        {!test() ? (
+          <>
+            <Route path="/" element={<Signin />} />
+            <Route path="/signup" element={<Signup />} />
+            {/* <Route exact path="/" element={<Home />} /> */}
+          </>
+        ) : (
+          <>
+            <Route path="/signup" element={<Signup />} />
+            <Route exact path="/" element={<Home />} />
+            <Route path="/:id" element={<Home />} />
+            <Route path="/signin" element={<Signin />} />
+            <Route path="/hotels" element={<List />} />
+            <Route path="/hotels/:id" element={<Hotel />} />
+            <Route path="/transaction" element={<Transaction />} />
+          </>
+        )}
       </Routes>
     </BrowserRouter>
   );

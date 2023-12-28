@@ -52,7 +52,7 @@ const Signin = (props) => {
           );
         })
         .then(() => {
-          navigate("/");
+          setTimeout(navigate("/"), 5000)
         })
         .catch((err) => {
           toast.error(err.message);

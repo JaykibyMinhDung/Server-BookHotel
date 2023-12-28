@@ -1,0 +1,17 @@
+table,
+td,
+tr {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+table {
+  width: 80%;
+  padding-left: 1rem;
+}
+
+th {
+  width: 10%;
+  border-right: 1px groove black;
+  padding: 1%;
+}

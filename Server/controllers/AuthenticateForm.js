@@ -12,9 +12,24 @@ exports.postNewUser = (req, res, next) => {
   const isAdmin = req.body.isAdmin;
   User.findOne({ email: email.trim() }).then((hasAccount) => {
     if (hasAccount) {
-      return res.json({ announce: "Account has existed" });
+      return res.json({
+        message:
+          "Tài khoản người dùng đã tồn tại, vui lòng đăng kí tài khoản khác",
+        statusCode: 0,
+      });
     }
   });
+  if (email === "" || email === undefined) {
+    return res.json({
+      message: "Email không được để trống",
+      statusCode: 0,
+    });
+  } else if (password === "" && password === undefined) {
+    return res.json({
+      message: "Password không được để trống",
+      statusCode: 0,
+    });
+  }
   // Mã hóa password
   bcrypt
     .hash(password, 12)
@@ -29,17 +44,22 @@ exports.postNewUser = (req, res, next) => {
       });
       return user.save();
     })
-
     .then((results) => {
       console.log(results);
       // res.redirect("http://localhost:3000/signin");
-      res.status(201).json({ message: "User created!", userId: results._id });
+      res.status(201).json({
+        message: "Tạo người dùng mới thành công",
+        userId: results._id,
+        statusCode: 1,
+      });
     })
     .catch((err) => {
       console.log(err); // Hiện lỗi phía server
-      res.status(400).json({
-        message: "Not signup new user, please check again information",
-      });
+      // res.status(400).json({
+      //   message:
+      //     "Không thể đăng kí, vui lòng kiểm tra lại thông tin hoặc liên hệ lại kĩ thuật để được hỗ trợ",
+      //   statusCode: 0,
+      // });
     });
 };
 
@@ -56,14 +76,14 @@ exports.postValidUser = (req, res, next) => {
     .then((user) => {
       if (!user) {
         console.log("SignUp error");
-        res.status(401).json({ message: "Please type again email" });
+        res.status(401).json({ message: "Email hoặc mật khẩu chưa đúng" });
       }
       AddTokenUser = user;
       return bcrypt.compare(password, user.password);
     })
     .then((account) => {
       if (!account) {
-        const error = new Error("Wrong password!");
+        const error = new Error("Email hoặc mật khẩu chưa đúng!");
         throw error;
         // return res.redirect(`http://localhost:3000/signin`);
       }
@@ -79,6 +99,8 @@ exports.postValidUser = (req, res, next) => {
         token: token,
         userId: AddTokenUser._id.toString(),
         emailUser: AddTokenUser.email,
+        numberphone: AddTokenUser.phoneNumber,
+        fullname: AddTokenUser.fullName,
       });
     })
 

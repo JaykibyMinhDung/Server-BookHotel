@@ -355,6 +355,7 @@ exports.detailHotel = (req, res, next) => {
               ],
             },
           ],
+          hotel: idHotel,
         }
       ).then((hasTransaction) => {
         const arrIdHasBookRoom = []; // Mảng chứa phòng đã đặt

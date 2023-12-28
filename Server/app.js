@@ -15,6 +15,7 @@ const uri = "mongodb://127.0.0.1:27017/admin";
 
 // Route
 const Homepage = require("./routes/homePage");
+const AdminPage = require("./routes/admin");
 // const { collection } = require("./model/hotel");
 // const Authenticate = require("./routes/AuthenticateForm")
 
@@ -62,6 +63,7 @@ app.use((req, res, next) => {
 });
 
 app.use(Homepage);
+app.use(AdminPage);
 
 app.use((req, res, next) => {
   res.status(500).json({ message: "Server error", SatusCode: 500 });

@@ -12,14 +12,14 @@ import axios from "axios";
 import { toast, Toaster } from "react-hot-toast";
 
 const BookHotel = ({ detailRoom, hotel, dateProps, newDate }) => {
-  const dataUserLocal = JSON.parse(localStorage.getItem('User'));
+  // const dataUserLocal = JSON.parse(localStorage.getItem('User'));
   let flag = false;
   const User = JSON.parse(localStorage.getItem("User"));
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
-      FullName: "Minh Dũng",
+      FullName: User[0]?.fullname,
       Email: User[0].emailUser,
-      PhoneNumber: "0945758347",
+      PhoneNumber: User[0]?.numberphone,
     },
   });
   const [valueRoom, setvalueRoom] = useState([]);
@@ -58,7 +58,7 @@ const BookHotel = ({ detailRoom, hotel, dateProps, newDate }) => {
     }
   };
 
-  console.log(valueRoom);
+  // console.log(valueRoom);
   const handleChangeRooms = (rooms) => {
     if (rangeDateBooking() < 1) {
       return toast.error("Bạn cần đăng kí lớn hơn 2 ngày trước khi đặt phòng.");
@@ -82,12 +82,16 @@ const BookHotel = ({ detailRoom, hotel, dateProps, newDate }) => {
     }
   };
 
-  // Lỗi handle là do trong hàm này đang xử lý thêm giá cả
+  // console.log(errors);
   const onSubmit = (data) => {
+    const empty = Object.values(errors)
+    if (empty.length) {
+      return toast.error("Giá trị không được để trống")
+    }
     if (rangeDateBooking() < 1) {
       return toast.error("Giao dịch không thành công do chưa đặt ngày");
     }
-    data.id = dataUserLocal.length > 0 ? dataUserLocal[0].userId : '';
+    data.id = User.length > 0 ? User[0].userId : '';
     axios.post("http://localhost:5000/detailhotel/reserve", {
       user: data,
       date: {
@@ -130,35 +134,43 @@ const BookHotel = ({ detailRoom, hotel, dateProps, newDate }) => {
               <h3>Reverve Infor</h3>
               <label htmlFor="">Your Full Name:</label>
               <input
-                {...register("FullName")}
+                {...register("FullName", { required: true })}
                 type="text"
                 placeholder="Full Name"
                 id=""
               />
+              {errors.FullName?.type === 'required' && <p style={{color: "red"}} role="alert">Tên không được để trống</p>}
               <br />
               <label htmlFor="">Your Email:</label>
               <input
-                {...register("Email")}
+                {...register("Email", { required: {value: true, message: 'Email không được để trống'}, pattern: {
+                  value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                  message: 'Email chưa đúng định dạng',
+              }, })}
                 type="text"
                 placeholder="Email"
                 id=""
               />
+              {errors.Email?.type === 'required' && <p style={{color: "red"}} role="alert">{errors.Email?.message}</p>}
+              {errors.Email?.type === 'pattern' && <p style={{color: "red"}} role="alert">{errors.Email?.message}</p>}
               <br />
               <label htmlFor="">Your Phone Number:</label>
               <input
-                {...register("PhoneNumber")}
+                {...register("PhoneNumber", { required: true })}
                 type="text"
                 placeholder="Phone Number"
                 id=""
               />
+              {errors.PhoneNumber?.type === 'required' && <p style={{color: "red"}} role="alert">Số điện thoại không được để trống</p>}
               <br />
               <label htmlFor="">Your Identity Card Number:</label>
               <input
-                {...register("CardNumber")}
+                {...register("CardNumber", { required: true })}
                 type="text"
                 placeholder="Card Number "
                 id=""
               />
+              {errors.CardNumber?.type === 'required' && <p style={{color: "red"}} role="alert">Tài khoản ngân hàng không được để trống</p>}
               {/* <input type="submit" value="test" /> */}
             </div>
           </div>

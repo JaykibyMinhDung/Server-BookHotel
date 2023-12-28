@@ -20,7 +20,7 @@ const Navbar = () => {
   };
   const logout = () => {
     localStorage.removeItem("User");
-    return navigate("/");
+    return navigate("/signin");
   };
 
   const DataUser = JSON.parse(localStorage.getItem("User"));

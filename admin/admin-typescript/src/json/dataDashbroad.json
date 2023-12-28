@@ -1,0 +1,258 @@
+{
+    "statusCode": 200,
+    "message": "Lấy giao dịch thành công",
+    "AllListTransaction": [
+        {
+            "_id": "64e4e72d78484005c9488886",
+            "user": "jaykiby@test.com",
+            "hotel": "6311a9c64a642f01423490bf",
+            "room": [
+                {
+                    "id": "6310dd998cfecfd90b30ca28",
+                    "numberRoom": 101,
+                    "price": 200
+                },
+                {
+                    "id": "6310dd998cfecfd90b30ca28",
+                    "numberRoom": 102,
+                    "price": 200
+                },
+                {
+                    "id": "6311b2a24a642f01423490d6",
+                    "numberRoom": 101,
+                    "price": 600
+                },
+                {
+                    "id": "6311b2a24a642f01423490d6",
+                    "numberRoom": 102,
+                    "price": 600
+                }
+            ],
+            "dateStart": "2023-08-05T17:00:00.000Z",
+            "dateEnd": "2023-08-09T17:00:00.000Z",
+            "price": 5000,
+            "payment": "cash",
+            "status": "Checkin",
+            "__v": 0
+        },
+        {
+            "_id": "64f4c39863fd80ece70228d5",
+            "user": "jaykiby@test.com",
+            "hotel": "6311a9c64a642f01423490bf",
+            "room": [
+                {
+                    "id": "6310dd998cfecfd90b30ca28",
+                    "numberRoom": 101,
+                    "price": 200
+                },
+                {
+                    "id": "6310dd998cfecfd90b30ca28",
+                    "numberRoom": 102,
+                    "price": 200
+                },
+                {
+                    "id": "6311b2a24a642f01423490d6",
+                    "numberRoom": 101,
+                    "price": 600
+                },
+                {
+                    "id": "6311b2a24a642f01423490d6",
+                    "numberRoom": 102,
+                    "price": 600
+                }
+            ],
+            "dateStart": "2023-10-12T03:00:00.000Z",
+            "dateEnd": "2023-10-15T01:00:00.000Z",
+            "price": 5000,
+            "payment": "cash",
+            "status": "Booked",
+            "__v": 0
+        },
+        {
+            "_id": "64f4c3ad63fd80ece70228d7",
+            "user": "jaykiby@test.com",
+            "hotel": "6311a9c64a642f01423490bf",
+            "room": [
+                {
+                    "id": "6310dd998cfecfd90b30ca28",
+                    "numberRoom": 101,
+                    "price": 200
+                },
+                {
+                    "id": "6310dd998cfecfd90b30ca28",
+                    "numberRoom": 102,
+                    "price": 200
+                },
+                {
+                    "id": "6311b2a24a642f01423490d6",
+                    "numberRoom": 101,
+                    "price": 600
+                },
+                {
+                    "id": "6311b2a24a642f01423490d6",
+                    "numberRoom": 102,
+                    "price": 600
+                }
+            ],
+            "dateStart": "2023-10-19T03:00:00.000Z",
+            "dateEnd": "2023-10-28T01:00:00.000Z",
+            "price": 5000,
+            "payment": "cash",
+            "status": "Booked",
+            "__v": 0
+        },
+        {
+            "_id": "64f4ce929adcf96175b6f880",
+            "user": "jaykiby@test.com",
+            "hotel": "6311a9c64a642f01423490bf",
+            "room": [
+                {
+                    "id": "6310dd998cfecfd90b30ca28",
+                    "numberRoom": 101,
+                    "price": 200
+                },
+                {
+                    "id": "6310dd998cfecfd90b30ca28",
+                    "numberRoom": 102,
+                    "price": 200
+                },
+                {
+                    "id": "6311b2a24a642f01423490d6",
+                    "numberRoom": 101,
+                    "price": 600
+                },
+                {
+                    "id": "6311b2a24a642f01423490d6",
+                    "numberRoom": 102,
+                    "price": 600
+                }
+            ],
+            "dateStart": "2023-08-17T03:00:00.000Z",
+            "dateEnd": "2023-08-28T01:00:00.000Z",
+            "price": 5000,
+            "payment": "cash",
+            "status": "Checkout",
+            "__v": 0
+        },
+        {
+            "_id": "64f4ceae9adcf96175b6f882",
+            "user": "jaykiby@test.com",
+            "hotel": "6311a9c64a642f01423490bf",
+            "room": [
+                {
+                    "id": "6310dd998cfecfd90b30ca28",
+                    "numberRoom": 101,
+                    "price": 200
+                },
+                {
+                    "id": "6310dd998cfecfd90b30ca28",
+                    "numberRoom": 102,
+                    "price": 200
+                },
+                {
+                    "id": "6311b2a24a642f01423490d6",
+                    "numberRoom": 101,
+                    "price": 600
+                },
+                {
+                    "id": "6311b2a24a642f01423490d6",
+                    "numberRoom": 102,
+                    "price": 600
+                }
+            ],
+            "dateStart": "2023-08-10T03:00:00.000Z",
+            "dateEnd": "2023-08-14T01:00:00.000Z",
+            "price": 5000,
+            "payment": "cash",
+            "status": "Checkout",
+            "__v": 0
+        },
+        {
+            "_id": "64f8232b30e36f04f3c3c924",
+            "user": "jaykiby@test.com",
+            "user_id": "6482059adb5e8572feb643d2",
+            "hotel": "6311a9c64a642f01423490bf",
+            "room": [
+                {
+                    "id": "6311b2a24a642f01423490d6",
+                    "numberRoom": 101,
+                    "price": 600
+                },
+                {
+                    "id": "6310dd998cfecfd90b30ca28",
+                    "numberRoom": 102,
+                    "price": 200
+                },
+                {
+                    "id": "6311b47b4a642f01423490f4",
+                    "numberRoom": 303,
+                    "price": 600
+                },
+                {
+                    "id": "6311b47b4a642f01423490f4",
+                    "numberRoom": 404,
+                    "price": 600
+                }
+            ],
+            "dateStart": "2023-09-07T03:00:00.000Z",
+            "dateEnd": "2023-09-10T01:00:00.000Z",
+            "price": 3000,
+            "payment": "cash",
+            "status": "Booked",
+            "__v": 0
+        },
+        {
+            "_id": "6507186f3fd428dc44e9f7cb",
+            "user": "jaykiby@test.com",
+            "user_id": "6482059adb5e8572feb643d2",
+            "hotel": "6311bd07f2fce6ea18172fa3",
+            "room": [
+                {
+                    "id": "6311be30f2fce6ea18172fa8",
+                    "numberRoom": 101,
+                    "price": 300
+                },
+                {
+                    "id": "6311be52f2fce6ea18172faf",
+                    "numberRoom": 202,
+                    "price": 425
+                }
+            ],
+            "dateStart": "2023-09-17T03:00:00.000Z",
+            "dateEnd": "2023-09-20T01:00:00.000Z",
+            "price": 7000,
+            "payment": "credit",
+            "status": "Booked",
+            "__v": 0
+        },
+        {
+            "_id": "652cf4ff5f4f87574854422b",
+            "user": "jaykiby@test.com",
+            "hotel": "6311a9c64a642f01423490bf",
+            "room": [
+                {
+                    "id": "6311b2a24a642f01423490d6",
+                    "numberRoom": 101,
+                    "price": 600
+                },
+                {
+                    "id": "6310dd998cfecfd90b30ca28",
+                    "numberRoom": 101,
+                    "price": 200
+                },
+                {
+                    "id": "6311b3944a642f01423490df",
+                    "numberRoom": 203,
+                    "price": 700
+                }
+            ],
+            "dateStart": "2023-10-15T17:00:00.000Z",
+            "dateEnd": "2023-10-17T17:00:00.000Z",
+            "price": 4000,
+            "payment": "card",
+            "status": "Booked",
+            "__v": 0,
+            "user_id": "6482059adb5e8572feb643d2"
+        }
+    ]
+}

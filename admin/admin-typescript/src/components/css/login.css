@@ -1,0 +1,44 @@
+/* Ruler BEM */
+
+.form__box {
+  /* width: 50%; */
+  text-align: center;
+}
+.form__box input {
+  width: 25%;
+  padding: 0.4em;
+  margin-top: 4px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+.form__box input:focus {
+  outline: none;
+  border-color: rgb(127, 146, 255);
+  background-color: rgb(196, 228, 255);
+}
+.form__box input:hover {
+  border-color: rgb(127, 146, 255);
+  background-color: rgb(196, 228, 255);
+}
+.form__box button {
+  font-size: larger;
+  font-weight: 600;
+  padding: 0.4em;
+  width: 26%;
+  background-color: rgb(110, 132, 255);
+  color: white;
+  border: 0px solid;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.form__box button:hover {
+  color: rgb(255, 255, 255);
+  background-color: rgb(58, 88, 255);
+  border-radius: 20px;
+}
+.form__box--inputEmail {
+  /* text-align: center;
+  text-align-last: left; */
+  margin: 1rem;
+}
