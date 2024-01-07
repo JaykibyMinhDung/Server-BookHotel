@@ -19,7 +19,7 @@ router.get(
 );
 
 // //* Hotel route *//
-// router.get("/hotellist", authenticateRouteAdmin, adminController.gethotelList);
+router.get("/hotel-list", authenticateRouteAdmin, adminController.gethotelList);
 
 // router.get(
 //   "/hotellist/newhotel",
@@ -27,24 +27,24 @@ router.get(
 //   adminController.getAddnewHotel
 // );
 
-// router.post(
-//   "/hotellist/newhotel",
-//   [
-//     body("Address").notEmpty().trim(),
-//     body("City").notEmpty().trim(),
-//     body("Description").notEmpty().trim(),
-//     body("Price").notEmpty().trim().isFloat(),
-//     body("far").notEmpty().trim(),
-//     body("Feature").notEmpty().trim(),
-//     body("Name").notEmpty().trim(),
-//     body("Images"),
-//     body("Rooms").notEmpty().trim(),
-//     body("Title").notEmpty().trim().isString(),
-//     body("Type").notEmpty().trim(),
-//   ],
-//   authenticateRouteAdmin,
-//   adminController.postNewHotelList
-// );
+router.post(
+  "/hotel-list/new-hotel",
+  [
+    body("Address").notEmpty().trim(),
+    body("City").notEmpty().trim(),
+    body("Description").notEmpty().trim(),
+    body("Price").notEmpty().trim().isFloat(),
+    body("Distance").notEmpty().trim(),
+    body("Feature").notEmpty().trim(),
+    body("Name").notEmpty().trim(),
+    body("Images"),
+    body("Rooms").notEmpty().trim(),
+    body("Title").notEmpty().trim().isString(),
+    body("Type").notEmpty().trim(),
+  ],
+  authenticateRouteAdmin,
+  adminController.postNewHotelList
+);
 
 // router.post(
 //   "/hotellist/deleted/:id",
@@ -52,60 +52,58 @@ router.get(
 //   adminController.deleteHotelList
 // );
 
-// router.get(
-//   "/hotellist/:id",
-//   authenticateRouteAdmin,
-//   adminController.getAddnewHotel
-// );
+router.get(
+  "/hotel-list/:id",
+  authenticateRouteAdmin,
+  adminController.getDetailHotel
+);
 
-// router.post(
-//   "/hotellist/updated/:id",
-//   [
-//     body("Address").notEmpty().trim(),
-//     body("City").notEmpty().trim(),
-//     body("Description").notEmpty().trim(),
-//     body("Price").notEmpty().trim().isFloat(),
-//     body("far").notEmpty().trim(),
-//     body("Feature").notEmpty().trim(),
-//     body("Name").notEmpty().trim(),
-//     body("Rooms").notEmpty().trim(),
-//     body("Title").notEmpty().trim().isString(),
-//     body("Type").notEmpty().trim(),
-//   ],
-//   authenticateRouteAdmin,
-//   adminController.postNewHotelList
-// );
+router.put(
+  "/hotel-list/updated/:id",
+  [
+    body("Address").notEmpty().trim(),
+    body("City").notEmpty().trim(),
+    body("Description").notEmpty().trim(),
+    body("Price").notEmpty().trim().isFloat(),
+    body("Distance").notEmpty().trim(),
+    body("Feature").notEmpty().trim(),
+    body("Name").notEmpty().trim(),
+    body("Rooms").notEmpty().trim(),
+    body("Title").notEmpty().trim().isString(),
+    body("Type").notEmpty().trim(),
+  ],
+  authenticateRouteAdmin,
+  adminController.updatedHotelList
+);
 
 // //* Room route *//
-// router.get("/roomlist", authenticateRouteAdmin, adminController.getroomsList);
+router.get("/room-list", authenticateRouteAdmin, adminController.getRoomsList);
 
-// router.get(
-//   "/roomlist/newroom",
-//   authenticateRouteAdmin,
-//   adminController.getaddnewRooms
-// );
+router.get(
+  "/room-list/new-room",
+  authenticateRouteAdmin,
+  adminController.getOptionHotels
+);
 
-// router.post(
+// router.delete(
 //   "/roomlist/deleted/:id",
 //   authenticateRouteAdmin,
 //   adminController.deleteRoomList
 // );
 
-// router.post(
-//   "/room-list/new-room",
-//   [
-//     body("description").notEmpty().trim(),
-//     body("numberPeople").notEmpty().trim().isFloat(),
-//     body("price").notEmpty().trim().isFloat(),
-//     body("roomNumbers").notEmpty().trim(),
-//     body("title").notEmpty().trim().isString(),
-//     body("hotel"),
-//   ],
-//   authenticateRouteAdmin,
-//   adminController.postNewRoomList
-// );
-
-// // router.post("/roomlist/deleted/:id/:id", authenticateRouteAdmin, adminController.deleteRoomList);
+router.post(
+  "/room-list/new-room",
+  [
+    body("description").notEmpty().trim(),
+    body("numberPeople").notEmpty().trim().isFloat(),
+    body("price").notEmpty().trim().isFloat(),
+    body("roomNumbers").notEmpty().trim(),
+    body("title").notEmpty().trim().isString(),
+    body("hotel"),
+  ],
+  authenticateRouteAdmin,
+  adminController.postNewRoomList
+);
 
 // router.get(
 //   "/roomlist/:id",
@@ -113,17 +111,17 @@ router.get(
 //   adminController.getaddnewRooms
 // );
 
-// router.post(
-//   "/roomlist/updated/:id",
-//   [
-//     body("description").notEmpty().trim(),
-//     body("numberPeople").notEmpty().trim().isFloat(),
-//     body("price").notEmpty().trim().isFloat(),
-//     body("roomNumbers").notEmpty().trim(),
-//     body("title").notEmpty().trim().isString(),
-//   ],
-//   authenticateRouteAdmin,
-//   adminController.postNewRoomList
-// );
+router.put(
+  "/room-list/updated/:id",
+  [
+    body("description").notEmpty().trim(),
+    body("numberPeople").notEmpty().trim().isFloat(),
+    body("price").notEmpty().trim().isFloat(),
+    body("roomNumbers").notEmpty().trim(),
+    body("title").notEmpty().trim().isString(),
+  ],
+  authenticateRouteAdmin,
+  adminController.updatedRoom
+);
 
 module.exports = router;
