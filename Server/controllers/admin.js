@@ -186,7 +186,7 @@ exports.postNewHotelList = (req, res, next) => {
     Feature,
     Rooms,
   } = req.body;
-  console.log(req.body);
+  // console.log(req.body);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({
@@ -231,7 +231,7 @@ exports.updatedHotelList = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({
-      statusCode: 403,
+      statusCode: 400,
       message:
         errors.array()[0].msg === "Invalid value"
           ? "Vui lòng không bỏ trống giá trị"
@@ -243,7 +243,7 @@ exports.updatedHotelList = (req, res, next) => {
     name: obj.Name,
     city: obj.City,
     address: obj.Address,
-    distance: obj.far,
+    distance: obj.Distance,
     desc: obj.Description,
     cheapestPrice: obj.Price,
     featured: obj.Feature,
@@ -254,7 +254,7 @@ exports.updatedHotelList = (req, res, next) => {
   };
   return Hotels.findByIdAndUpdate({ _id: idUpdated }, newObj, { new: true })
     .then((hotel) => {
-      req.json({ statusCode: 200, message: "Cập nhật khách sạn thành công" });
+      res.json({ statusCode: 200, message: "Cập nhật khách sạn thành công" });
     })
     .catch((err) => {
       console.log(err);
@@ -281,26 +281,6 @@ exports.postNewRoomList = (req, res, next) => {
   const { description, title, price, numberPeople, hotel, roomNumbers } =
     req.body;
   const arrNumberRooms = roomNumbers.split(",").map((e) => e.trim());
-  // const errors = validationResult(req);
-  // if (!errors.isEmpty()) {
-  //   return Hotels.find().then((hotel) => {
-  //     const nameHotel = hotel.map((e) => e.name);
-  //     return res.status(422).json({
-  //       name: nameHotel,
-  //       products: {
-  //         desc: description,
-  //         maxPeople: numberPeople,
-  //         price: price,
-  //         title: title,
-  //         roomNumbers: roomNumbers,
-  //       },
-  //       message:
-  //         errors.array()[0].msg === "Invalid value"
-  //           ? "Vui lòng không bỏ trống giá trị"
-  //           : "Dữ liệu chưa đúng vui lòng điền lại",
-  //     });
-  //   });
-  // }
   const newRoom = new Rooms({
     createdAt: new Date(),
     desc: description,
@@ -321,6 +301,12 @@ exports.postNewRoomList = (req, res, next) => {
         })
         .then(() => {
           res.json({ statusCode: 200, message: "Tạo phòng thành công" });
+        })
+        .catch((err) => {
+          res.json({
+            statusCode: 400,
+            message: "Chọn hotel trước khi tạo phòng mới",
+          });
         });
     })
     .catch((err) => {
@@ -330,9 +316,18 @@ exports.postNewRoomList = (req, res, next) => {
 
 exports.updatedRoom = (req, res, next) => {
   const idUpdated = req.params.id;
-  const { description, title, price, numberPeople, hotel, roomNumbers } =
-    req.body;
+  const { roomNumbers } = req.body;
   const arrNumberRooms = roomNumbers.split(",").map((e) => e.trim());
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({
+      statusCode: 400,
+      message:
+        errors.array()[0].msg === "Invalid value"
+          ? "Vui lòng không bỏ trống giá trị"
+          : "Dữ liệu chưa đúng vui lòng điền lại",
+    });
+  }
   const obj = JSON.parse(JSON.stringify(req.body));
   const newObj = {
     roomNumbers: [...arrNumberRooms],
@@ -360,40 +355,29 @@ exports.deleteHotelList = (req, res, next) => {
   Transactions.find({ hotel: id })
     .then((hotel) => {
       if (hotel.length) {
-        req.flash(
-          "success",
-          "Xóa khách sạn thất bại, do có khách sạn đang đặt"
-        );
-        return res.redirect("/hotellist");
+        res.json({
+          statusCode: 400,
+          message:
+            "Xóa khách sạn thất bại, vui lòng liên hệ kĩ thuật để khắc phục sự cố",
+        });
       } else {
         Hotels.findOneAndDelete({ _id: id })
-          // function(err, photo) {
-          //   fs.unlink(photo.path, function() {
-          //     res.send ({
-          //       status: "200",
-          //       responseType: "string",
-          //       response: "success"
-          //     });
-          //   });
-          // }
           .then((results) => {
             // console.log(results);
-            if (results.photos.length) {
+            if (results?.photos.length) {
               for (const pathImg of results.photos) {
                 fs.unlink(pathImg, function (err) {
                   console.log(err);
                 });
               }
             }
-            req.flash("success", "Xóa khách sạn thành công");
-            return res.redirect("/hotellist");
+            res.json({
+              statusCode: 200,
+              message: "Xóa khách sạn thành công",
+            });
           })
           .catch((err) => {
             console.log(err);
-            req.flash(
-              "success",
-              "Xóa khách sạn thất bại, vui lòng liên hệ kĩ thuật để khắc phục sự cố"
-            );
           });
         // Lát xóa khách sạn
       }
@@ -402,7 +386,7 @@ exports.deleteHotelList = (req, res, next) => {
 };
 
 exports.deleteRoomList = (req, res, next) => {
-  const idDeleted = req.params.id;
+  const idDeleted = req.params.id; // id roó
   const idHotel = req.query.idHotel;
   Transactions.find({ hotel: idHotel })
     .then((transaction) => {
@@ -413,10 +397,12 @@ exports.deleteRoomList = (req, res, next) => {
         }
       };
       if (checkBookedRoom()) {
-        console.log(checkBookedRoom());
-        console.log(idDeleted);
-        req.flash("success", "Xóa phòng thất bại, do có phòng đang đặt");
-        return res.redirect("/roomlist");
+        // console.log(checkBookedRoom());
+        // console.log(idDeleted);
+        res.json({
+          statusCode: 400,
+          message: "Xóa phòng thất bại, do có phòng đang đặt",
+        });
       } else {
         Hotels.findById(idHotel)
           .then((hotel) => {
@@ -424,28 +410,28 @@ exports.deleteRoomList = (req, res, next) => {
             if (indexIdRoom !== -1) {
               hotel.rooms.splice(indexIdRoom, 1);
               hotel.save();
+            } else {
+              res.json({
+                statusCode: 400,
+                message: "Không tìm thấy khách sạn",
+              });
             }
           })
           .then(() => {
             Rooms.findByIdAndDelete(idDeleted).then((results) => {
               if (results) {
-                req.flash("success", "Xóa phòng thành công");
-                return res.redirect("/roomlist");
+                res.json({ statusCode: 200, message: "Xóa phòng thành công" });
               } else {
-                req.flash(
-                  "success",
-                  "Xóa phòng thất bại, vui lòng thử lại hoặc liên hệ với kĩ thuật"
-                );
-                return res.redirect("/roomlist");
+                res.json({
+                  statusCode: 400,
+                  message:
+                    "Xóa phòng thất bại, vui lòng thử lại hoặc liên hệ với kĩ thuật",
+                });
               }
             });
           })
           .catch((err) => {
             console.log(err);
-            req.flash(
-              "success",
-              "Xóa phòng thất bại, vui lòng liên hệ kĩ thuật để khắc phục sự cố"
-            );
           });
         // Lát xóa khách sạn
       }

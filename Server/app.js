@@ -21,7 +21,7 @@ const AdminPage = require("./routes/admin");
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, __dirname);
+    cb(null, __dirname + "/public");
   },
   filename: (req, file, cb) => {
     cb(null, new Date().setTime() + "-" + file.originalname);

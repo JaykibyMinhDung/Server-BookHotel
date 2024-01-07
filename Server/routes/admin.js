@@ -46,11 +46,11 @@ router.post(
   adminController.postNewHotelList
 );
 
-// router.post(
-//   "/hotellist/deleted/:id",
-//   authenticateRouteAdmin,
-//   adminController.deleteHotelList
-// );
+router.delete(
+  "/hotel-list/deleted/:id",
+  authenticateRouteAdmin,
+  adminController.deleteHotelList
+);
 
 router.get(
   "/hotel-list/:id",
@@ -85,11 +85,11 @@ router.get(
   adminController.getOptionHotels
 );
 
-// router.delete(
-//   "/roomlist/deleted/:id",
-//   authenticateRouteAdmin,
-//   adminController.deleteRoomList
-// );
+router.delete(
+  "/room-list/deleted/:id",
+  authenticateRouteAdmin,
+  adminController.deleteRoomList
+);
 
 router.post(
   "/room-list/new-room",
