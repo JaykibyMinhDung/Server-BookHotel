@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Managers } from "../apis/Managers";
 import "../components/dashbroad/dashbroad.css";
 import data from "../json/dataDashbroad.json";
 import Navigator from "../components/dashbroad/Navigator";
@@ -7,6 +8,28 @@ import Table from "../components/table/Table";
 type Props = {};
 
 const Dashbroad = (props: Props) => {
+  // axios.get()
+  const [dataTransactions, setdataTransactions] = useState();
+
+  const titleHead = [
+    "ID",
+    "User",
+    "Hotel",
+    "Room",
+    "Date",
+    "Price",
+    "Payment Method",
+    "Status",
+  ];
+  useEffect(() => {
+    Managers()
+      .getDashbroad()
+      .then((data) => {
+        setdataTransactions(data);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+  console.log(dataTransactions);
   return (
     <>
       <Navigator />
@@ -47,9 +70,13 @@ const Dashbroad = (props: Props) => {
         </article>
       </main>
       <div
-        style={{ textAlign: "right", marginRight: "2rem", fontSize: "large" }}
+        style={{ textAlign: "right", margin: "0rem 2rem", fontSize: "large" }}
       >
-        <Table products={data.AllListTransaction} pageTitle="Admin Page" />
+        <Table
+          products={data.AllListTransaction}
+          titleHead={titleHead}
+          pageTitle="Admin Page"
+        />
         <span style={{ marginRight: "1rem;" }}>1 - 20</span>
         <span>
           <i

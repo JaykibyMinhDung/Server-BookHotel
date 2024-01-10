@@ -1,9 +1,11 @@
+const fs = require("fs");
+
 const { validationResult } = require("express-validator");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const Hotels = require("../model/hotel");
 const Rooms = require("../model/room");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const Transactions = require("../model/transaction");
 const User = require("../model/user");
 
@@ -57,6 +59,7 @@ exports.postLogin = (req, res, next) => {
 };
 
 exports.getDashbroad = (req, res, next) => {
+  const date = new Date()
   function getFirstDayofMonth(year, month) {
     return new Date(year, month, 2);
   }
@@ -69,9 +72,9 @@ exports.getDashbroad = (req, res, next) => {
     $and: [{ dateStart: { $gt: firstDay } }, { dateEnd: { $lt: lastDay } }],
   })
     .sort({ dateStart: "asc" }) //desc
-    .skip()
-    .exec()
+    // .skip()
     .limit(8)
+    .exec()
     .then((transactions) => {
       return res.status(200).json({
         statusCode: 200,

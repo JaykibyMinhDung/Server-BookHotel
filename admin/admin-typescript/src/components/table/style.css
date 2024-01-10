@@ -6,7 +6,7 @@ tr {
 }
 
 table {
-  width: 80%;
+  width: 82, 5%;
   padding-left: 1rem;
 }
 
@@ -14,4 +14,8 @@ th {
   width: 10%;
   border-right: 1px groove black;
   padding: 1%;
+}
+
+td {
+  padding: 5px;
 }

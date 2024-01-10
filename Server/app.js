@@ -5,7 +5,7 @@ const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const flash = require("connect-flash");
+// const flash = require("connect-flash");
 const multer = require("multer"); // gói về download and upload file
 
 // connect path of app
@@ -51,7 +51,7 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 
 // Phá CORS
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3001", "http://localhost:3000");
   res.setHeader(
     "Access-Control-Allow-Methods",
     "OPTION, GET, POST, PUT, PATCH, DELETE"

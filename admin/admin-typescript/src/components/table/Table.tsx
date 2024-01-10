@@ -3,12 +3,14 @@ import "./style.css";
 
 interface Props {
   products: any;
+  titleHead: Array<String>;
   pageTitle: string;
 }
 
-const Table: React.FC<Props> = ({ products, pageTitle }) => {
+const Table: React.FC<Props> = ({ products, titleHead, pageTitle }) => {
   const navigationFormUpdated = (id: any, hotel: string) => {};
   const checker = (id: any) => {};
+  console.log(pageTitle === "rooms List", products);
   const generateReactHTML = (): JSX.Element => {
     // const changeStyle = background-color: products[i].status ===
     //     ' Booked' ? 'red' : products[i].status==='Checkout' ? 'gray' : 'green' ; color: white; border: 0px; padding:
@@ -43,30 +45,35 @@ const Table: React.FC<Props> = ({ products, pageTitle }) => {
     };
     const getButtonStatusStyle = (statusRoom: string): CSSProperties => {
       return statusRoom === " Booked"
-        ? { backgroundColor: "red" }
+        ? { backgroundColor: "red", color: "white" }
         : statusRoom === "Checkout"
-        ? { backgroundColor: "gray" }
-        : { backgroundColor: "green" };
+        ? { backgroundColor: "gray", color: "white" }
+        : { backgroundColor: "green", color: "white" };
     };
     // const StyleButtonStatus: React.CSSProperties =
     //   getButtonStatusStyle(statusRoom);
     if (pageTitle === "Admin Page") {
       return (
         <tbody id="1">
-          {products.map((e: any, i: any) => {
+          {products.map((e: any, index: number) => {
             return (
-              <tr>
-                <th scope="row">{i}</th>
+              <tr key={index}>
+                <th scope="row">
+                  <input type="checkbox" />
+                </th>
                 <td>{e._id}</td>
+                {/* <td>{}</td> */}
                 <td>{e.user}</td>
-                <td>'namehotel[i]'</td>
+                <td>{e.hotel}</td>
                 <td>
-                  {e.room.map((t: any) => (
-                    <span>{t.numberRoom}</span>
+                  {e.room.map((t: any, key: number) => (
+                    <span key={key}>{t.numberRoom}, </span>
                   ))}
                 </td>
-                <td>{new Date(e.dateStart).toLocaleDateString("en-GB")}</td>
-                <td>{new Date(e.dateEnd).toLocaleDateString("en-GB")}</td>
+                <td>
+                  {new Date(e.dateStart).toLocaleDateString("en-GB")} -{" "}
+                  {new Date(e.dateEnd).toLocaleDateString("en-GB")}
+                </td>
                 <td>${e.price}</td>
                 <td>{e.payment}</td>
                 <td>
@@ -82,12 +89,13 @@ const Table: React.FC<Props> = ({ products, pageTitle }) => {
           })}
         </tbody>
       );
-    } else if (pageTitle === "hotel List") {
+    }
+    if (pageTitle === "hotel List") {
       return (
         <tbody id="2">
-          {products.map((e: any, i: any) => {
+          {products.map((e: any, index: number) => {
             return (
-              <tr>
+              <tr key={index}>
                 <th scope="col">
                   <input type="checkbox" name="check" id="check" />
                 </th>
@@ -122,76 +130,92 @@ const Table: React.FC<Props> = ({ products, pageTitle }) => {
           })}
         </tbody>
       );
-    } else if (pageTitle === "rooms List") {
-      <tbody id="3">
-        {products.map((e: any, i: any) => {
-          return (
-            <tr>
-              <th scope="col">
-                <input type="checkbox" name="check" id="check" />
-              </th>
-              <td>{e._id} </td>
-              <td>{e.title} </td>
-              <td>{e.desc} </td>
-              <td>{e.price} </td>
-              <td>{e.maxPeople}</td>
-              <td>
-                <form
-                  id="deleteRoom=e._id"
-                  action="/roomlist/deleted/=e._id?idHotel==e._doc.hotel"
-                  method="post"
-                >
-                  <input
-                    style={StyleButtonDelete}
-                    type="button"
-                    value="Delete"
-                    onClick={() => checker("deleteRoom=e._id")}
-                  />
-                </form>
-              </td>
-              <td onClick={() => navigationFormUpdated(e._id, "room")}>
-                <input style={StyleButtonUpdated} type="button" value="Edit" />
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>;
-    } else if (pageTitle === "transaction List") {
-      <tbody id="3">
-        {products.map((e: any) => {
-          return (
-            <tr>
-              <th scope="col">
-                <input type="checkbox" name="check" id="check" />
-              </th>
-              <td>{e._id}</td>
-              <td>{e.user}</td>
-              <td>Namehotel[i]</td>
-              <td>
-                {e.room.forEach((n: any) => {
-                  <span>{n.numberRoom}</span>;
-                })}
-              </td>
-              <td>
-                {new Date(e.dateStart).toLocaleDateString("en-GB")} -{" "}
-                {new Date(e.dateEnd).toLocaleDateString("en-GB")}
-              </td>
-              <td>${e.price}</td>
-              <td>{e.payment}</td>
-              <td>
-                <input
-                  style={getButtonStatusStyle(e.status)}
-                  type="button"
-                  value="e.status "
-                  disabled
-                />
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>;
     }
-    return <div></div>;
+    if (pageTitle === "rooms List") {
+      return (
+        <tbody id="3">
+          {products.map((e: any, index: number) => {
+            return (
+              <tr key={index}>
+                <th scope="col">
+                  <input type="checkbox" name="check" id="check" />
+                </th>
+                <td>{e._id} </td>
+                <td>{e.title} </td>
+                <td>{e.desc} </td>
+                <td>{e.price} </td>
+                <td>{e.maxPeople}</td>
+                <td>
+                  <form
+                    id="deleteRoom=e._id"
+                    action="/roomlist/deleted/=e._id?idHotel==e._doc.hotel"
+                    method="post"
+                  >
+                    <input
+                      style={StyleButtonDelete}
+                      type="button"
+                      value="Delete"
+                      onClick={() => checker("deleteRoom=e._id")}
+                    />
+                  </form>
+                </td>
+                <td onClick={() => navigationFormUpdated(e._id, "room")}>
+                  <input
+                    style={StyleButtonUpdated}
+                    type="button"
+                    value="Edit"
+                  />
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      );
+    }
+    if (pageTitle === "transaction List") {
+      return (
+        <tbody id="4">
+          {products.map((e: any, index: number) => {
+            return (
+              <tr key={index}>
+                <th scope="col">
+                  <input type="checkbox" name="check" id="check" />
+                </th>
+                <td>{e._id}</td>
+                <td>{e.user}</td>
+                <td>{e.hotel}</td>
+                <td>
+                  {e.room.map((n: any, key: number) => (
+                    <span key={key}>{n.numberRoom}, </span>
+                  ))}
+                </td>
+                <td>
+                  {new Date(e.dateStart).toLocaleDateString("en-GB")} -{" "}
+                  {new Date(e.dateEnd).toLocaleDateString("en-GB")}
+                </td>
+                <td>${e.price}</td>
+                <td>{e.payment}</td>
+                <td>
+                  <input
+                    style={getButtonStatusStyle(e.status)}
+                    type="button"
+                    value="e.status "
+                    disabled
+                  />
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      );
+    }
+    return (
+      <tbody>
+        <tr>
+          <th>Chưa nhận được dữ liệu</th>
+        </tr>
+      </tbody>
+    );
   };
   return (
     <table style={{ textAlign: "center", marginBottom: "4rem" }}>
@@ -201,12 +225,16 @@ const Table: React.FC<Props> = ({ products, pageTitle }) => {
             <input type="checkbox" name="check" id="check" />
           </th>
           {/* fix */}
-          {products.map((e: any) => {
-            return <th scope="col">{e.titleHead}</th>;
+          {titleHead.map((e: String, key: number) => {
+            return (
+              <th key={key} scope="col">
+                {e}
+              </th>
+            );
           })}
         </tr>
-        {generateReactHTML()}
       </thead>
+      {generateReactHTML()}
     </table>
   );
 };
