@@ -1,7 +1,47 @@
 import React from "react";
 import Navigator from "../components/dashbroad/Navigator";
+import { useForm } from "react-hook-form";
+import { Managers } from "../apis/Managers";
+import { useNavigate } from "react-router-dom";
 
 const AddnewHotel = () => {
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    // formState: { errors },
+  } = useForm();
+  const onSubmit = async (data: any) => {
+    const formData = new FormData();
+    formData.append("image", data.Images[0]);
+    formData.append("Name", data.Name);
+    formData.append("Address", data.Address);
+    formData.append("City", data.City);
+    formData.append("Price", data.Price);
+    formData.append("Description", data.Description);
+    formData.append("Distance", data.Distance);
+    formData.append("Type", data.Type);
+    formData.append("Rooms", data.Rooms);
+    formData.append("Feature", data.Feature);
+    formData.append("Title", data.Title);
+    // const request = keyObject.map((e, index) => {
+    // for (const [key, value] of Object.entries(data)) {
+    //   return formData.append(key, value);
+    // }
+    // });
+    // data = { ...data, Images: data.Images[0].name };
+    // formData.append("recipe", JSON.stringify(data));
+    Managers()
+      .postNewhotels(formData)
+      .then((res) => {
+        alert(res.response.data.message);
+      })
+      .then(() => navigate("/room_list"))
+      .catch((err) => {
+        alert(err.response.data.message);
+        console.error(err);
+      });
+  };
   return (
     <>
       <Navigator />
@@ -11,150 +51,77 @@ const AddnewHotel = () => {
         </header>
         {/* Hiển thị lỗi sai ở đây */}
         <article className="form__input">
+          {/* {errors.exampleRequired && <span>This field is required</span>} */}
           <form
-            action="/hotellist/updated/<%= updated._id %>"
             method="post"
             encType="multipart/form-data"
+            onSubmit={handleSubmit(onSubmit)}
           >
             <div className="form__input--flex">
               <div>
                 <label htmlFor="Name">Name</label> <br />
                 <input
                   type="text"
-                  value="<%= updated.name %>"
+                  {...register("Name")}
                   placeholder="My Hotel"
-                  id="Name"
-                  name="Name"
                 />
                 <label htmlFor="City">City</label> <br />
                 <input
                   type="text"
-                  value="<%= updated.city %>"
                   placeholder="New York"
-                  id="City"
-                  name="City"
+                  {...register("City")}
                 />
                 <label htmlFor="far">Distance from city center</label> <br />
                 <input
                   type="text"
-                  value="<%= updated.distance %>"
                   placeholder="500"
-                  id="far"
-                  name="far"
+                  {...register("Distance")}
                 />
                 <label htmlFor="Description">Description</label> <br />
                 <input
                   type="text"
-                  value="<%= updated.desc %>"
                   placeholder="Description"
                   id="Description"
-                  name="Description"
+                  {...register("Description")}
                 />
                 <label htmlFor="Images">Images</label> <br />
                 <input
                   type="file"
                   // value="<%= updated.photos %>"
                   placeholder="Images"
-                  id="Images"
-                  name="Images"
+                  {...register("Images")}
                   multiple
                 />
               </div>
               <div>
                 <label htmlFor="Type">Type</label> <br />
-                <input
-                  type="text"
-                  value="<%= updated.type %>"
-                  placeholder="hotel"
-                  id="Type"
-                  name="Type"
-                />
+                <input type="text" placeholder="hotel" {...register("Type")} />
                 <label htmlFor="Address">Address</label> <br />
                 <input
                   type="text"
-                  value="<%= updated.address %>"
                   placeholder="elton st, 216"
-                  id="Address"
-                  name="Address"
+                  {...register("Address")}
                 />
                 <label htmlFor="Title">Title</label> <br />
                 <input
                   type="text"
-                  value="<%= updated.title %>"
                   placeholder="The best hotel"
-                  id="Title"
-                  name="Title"
+                  {...register("Title")}
                 />
                 <label htmlFor="Price">Price</label> <br />
-                <input
-                  type="text"
-                  value="<%= updated.cheapestPrice %>"
-                  placeholder="100"
-                  id="Price"
-                  name="Price"
-                />
+                <input type="text" placeholder="100" {...register("Price")} />
                 <label htmlFor="Feature">Feature</label> <br />
-                <select name="Feature" id="Feature">
+                <select {...register("Feature")}>
                   <option value="yes">yes</option>
                   <option value="no">no</option>
                 </select>
               </div>
             </div>
             <label htmlFor="Rooms">Rooms</label>
-            <textarea name="Rooms" id="Rooms" cols={30} rows={5}></textarea>
+            <textarea {...register("Rooms")} cols={30} rows={5}></textarea>
             <br />
             <button type="submit">Send</button>
-            <input type="submit" value="Send" />
-            {/* có dòng enctype="multipart/form-data" này để tạo dữ liệu binary cho file ảnh %> */}
           </form>
-          {/*                 
-                  <form action="/hotellist/newhotel" method="post" enctype="multipart/form-data">
-                    <div className="form__input--flex">
-                      <div>
-                        <label for="Name">Name</label> <br />
-                        <input type="text" placeholder="My Hotel" id="Name" name="Name">
-                        <label for="City">City</label> <br />
-                        <input type="text" placeholder="New York" id="City" name="City">
-                        <label for="far">Distance from city center</label> <br />
-                        <input type="text" placeholder="500" id="far" name="far">
-                        <label for="Description">Description</label> <br />
-                        <input type="text" placeholder="Description" id="Description" name="Description">
-                        <label for="Images">Images</label> <br />
-                        <input type="file" placeholder="Images" id="Images" name="Images" multiple>
-                      </div>
-                      <div>
-                        <label for="Type">Type</label> <br />
-                        <input type="text" placeholder="hotel" id="Type" name="Type">
-                        <label for="Address">Address</label> <br />
-                        <input type="text" placeholder="elton st, 216" id="Address" name="Address">
-                        <label for="Title">Title</label> <br />
-                        <input type="text" placeholder="The best hotel" id="Title" name="Title">
-                        <label for="Price">Price</label> <br />
-                        <input type="text" placeholder="100" id="Price" name="Price">
-                        <label for="Feature">Feature</label> <br />
-                        <select name="Feature" id="Feature">
-                          <option value="yes">yes</option>
-                          <option value="no">no</option>
-                        </select>
-                      </div>
-                    </div>
-                    <label for="Rooms">Rooms</label>
-                    <textarea 
-                    name="Rooms" 
-                    placeholder="
-                    2 Bed Rooms,
-                    1 Bed Rooms,
-                    Basement Double Room,
-                    Superior basement room,
-                    Deliver rooms" 
-                    id="Rooms" 
-                    cols="30" 
-                    rows="5"
-                    value=""></textarea>
-                    <br />
-                    <button type="submit">Send</button>
-                    <%# <input type="submit" value="Send"> %>
-                  </form> */}
         </article>
       </main>
     </>

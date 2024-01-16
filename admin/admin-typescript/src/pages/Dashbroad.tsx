@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Managers } from "../apis/Managers";
 import "../components/dashbroad/dashbroad.css";
-import data from "../json/dataDashbroad.json";
+// import data from "../json/dataDashbroad.json";
 import Navigator from "../components/dashbroad/Navigator";
 import Table from "../components/table/Table";
 
@@ -9,8 +9,8 @@ type Props = {};
 
 const Dashbroad = (props: Props) => {
   // axios.get()
-  const [dataTransactions, setdataTransactions] = useState();
-
+  const [dataTransactions, setdataTransactions] = useState([]);
+  const styleTable: string = "17rem";
   const titleHead = [
     "ID",
     "User",
@@ -25,11 +25,10 @@ const Dashbroad = (props: Props) => {
     Managers()
       .getDashbroad()
       .then((data) => {
-        setdataTransactions(data);
+        setdataTransactions(data.AllListTransaction);
       })
       .catch((err) => console.error(err));
   }, []);
-  console.log(dataTransactions);
   return (
     <>
       <Navigator />
@@ -70,12 +69,19 @@ const Dashbroad = (props: Props) => {
         </article>
       </main>
       <div
-        style={{ textAlign: "right", margin: "0rem 2rem", fontSize: "large" }}
+        style={{
+          textAlign: "right",
+          margin: "0rem 2rem",
+          fontSize: "large",
+        }}
       >
         <Table
-          products={data.AllListTransaction}
+          style={styleTable}
+          products={dataTransactions}
           titleHead={titleHead}
           pageTitle="Admin Page"
+          deletedRoomAPI={Managers().deletedroomsList}
+          deletedHotelAPI={Managers().deletedhotelsList}
         />
         <span style={{ marginRight: "1rem;" }}>1 - 20</span>
         <span>

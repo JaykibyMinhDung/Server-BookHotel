@@ -1,16 +1,43 @@
 import React, { CSSProperties } from "react";
 import "./style.css";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   products: any;
+  style: string;
   titleHead: Array<String>;
   pageTitle: string;
+  deletedRoomAPI: (id: string, hotel: string | undefined) => Promise<any>;
+  deletedHotelAPI: (id: string) => Promise<any>;
 }
 
-const Table: React.FC<Props> = ({ products, titleHead, pageTitle }) => {
-  const navigationFormUpdated = (id: any, hotel: string) => {};
-  const checker = (id: any) => {};
-  console.log(pageTitle === "rooms List", products);
+const Table: React.FC<Props> = ({
+  products,
+  titleHead,
+  style,
+  pageTitle,
+  deletedRoomAPI,
+  deletedHotelAPI,
+}) => {
+  const navigate = useNavigate();
+  const navigationFormUpdated = async (id: any, flag: string) => {
+    if (flag === "hotel") {
+      return navigate("/new_hotel", { state: { updated: "hotel" } });
+    } else {
+      return navigate("/new_room", { state: { updated: "room" } });
+    }
+  };
+  const deleteHandle = async (id: string, hotel?: string) => {
+    if (hotel) {
+      return deletedHotelAPI(id)
+        .then((res) => console.log(res))
+        .catch((err) => console.error(err));
+    } else {
+      return deletedRoomAPI(id, hotel)
+        .then((res) => console.log(res))
+        .catch((err) => console.error(err));
+    }
+  };
   const generateReactHTML = (): JSX.Element => {
     // const changeStyle = background-color: products[i].status ===
     //     ' Booked' ? 'red' : products[i].status==='Checkout' ? 'gray' : 'green' ; color: white; border: 0px; padding:
@@ -44,7 +71,7 @@ const Table: React.FC<Props> = ({ products, titleHead, pageTitle }) => {
       borderRadius: "5px",
     };
     const getButtonStatusStyle = (statusRoom: string): CSSProperties => {
-      return statusRoom === " Booked"
+      return statusRoom === "Booked"
         ? { backgroundColor: "red", color: "white" }
         : statusRoom === "Checkout"
         ? { backgroundColor: "gray", color: "white" }
@@ -114,7 +141,7 @@ const Table: React.FC<Props> = ({ products, titleHead, pageTitle }) => {
                       style={StyleButtonDelete}
                       type="button"
                       value="Delete"
-                      onClick={() => checker("deletedHotel=e._id")}
+                      onClick={() => deleteHandle(e._id)}
                     />
                   </form>
                 </td>
@@ -146,16 +173,12 @@ const Table: React.FC<Props> = ({ products, titleHead, pageTitle }) => {
                 <td>{e.price} </td>
                 <td>{e.maxPeople}</td>
                 <td>
-                  <form
-                    id="deleteRoom=e._id"
-                    action="/roomlist/deleted/=e._id?idHotel==e._doc.hotel"
-                    method="post"
-                  >
+                  <form id={e._id}>
                     <input
                       style={StyleButtonDelete}
                       type="button"
                       value="Delete"
-                      onClick={() => checker("deleteRoom=e._id")}
+                      onClick={() => deleteHandle(e._id)}
                     />
                   </form>
                 </td>
@@ -199,7 +222,7 @@ const Table: React.FC<Props> = ({ products, titleHead, pageTitle }) => {
                   <input
                     style={getButtonStatusStyle(e.status)}
                     type="button"
-                    value="e.status "
+                    value={e.status}
                     disabled
                   />
                 </td>
@@ -218,7 +241,13 @@ const Table: React.FC<Props> = ({ products, titleHead, pageTitle }) => {
     );
   };
   return (
-    <table style={{ textAlign: "center", marginBottom: "4rem" }}>
+    <table
+      style={{
+        textAlign: "center",
+        marginBottom: "4rem",
+        marginLeft: style,
+      }}
+    >
       <thead>
         <tr>
           <th scope="col">

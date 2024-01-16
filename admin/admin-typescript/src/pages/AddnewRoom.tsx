@@ -1,8 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../components/css/addnew.css";
 import Navigator from "../components/dashbroad/Navigator";
+import { useForm } from "react-hook-form";
+import { Managers } from "../apis/Managers";
+import { useNavigate } from "react-router-dom";
 
 const AddnewRoom = () => {
+  const [defaultHotels, setDefaultHotels] = useState([]);
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    // formState: { errors },
+  } = useForm();
+  const onSubmit = async (data: any) => {
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("price", data.price);
+    formData.append("description", data.description);
+    formData.append("numberPeople", data.numberPeople);
+    formData.append("roomNumbers", data.roomNumbers);
+    formData.append("hotel", data.hotel);
+    Managers()
+      .postNewrooms(formData)
+      .then((res) => {
+        alert(res.message);
+      })
+      .then(() => navigate("/hotel_list"))
+      .catch((err) => {
+        console.error(err);
+        alert(err.message);
+      });
+  };
+  useEffect(() => {
+    Managers()
+      .optionhotelsList()
+      .then((res) => {
+        setDefaultHotels(res.optionHotel);
+      })
+      .catch((err) => console.error(err));
+  }, []);
   return (
     <>
       <Navigator />
@@ -16,42 +53,30 @@ const AddnewRoom = () => {
           </h2>
         </div>
         <article className="form__input">
-          <form action="" method="post">
+          <form method="post" onSubmit={handleSubmit(onSubmit)}>
             <div className="form__input--flex">
               <div>
                 <label htmlFor="Name">Title</label> <br />
                 <input
                   type="text"
                   placeholder="2 bed rooms"
-                  id="Name"
-                  value="<%= updated.title %>"
-                  name="title"
+                  {...register("title")}
                 />
                 <label htmlFor="Price">Price</label> <br />
-                <input
-                  type="text"
-                  placeholder="100"
-                  id="Price"
-                  value="<%= updated.price %>"
-                  name="price"
-                />
+                <input type="text" placeholder="100" {...register("price")} />
               </div>
               <div>
                 <label htmlFor="Description">Description</label> <br />
                 <input
                   type="text"
                   placeholder="King size bed, 1 bathroom"
-                  id="Description"
-                  value="<%= updated.desc %>"
-                  name="description"
+                  {...register("description")}
                 />
                 <label htmlFor="Type">Max People</label> <br />
                 <input
                   type="text"
                   placeholder="2"
-                  id="Type"
-                  value="<%= updated.maxPeople %>"
-                  name="numberPeople"
+                  {...register("numberPeople")}
                 />
               </div>
             </div>
@@ -60,8 +85,7 @@ const AddnewRoom = () => {
                 <label htmlFor="Rooms">Rooms</label>
                 <textarea
                   style={{ width: "90%" }}
-                  name="roomNumbers"
-                  id="Rooms"
+                  {...register("roomNumbers")}
                   cols={30}
                   rows={10}
                   placeholder="give comma between room numbers"
@@ -70,8 +94,10 @@ const AddnewRoom = () => {
               <div className="foot__newrooms--align">
                 <label htmlFor="hotel">Choose a hotel</label>
                 <br />
-                <select name="hotel" id="hotel">
-                  <option value="<%= nameHotelUpdated %>"></option>
+                <select {...register("hotel")}>
+                  {defaultHotels.map((hotel) => (
+                    <option value={hotel}>{hotel}</option>
+                  ))}
                 </select>
                 <br />
               </div>
@@ -80,63 +106,6 @@ const AddnewRoom = () => {
               </div>
             </div>
           </form>
-          {/* 
-          <form action="/room-list/new-room" method="post">
-            <div className="form__input--flex">
-              <div>
-                <label htmlFor="Name">Title</label> <br />
-                <input
-                  type="text"
-                  placeholder="2 bed rooms"
-                  id="Name"
-                  name="title"
-                />
-                <label htmlFor="Price">Price</label> <br />
-                <input type="text" placeholder="100" id="Price" name="price" />
-              </div>
-              <div>
-                <label htmlFor="Description">Description</label> <br />
-                <input
-                  type="text"
-                  placeholder="King size bed, 1 bathroom"
-                  id="Description"
-                  name="description"
-                />
-                <label htmlFor="Type">Max People</label> <br />
-                <input
-                  type="text"
-                  placeholder="2"
-                  id="Type"
-                  name="numberPeople"
-                />
-              </div>
-            </div>
-            <div className="foot__newrooms">
-              <div>
-                <label htmlFor="Rooms">Rooms</label>
-                <textarea
-                  style={{ width: "90%" }}
-                  name="roomNumbers"
-                  id="Rooms"
-                  cols={30}
-                  rows={10}
-                  placeholder="give comma between room numbers"
-                ></textarea>
-              </div>
-              <div className="foot__newrooms--align">
-                <label htmlFor="hotel">Choose a hotel</label>
-                <br />
-                <select name="hotel" id="hotel">
-                  <option selected>Vui lòng chọn khách sạn</option>
-                </select>
-                <br />
-              </div>
-              <div className="foot__newrooms--align">
-                <button type="submit">Send</button>
-              </div>
-            </div>
-          </form>
-          */}
         </article>
       </main>
     </>

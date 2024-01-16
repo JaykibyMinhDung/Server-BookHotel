@@ -1,21 +1,22 @@
 table,
 td,
 tr {
-  border: 1px solid black;
+  border: 1px solid rgba(0, 0, 0, 0.205);
   border-collapse: collapse;
 }
 
 table {
-  width: 82, 5%;
+  width: 95%;
   padding-left: 1rem;
 }
 
 th {
   width: 10%;
-  border-right: 1px groove black;
+  border-right: 1px groove rgba(0, 0, 0, 0.205);
   padding: 1%;
 }
 
 td {
   padding: 5px;
+  /* boxShadow: "0px 5px 15px 2px rgba(0, 0, 0, 0.377)", */
 }

@@ -59,7 +59,7 @@ exports.postLogin = (req, res, next) => {
 };
 
 exports.getDashbroad = (req, res, next) => {
-  const date = new Date()
+  const date = new Date();
   function getFirstDayofMonth(year, month) {
     return new Date(year, month, 2);
   }
@@ -127,22 +127,37 @@ exports.getRoomsList = (req, res, next) => {
   const pageNumber = req.query?.pageNumber || 1;
   const documentSkip = (pageNumber - 1) * 8;
   Rooms.find()
-    .skip(documentSkip)
-    .limit(8)
+    // .skip(documentSkip)
+    // .limit(8)
     .then((room) => {
-      if (room.length > 0) {
-        return res.status(200).json({
-          statusCode: 200,
-          message: "Nhận thông tin phòng thành công",
-          ListRoom: room,
-        });
-      } else {
-        return res.status(200).json({
-          statusCode: 200,
-          message: "Không có phòng nào cả, vui lòng tạo thêm",
-          ListRoom: [],
-        });
-      }
+      Hotels.find()
+        .then((hotel) => {
+          let responseData;
+          for (const element of hotel) {
+            responseData = element.rooms.map((e) => {
+              if (e === room._id) {
+                return {
+                  ...element._doc,
+                  idHotel: element.name,
+                };
+              }
+            });
+          }
+          if (room.length > 0) {
+            return res.status(200).json({
+              statusCode: 200,
+              message: "Nhận thông tin phòng thành công",
+              ListRoom: responseData,
+            });
+          } else {
+            return res.status(200).json({
+              statusCode: 200,
+              message: "Không có phòng nào cả, vui lòng tạo thêm",
+              ListRoom: [],
+            });
+          }
+        })
+        .catch((err) => console.log(err));
     })
     .catch((err) => {
       console.log(err);
@@ -174,9 +189,9 @@ exports.postNewHotelList = (req, res, next) => {
   // const idUpdated = req.params?.id;
   const imageArr = [];
   console.log(req.files);
-  for (const key of req.files) {
-    imageArr.push(key.path.replace(/\\/g, "/"));
-  }
+  // for (const key of req.files) {
+  //   imageArr.push(key.path.replace(/\\/g, "/"));
+  // }
   const {
     Name,
     City,
@@ -189,7 +204,7 @@ exports.postNewHotelList = (req, res, next) => {
     Feature,
     Rooms,
   } = req.body;
-  // console.log(req.body);
+  console.log(req.body);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({
@@ -292,6 +307,7 @@ exports.postNewRoomList = (req, res, next) => {
     roomNumbers: [...arrNumberRooms],
     title: title,
   });
+  console.log(newRoom);
   newRoom
     .save()
     .then((new_room) => {

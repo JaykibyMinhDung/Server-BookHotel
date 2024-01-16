@@ -6,7 +6,7 @@ import Table from "../components/table/Table";
 
 const Transaction = () => {
   const [dataTransactions, setdataTransactions] = useState([]);
-
+  const styleTable: string = "2rem";
   const titleHead = [
     "ID",
     "User",
@@ -32,12 +32,15 @@ const Transaction = () => {
         <article>
           <h2 style={{ color: "rgb(141, 141, 141)" }}>Transactions List</h2>
         </article>
+        <Table
+          products={dataTransactions}
+          style={styleTable}
+          titleHead={titleHead}
+          pageTitle={"transaction List"}
+          deletedRoomAPI={Managers().deletedroomsList}
+          deletedHotelAPI={Managers().deletedhotelsList}
+        />
       </main>
-      <Table
-        products={dataTransactions}
-        titleHead={titleHead}
-        pageTitle={"transaction List"}
-      />
     </>
   );
 };

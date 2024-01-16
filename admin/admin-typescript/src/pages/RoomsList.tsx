@@ -2,11 +2,15 @@ import React, { useEffect, useState } from "react";
 import Navigator from "../components/dashbroad/Navigator";
 import Table from "../components/table/Table";
 import { Managers } from "../apis/Managers";
+import { useNavigate } from "react-router-dom";
 
 const RoomsList = () => {
   const [dataRooms, setdataRooms] = useState([]);
-
-  const navigationNewRoomHandle = () => {};
+  const navigate = useNavigate();
+  const styleTable: string = "2rem";
+  const navigationNewRoomHandle = () => {
+    return navigate("/new_room");
+  };
   const titleHead = [
     "ID",
     "Title",
@@ -30,7 +34,7 @@ const RoomsList = () => {
           <div className="headerHotel__list">
             <h2 style={{ color: "rgb(141, 141, 141)" }}>Rooms List</h2>
             <button
-              id="btn"
+              id="btn-newRoom"
               style={{ padding: "5px" }}
               onClick={navigationNewRoomHandle}
             >
@@ -38,14 +42,15 @@ const RoomsList = () => {
             </button>
           </div>
         </article>
-      </main>
-      <div>
         <Table
+          style={styleTable}
           products={dataRooms}
           titleHead={titleHead}
           pageTitle={"rooms List"}
+          deletedRoomAPI={Managers().deletedroomsList}
+          deletedHotelAPI={Managers().deletedhotelsList}
         />
-      </div>
+      </main>
     </>
   );
 };
