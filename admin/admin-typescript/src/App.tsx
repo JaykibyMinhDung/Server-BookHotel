@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, redirect } from "react-router-dom";
 import Dashbroad from "./pages/Dashbroad";
 import Transaction from "./pages/Transactions";
 import Login from "./pages/Login";
@@ -11,13 +11,15 @@ import HotelList from "./pages/HotelList";
 export interface IAppProps {}
 
 const App: React.FunctionComponent<IAppProps> = () => {
+  // const isLogin = localStorage.getItem("access_user");
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/login" element={<Login />} />
         <Route path="/" element={<Dashbroad />} />
+
         <Route>
           {/* <Route index element={} /> */}
-          <Route path="/login" element={<Login />} />
           <Route path="/transaction" element={<Transaction />} />
           <Route path="/room_list" element={<RoomsList />} />
           <Route path="/hotel_list" element={<HotelList />} />

@@ -71,8 +71,10 @@ const Dashbroad = (props: Props) => {
       <div
         style={{
           textAlign: "right",
-          margin: "0rem 2rem",
-          fontSize: "large",
+          // margin: "0rem 8rem",
+          marginRight: "10rem",
+          marginLeft: "8rem",
+          // fontSize: "large",
         }}
       >
         <Table

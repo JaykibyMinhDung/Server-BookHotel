@@ -20,7 +20,7 @@ module.exports = (req, res, next) => {
       });
     }
   } catch (error) {
-    console.log(error);
+    console.log("23", error);
     return res.status(401).json({
       statusCode: 401,
       message: "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại",

@@ -24,7 +24,10 @@ const fileStorage = multer.diskStorage({
     cb(null, __dirname + "/public");
   },
   filename: (req, file, cb) => {
-    cb(null, new Date().setTime() + "-" + file.originalname);
+    cb(
+      null,
+      new Date().setTime(new Date().getTime()) + "-" + file.originalname
+    );
   },
 });
 
@@ -51,7 +54,7 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 
 // Phá CORS
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3001", "http://localhost:3000");
+  res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Methods",
     "OPTION, GET, POST, PUT, PATCH, DELETE"
@@ -60,8 +63,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(Homepage);
 app.use(AdminPage);
+app.use(Homepage);
 
 app.use((req, res, next) => {
   res.status(500).json({ message: "Server error", SatusCode: 500 });

@@ -85,6 +85,12 @@ router.get(
   adminController.getOptionHotels
 );
 
+router.get(
+  "/room-list/:id",
+  authenticateRouteAdmin,
+  adminController.getDetailRoom
+);
+
 router.delete(
   "/room-list/deleted/:id",
   authenticateRouteAdmin,

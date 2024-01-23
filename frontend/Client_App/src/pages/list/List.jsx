@@ -4,7 +4,7 @@ import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 
 import { useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { DateRange } from "react-date-range";
 import SearchItem from "../../components/searchItem/SearchItem";
@@ -16,16 +16,30 @@ const List = () => {
 	// Cài đặt thêm nếu khách muốn đổi ý
 	const resultsHotel = location.state.data.results;
 	const [destination, setDestination] = useState(location.state.destination);
+	const [newSearchResponse, setNewSearchResponse] = useState([]);
 	const [date, setDate] = useState(location.state.date);
 	const [openDate, setOpenDate] = useState(false);
 	const [options, setOptions] = useState(location.state.options);
 
 	const getDataSearchHotel = async () => {
-		const res = await axios.post("http://localhost:5000/searchhotels");
-		const changeData = res.data;
-		// console.log(changeData);
+		const requestSearch = {
+			data: {
+				city: destination,
+				time: date,
+				amountPeople: options
+		  }
+		}
+		const res = await axios.post("http://localhost:5000/searchhotels", requestSearch);
+		const changeData = await res.data;
+		console.log(changeData);
+		return setNewSearchResponse(changeData.results)
 	};
 
+	useEffect(() => {
+		if (!newSearchResponse[0]) {
+			setNewSearchResponse(resultsHotel);
+		}
+	}, [])
 	// Tạo redux toolkit để quản lý các dữ liệu mà server gửi về
 
 	return (
@@ -110,7 +124,7 @@ const List = () => {
 						<button onClick={getDataSearchHotel}>Search</button>
 					</div>
 					<div className="listResult">
-						{resultsHotel.map((hotel, i) => (
+						{newSearchResponse.map((hotel, i) => (
 							<SearchItem key={i} data={hotel} date={date} />
 						))}
 						{/* 

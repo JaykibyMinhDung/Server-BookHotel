@@ -5,6 +5,14 @@ import axios from "../../util/baseUrl";
 const FeaturedProperties = () => {
   const [hotels, setHotels] = useState();
   const [isLoadding, setIsLoadding] = useState(false);
+  const httpPhotos = (image) => {
+    const checkPhotos = image ? image.split("://") : image
+    if (checkPhotos && checkPhotos[0]) {
+      return image
+    } else {
+      return "http://localhost:5000/" + image + ".jpg"
+    }
+  }
   const highestHotel = async () => {
     setIsLoadding(true);
     axios
@@ -39,7 +47,7 @@ const FeaturedProperties = () => {
           (hotel) => (
             <div className="fpItem" key={hotel.title}>
               <img
-                src={hotel.photos[0]}
+                src={httpPhotos(hotel.photos[0])}
                 alt={hotel.name}
                 className="fpImg"
                 loading="lazy"

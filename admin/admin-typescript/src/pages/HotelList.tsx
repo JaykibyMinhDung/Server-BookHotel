@@ -18,6 +18,7 @@ const HotelList = () => {
       .then((res) => setdataHotels(res.ListHotel))
       .catch((err) => console.error(err));
   }, []);
+
   return (
     <>
       <Navigator />

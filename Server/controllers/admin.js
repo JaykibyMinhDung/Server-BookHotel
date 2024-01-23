@@ -32,6 +32,7 @@ exports.postLogin = (req, res, next) => {
       bcrypt
         .compare(password, user.password)
         .then((doMatch) => {
+          console.log(doMatch);
           if (doMatch) {
             const token = jwt.sign(
               {
@@ -47,13 +48,18 @@ exports.postLogin = (req, res, next) => {
               emailUser: AddTokenUser.email,
               fullname: "Admin",
             });
+          } else {
+            res.status(422).json({
+              statusCode: 401,
+              message: "Email hoặc password dùng để đăng nhập chưa đúng",
+            });
           }
         })
         .catch((err) => {
-          console.log(err);
+          return console.log(err);
         });
     } catch (error) {
-      console.error(error);
+      return console.error(error);
     }
   });
 };
@@ -130,24 +136,40 @@ exports.getRoomsList = (req, res, next) => {
     // .skip(documentSkip)
     // .limit(8)
     .then((room) => {
+      const initialArray = [];
+      const filterRepeatData = [];
       Hotels.find()
         .then((hotel) => {
-          let responseData;
-          for (const element of hotel) {
-            responseData = element.rooms.map((e) => {
-              if (e === room._id) {
-                return {
-                  ...element._doc,
-                  idHotel: element.name,
-                };
+          const responseData = () => {
+            for (const iterator of hotel) {
+              for (let index = 0; index < iterator.rooms.length; index++) {
+                const element = iterator.rooms[index];
+                room.map((r) => {
+                  if (element === r._id.toString()) {
+                    initialArray.push({
+                      ...r._doc,
+                      idHotel: iterator._id,
+                    });
+                  }
+                });
               }
-            });
+            }
+          };
+          responseData();
+          for (let i = 0; i < initialArray.length; i++) {
+            const elementFirst = initialArray[i];
+            const elementSecond = initialArray[i + 1];
+            if (elementFirst._id !== elementSecond?._id) {
+              filterRepeatData.push(elementFirst);
+            }
           }
+
           if (room.length > 0) {
             return res.status(200).json({
               statusCode: 200,
               message: "Nhận thông tin phòng thành công",
-              ListRoom: responseData,
+              ListRoom: filterRepeatData,
+              numberResults: filterRepeatData.length,
             });
           } else {
             return res.status(200).json({
@@ -188,7 +210,7 @@ exports.getDetailHotel = (req, res, next) => {
 exports.postNewHotelList = (req, res, next) => {
   // const idUpdated = req.params?.id;
   const imageArr = [];
-  console.log(req.files);
+  console.log(req.body);
   // for (const key of req.files) {
   //   imageArr.push(key.path.replace(/\\/g, "/"));
   // }
@@ -293,6 +315,27 @@ exports.getOptionHotels = (req, res, next) => {
     .catch((err) => {
       console.log(err);
     });
+};
+
+exports.getDetailRoom = (req, res, next) => {
+  try {
+    const idRoom = req.params?.id;
+    if (idRoom) {
+      Rooms.findById(idRoom).then((room) => {
+        res.json({
+          statusCode: 200,
+          roomDetail: room,
+          message: "Nhận thông tin chi tiết phòng thành công",
+        });
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      statusCode: 200,
+      message: "Nhận chi tiết phòng thất bại, vui lòng liên hệ kĩ thuật",
+    });
+  }
 };
 
 exports.postNewRoomList = (req, res, next) => {
@@ -439,7 +482,10 @@ exports.deleteRoomList = (req, res, next) => {
           .then(() => {
             Rooms.findByIdAndDelete(idDeleted).then((results) => {
               if (results) {
-                res.json({ statusCode: 200, message: "Xóa phòng thành công" });
+                res.json({
+                  statusCode: 200,
+                  message: "Xóa phòng thành công",
+                });
               } else {
                 res.json({
                   statusCode: 400,

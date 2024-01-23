@@ -84,7 +84,10 @@ const Signin = (props) => {
             type="email"
             {...register("email", {
               require: "Please type email ",
-              minLength: 4,
+              minLength: {
+                value: 4,
+                message: "Vui lòng nhập email chính xác"
+              },
             })}
             id="email"
             placeholder="email"
@@ -94,7 +97,10 @@ const Signin = (props) => {
             type="password"
             {...register("password", {
               require: "Password is require",
-              minLength: 4,
+              minLength: {
+                value: 4,
+                message: "Vui lòng nhập password trên 4 kí tự"
+              },
             })}
             id="password"
             placeholder="password"
@@ -103,7 +109,9 @@ const Signin = (props) => {
           {errors.password && errors.email && (
             <span>This field is required</span>
           )}
-          <button>Login</button>
+          {errors.password?.message && <p style={{color: "red"}}>{errors.password?.message}</p>}
+          {errors.email?.message && <p style={{color: "red"}}>{errors.email?.message}</p>}
+          <button type="submit">Login</button>
         </form>
       </div>
     </div>

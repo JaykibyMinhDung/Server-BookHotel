@@ -1,8 +1,13 @@
 import React from "react";
 import "../css/sidebar.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navigator = () => {
+  const navigate = useNavigate();
+  const logout = () => {
+    localStorage.removeItem("access_user");
+    navigate("/login");
+  };
   return (
     <nav className="sidebar__horizontal">
       <div className="Heading__border">
@@ -188,7 +193,7 @@ const Navigator = () => {
               fill="#AA77FF"
             />
           </svg>
-          <button>Logout</button>
+          <button onClick={logout}>Logout</button>
         </li>
       </ul>
     </nav>

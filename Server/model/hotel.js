@@ -7,6 +7,10 @@ const hotelSchema = new Schema({
     type: String,
     require: true,
   },
+  title: {
+    type: String,
+    require: true,
+  },
   type: {
     type: String,
     require: true,

@@ -78,7 +78,7 @@ const BookHotel = ({ detailRoom, hotel, dateProps, newDate }) => {
           room?.id === rooms?.informationRoom.id &&
           room?.numberRoom === rooms?.informationRoom.numberRoom
       )
-      const test = valueRoom.splice(indexRoom, 1)
+      valueRoom.splice(indexRoom, 1)
     }
   };
 
@@ -88,6 +88,13 @@ const BookHotel = ({ detailRoom, hotel, dateProps, newDate }) => {
     if (empty.length) {
       return toast.error("Giá trị không được để trống")
     }
+    if (valueRoom.length === 0) {
+      return toast.error("Vui lòng chọn phòng")
+    }
+    if (data.payment === "auto") {
+      return toast.error("Vui lòng chọn phương thức thanh toán")
+    }
+    console.log(valueRoom.length)
     if (rangeDateBooking() < 1) {
       return toast.error("Giao dịch không thành công do chưa đặt ngày");
     }
@@ -102,7 +109,10 @@ const BookHotel = ({ detailRoom, hotel, dateProps, newDate }) => {
       detailHotel: hotel._id,
       detailRoom: valueRoom,
       totalPrice: totalBill
-    }).then((res) => toast(res.message))    
+    }).then((res) => {
+      // console.log(res);
+      toast(res.data.message)
+    }).catch(err => console.error(err))    
   };
 
   useEffect(() => {

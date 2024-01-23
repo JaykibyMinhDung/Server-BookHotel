@@ -25,7 +25,8 @@ const RoomsList = () => {
       .getRoomsList()
       .then((res) => setdataRooms(res.ListRoom))
       .catch((err) => console.error(err));
-  }, []);
+  }, []); // reload mutiple time
+
   return (
     <>
       <Navigator />

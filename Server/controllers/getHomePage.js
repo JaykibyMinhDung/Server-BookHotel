@@ -85,6 +85,7 @@ exports.getRatingHotel = (req, res, next) => {
 
 // Tìm kiếm hotel
 exports.serchHotels = (req, res, next) => {
+  // console.log(req.body);
   const location = req.body.data.city; // Vi trí khách sạn
   const people = req.body.data.amountPeople; // Số lượng người
   const timeClient = req.body.data.time; // Thời gian đặt phòng
@@ -254,6 +255,7 @@ exports.serchHotels = (req, res, next) => {
       });
     })
     .catch((err) => {
+      console.log(err);
       return res.json({
         results: "Không tìm thấy phòng phù hợp",
         ResultsDetailRooms: [],

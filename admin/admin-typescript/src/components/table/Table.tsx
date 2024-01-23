@@ -1,4 +1,4 @@
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, useEffect } from "react";
 import "./style.css";
 import { useNavigate } from "react-router-dom";
 
@@ -22,20 +22,35 @@ const Table: React.FC<Props> = ({
   const navigate = useNavigate();
   const navigationFormUpdated = async (id: any, flag: string) => {
     if (flag === "hotel") {
-      return navigate("/new_hotel", { state: { updated: "hotel" } });
+      return navigate("/new_hotel", {
+        state: { updated: "hotel", idHotel: id },
+      });
     } else {
-      return navigate("/new_room", { state: { updated: "room" } });
+      return navigate("/new_room", { state: { updated: "room", idRoom: id } });
     }
   };
   const deleteHandle = async (id: string, hotel?: string) => {
-    if (hotel) {
-      return deletedHotelAPI(id)
-        .then((res) => console.log(res))
-        .catch((err) => console.error(err));
-    } else {
-      return deletedRoomAPI(id, hotel)
-        .then((res) => console.log(res))
-        .catch((err) => console.error(err));
+    const acceptDeleted = window.confirm(
+      "Bạn có chắc muốn xóa khách sạn không?"
+    );
+    if (acceptDeleted) {
+      if (hotel) {
+        return deletedRoomAPI(id, hotel)
+          .then((res) => alert(res.message))
+          .then(() => navigate("/"))
+          .catch((err) => {
+            console.log(err);
+            alert("Có lỗi xảy ra, vui lòng kiểm tra lại đường truyền kết nối");
+          });
+      } else {
+        return deletedHotelAPI(id)
+          .then((res) => alert(res.message))
+          .then(() => navigate("/"))
+          .catch((err) => {
+            console.log(err);
+            alert("Có lỗi xảy ra, vui lòng kiểm tra lại đường truyền kết nối");
+          });
+      }
     }
   };
   const generateReactHTML = (): JSX.Element => {
@@ -178,7 +193,7 @@ const Table: React.FC<Props> = ({
                       style={StyleButtonDelete}
                       type="button"
                       value="Delete"
-                      onClick={() => deleteHandle(e._id)}
+                      onClick={() => deleteHandle(e._id, e.idHotel)}
                     />
                   </form>
                 </td>
@@ -240,6 +255,7 @@ const Table: React.FC<Props> = ({
       </tbody>
     );
   };
+
   return (
     <table
       style={{
